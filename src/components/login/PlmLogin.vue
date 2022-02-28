@@ -77,14 +77,16 @@ export default {
     onLogin: function () {
       if (this.validationEmail === false)
         return;
-      axios.post('http://localhost:3000/login', this.jsonData, {
+      axios.post(`${process.env.VUE_APP_URL_BACKEND}/login`, this.jsonData, {
         headers: {
           "Accept-Version": '1.0.0'
         }
       })
       .then((response) => {
-        if (response.data.success)
-          console.log("LOGIN AVVENUTA CON SUCCESSO");
+        if (response.data.success) {
+          if (response.data.data.auth)
+            this.$router.push('/home');
+        }
         else
           console.log("ERRORE LOGIN", response.data.msg);
       })

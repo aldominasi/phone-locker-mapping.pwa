@@ -17,7 +17,6 @@
 </template>
 
 <script>
-
 const Home = Symbol("Home");
 let component = Home;
 
@@ -25,7 +24,8 @@ export default {
   name: 'navBar',
   data() {
     return {
-      title: component.description
+      title: component.description,
+      armadi: [],
     }
   },
   methods: {
