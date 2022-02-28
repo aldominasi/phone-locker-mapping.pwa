@@ -1,6 +1,7 @@
 import vue from 'vue';
 import VueRouter from 'vue-router';
-import PlmLogin from '@/components/login/PlmLogin';
+const Login = () => import ('@/components/login/PlmLogin');
+const Home = () => import('@/components/home/Home');
 
 vue.use(VueRouter);
 
@@ -8,7 +9,12 @@ const routes = [
   {
     "path": '/',
     "name": 'PlmLogin',
-    "component": PlmLogin
+    "component": Login
+  },
+  {
+    "path": '/home',
+    "name": 'PlmHome',
+    "component": Home
   }
 ];
 

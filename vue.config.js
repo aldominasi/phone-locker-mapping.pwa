@@ -3,7 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   pwa: {
     name: "Phone Locker Mapping",
-    themeColor: "#868889",
-    msTileColor: "#CC071E"
+    themeColor: "#41E296",
+    msTileColor: "#00C4EE"
   }
 })
