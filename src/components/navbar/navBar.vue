@@ -9,28 +9,32 @@
       <b-navbar-toggle target="nav-collapse" class="mr-2"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="#">Link</b-nav-item>
+          <b-nav-item href="#" @click="changeComponent(0, 'Home')">Link</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <home v-if="indexComponent === 0"></home>
   </div>
 </template>
 
 <script>
-const Home = Symbol("Home");
-let component = Home;
+import Home from '@/components/home/Home';
 
 export default {
   name: 'navBar',
+  components: {
+    Home
+  },
   data() {
     return {
-      title: component.description,
-      armadi: [],
+      title: 'Home',
+      indexComponent: 0
     }
   },
   methods: {
-    changeComponent: function (value) {
-      component = value;
+    changeComponent: function (indexComponent, title) {
+      this.indexComponent = indexComponent;
+      this.title = title;
     }
   }
 }

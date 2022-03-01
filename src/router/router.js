@@ -1,7 +1,7 @@
 import vue from 'vue';
 import VueRouter from 'vue-router';
 const Login = () => import ('@/components/login/PlmLogin');
-const Home = () => import('@/components/home/Home');
+const NavBar = () => import('@/components/navbar/navBar');
 
 vue.use(VueRouter);
 
@@ -14,7 +14,7 @@ const routes = [
   {
     "path": '/home',
     "name": 'PlmHome',
-    "component": Home
+    "component": NavBar
   }
 ];
 

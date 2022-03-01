@@ -1,22 +1,20 @@
 <template>
   <div>
-    <side-bar></side-bar>
-    <p>{{jsonData.toString()}}</p>
+    <b-table
+      striped
+      hover
+      :items="jsonData"></b-table>
   </div>
 </template>
 
 <script>
-import SideBar from '@/components/navbar/navBar';
 import axios from 'axios';
 
 export default {
   name: 'PlmHome',
-  components: {
-    SideBar
-  },
   data() {
     return {
-      jsonData: null,
+      jsonData: [],
     }
   },
   mounted() {
@@ -31,8 +29,10 @@ export default {
       withCredentials: true
     })
       .then(response => {
-        this.jsonData = response.data;
-        //console.log(response.data);
+        if (!response.data.success)
+          return console.log('not success');
+        console.log(response.data.data);
+        this.jsonData = response.data.data.armadi;
       })
       .catch(err => {
         console.log(err);
