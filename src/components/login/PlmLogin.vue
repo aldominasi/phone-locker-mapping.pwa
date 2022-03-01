@@ -79,13 +79,15 @@ export default {
         return;
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/login`, this.jsonData, {
         headers: {
-          "Accept-Version": '1.0.0'
-        }
+          "Accept-Version": '1.0.0',
+        },
+        withCredentials: true
       })
       .then((response) => {
         if (response.data.success) {
-          if (response.data.data.auth)
+          if (response.data.data.auth) {
             this.$router.push('/home');
+          }
         }
         else
           console.log("ERRORE LOGIN", response.data.msg);

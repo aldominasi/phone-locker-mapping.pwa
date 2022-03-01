@@ -1,7 +1,7 @@
 <template>
   <div>
     <side-bar></side-bar>
-
+    <p>{{jsonData.toString()}}</p>
   </div>
 </template>
 
@@ -14,6 +14,11 @@ export default {
   components: {
     SideBar
   },
+  data() {
+    return {
+      jsonData: null,
+    }
+  },
   mounted() {
     axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi`, {
       headers: {
@@ -22,10 +27,12 @@ export default {
       params: {
         page: 0,
         limit: 10
-      }
+      },
+      withCredentials: true
     })
       .then(response => {
-        console.log(response.data);
+        this.jsonData = response.data;
+        //console.log(response.data);
       })
       .catch(err => {
         console.log(err);
