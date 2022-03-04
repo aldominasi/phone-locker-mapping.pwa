@@ -10,7 +10,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item href="/#/home/armadi">Home</b-nav-item>
-          <b-nav-item href="/#/home/utenti" @click="changeComponent(1, 'Utenti')">Utenti</b-nav-item>
+          <b-nav-item href="/#/home/utenti">Utenti</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

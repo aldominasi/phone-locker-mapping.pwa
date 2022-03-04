@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pwa-install></pwa-install>
+    <pwa-install/>
     <b-container class="mt-10">
       <b-row>
         <b-card

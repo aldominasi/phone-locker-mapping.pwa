@@ -1,16 +1,27 @@
 <template>
-  <div class="overflow-auto">
-    <b-table
-      id="table-armadi"
-      striped
-      hover
-      :items="jsonData"></b-table>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      @change="changePageTable"
-      aria-controls="table-armadi"></b-pagination>
+  <div>
+    <b-container class="mt-10">
+      <b-row>
+        <b-card
+          class="container card_container">
+          <b-card-body>
+            <div class="overflow-auto">
+              <b-table
+                id="table-armadi"
+                striped
+                hover
+                :items="jsonData"></b-table>
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                @change="changePageTable"
+                aria-controls="table-armadi"></b-pagination>
+            </div>
+          </b-card-body>
+        </b-card>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
