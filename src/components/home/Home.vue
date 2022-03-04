@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     changePageTable(page) {
-      console.log(page);
       this.currentPage = page;
       this.getArmadi();
     },
@@ -51,7 +50,6 @@ export default {
         .then(response => {
           if (!response.data.success)
             return console.log('not success');
-          console.log(response.data.data);
           this.jsonData = response.data.data.armadi;
           this.elementiTotali = response.data.data.documentiTotali;
         })
