@@ -1,9 +1,9 @@
 import vue from 'vue';
 import VueRouter from 'vue-router';
-const Login = () => import ('@/components/login/PlmLogin');
+const PlmLogin = () => import ('@/components/login/PlmLogin');
 const NavBar = () => import('@/components/navbar/navBar');
-const Armadi = () => import ('@/components/home/Armadi');
-const Utenti = () => import('@/components/home/Utenti');
+const PlmArmadi = () => import ('@/components/home/PlmArmadi');
+const PlmUtenti = () => import('@/components/home/PlmUtenti');
 
 vue.use(VueRouter);
 
@@ -11,7 +11,7 @@ const routes = [
   {
     "path": '/',
     "name": 'PlmLogin',
-    "component": Login
+    "component": PlmLogin
   },
   {
     "path": '/home',
@@ -20,11 +20,11 @@ const routes = [
     "children": [
       {
         "path": 'armadi',
-        "component": Armadi
+        "component": PlmArmadi
       },
       {
         "path": 'utenti',
-        "component": Utenti
+        "component": PlmUtenti
       }
     ]
   }
