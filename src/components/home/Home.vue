@@ -1,9 +1,16 @@
 <template>
-  <div>
+  <div class="overflow-auto">
     <b-table
+      id="table-armadi"
       striped
       hover
       :items="jsonData"></b-table>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      @change="changePageTable"
+      aria-controls="table-armadi"></b-pagination>
   </div>
 </template>
 
@@ -15,29 +22,48 @@ export default {
   data() {
     return {
       jsonData: [],
+      currentPage: 1,
+      perPage: 5,
+      elementiTotali: 0
     }
   },
   mounted() {
-    axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi`, {
-      headers: {
-        "Accept-Version": '1.0.0'
-      },
-      params: {
-        token: sessionStorage.getItem('tokenPlm'),
-        page: 0,
-        limit: 10
-      },
-      withCredentials: true
-    })
-      .then(response => {
-        if (!response.data.success)
-          return console.log('not success');
-        console.log(response.data.data);
-        this.jsonData = response.data.data.armadi;
+    this.getArmadi();
+  },
+  methods: {
+    changePageTable(page) {
+      console.log(page);
+      this.currentPage = page;
+      this.getArmadi();
+    },
+    getArmadi() {
+      axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi`, {
+        headers: {
+          "Accept-Version": '1.0.0'
+        },
+        params: {
+          token: sessionStorage.getItem('tokenPlm'),
+          page: this.currentPage - 1,
+          limit: this.perPage
+        },
+        withCredentials: true
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(response => {
+          if (!response.data.success)
+            return console.log('not success');
+          console.log(response.data.data);
+          this.jsonData = response.data.data.armadi;
+          this.elementiTotali = response.data.data.documentiTotali;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  computed: {
+    rows() {
+      return this.elementiTotali;
+    }
   }
 }
 </script>
