@@ -86,6 +86,7 @@ export default {
       .then((response) => {
         if (response.data.success) {
           if (response.data.data.auth) {
+            sessionStorage.setItem('tokenPlm', response.data.data.token);
             this.$router.push('/home');
           }
         }

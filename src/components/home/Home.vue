@@ -23,6 +23,7 @@ export default {
         "Accept-Version": '1.0.0'
       },
       params: {
+        token: sessionStorage.getItem('tokenPlm'),
         page: 0,
         limit: 10
       },
