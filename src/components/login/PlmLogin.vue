@@ -80,14 +80,13 @@ export default {
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/login`, this.jsonData, {
         headers: {
           "Accept-Version": '1.0.0',
-        },
-        withCredentials: true
+        }
       })
       .then((response) => {
         if (response.data.success) {
           if (response.data.data.auth) {
             sessionStorage.setItem('tokenPlm', response.data.data.token);
-            this.$router.push('/home');
+            this.$router.push('/home/armadi');
           }
         }
         else

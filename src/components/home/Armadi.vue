@@ -18,7 +18,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'PlmHome',
+  name: 'PlmArmadi',
   data() {
     return {
       jsonData: [],
@@ -44,8 +44,7 @@ export default {
           token: sessionStorage.getItem('tokenPlm'),
           page: this.currentPage - 1,
           limit: this.perPage
-        },
-        withCredentials: true
+        }
       })
         .then(response => {
           if (!response.data.success)
