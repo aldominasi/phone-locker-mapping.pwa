@@ -61,9 +61,30 @@
 <script>
 import PwaInstall from '@/components/PWAPrompt/PwaInstall';
 import axios from 'axios';
+import {
+  BRow,
+  BContainer,
+  BCard,
+  BCardHeader,
+  BForm,
+  BFormGroup,
+  BButton,
+  BLink,
+  BFormInput
+} from 'bootstrap-vue'
+
 export default {
   components:{
-    PwaInstall
+    PwaInstall,
+    BRow,
+    BContainer,
+    BCard,
+    BCardHeader,
+    BForm,
+    BFormGroup,
+    BButton,
+    BLink,
+    BFormInput
   },
   data() {
     return {

@@ -27,9 +27,25 @@
 
 <script>
 import axios from 'axios';
+import {
+  BContainer,
+  BRow,
+  BCard,
+  BCardBody,
+  BPagination,
+  BTable,
+} from 'bootstrap-vue';
 
 export default {
   name: 'PlmArmadi',
+  components: {
+    BContainer,
+    BRow,
+    BCard,
+    BCardBody,
+    BPagination,
+    BTable,
+  },
   data() {
     return {
       jsonData: [],

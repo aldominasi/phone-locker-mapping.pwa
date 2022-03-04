@@ -19,9 +19,25 @@
 </template>
 
 <script>
+import {
+  BNavbarBrand,
+  BNavbarToggle,
+  BNavbar,
+  BNavbarNav,
+  BNavItem,
+  BCollapse,
+} from 'bootstrap-vue';
 
 export default {
   name: 'navBar',
+  components: {
+    BNavbarBrand,
+    BNavbarToggle,
+    BNavbar,
+    BNavbarNav,
+    BNavItem,
+    BCollapse,
+  },
   data() {
     return {
       title: 'Home'
