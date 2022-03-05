@@ -130,6 +130,10 @@ export default {
 </script>
 
 <style scoped>
+img {
+  width: 75px;
+  height: auto;
+}
 .btnLogin {
   color: #0b769a;
   border-color: #0b769a;

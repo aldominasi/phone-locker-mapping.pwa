@@ -4,6 +4,10 @@ module.exports = defineConfig({
   pwa: {
     name: "Phone Locker Mapping",
     themeColor: "#41E296",
-    msTileColor: "#00C4EE"
+    msTileColor: "#00C4EE",
+    workboxOptions: {
+      skipWaiting: true,
+      clientsClaim: true
+    }
   }
 })
