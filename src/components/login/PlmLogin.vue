@@ -7,7 +7,7 @@
           style="max-width: 50rem;"
           class="container card_container">
           <b-card-header class="text-center bg-transparent">
-            <img :src="'/img/logo/logo_75x75.png'" alt="logo">
+            <img :src="'/plm/img/logo/logo_75x75.png'" alt="logo">
             <h4 class="mt-2">Find a locker</h4>
           </b-card-header>
           <b-form @submit.stop.prevent class="mt-4">
