@@ -9,14 +9,19 @@
             </b-card-header>
             <b-card-body>
               <b-form>
-                <b-form-input
-                  placeholder="Scegli la centrale"
-                  v-model="filtri.centrale.selected"
-                  debounce="200"
-                  list="list-centrali"></b-form-input>
-                <b-form-datalist
-                  id="list-centrali"
-                  :options="filtri.centrale.options"></b-form-datalist>
+                <b-form-row>
+                  <b-form-input
+                    placeholder="Scegli la centrale"
+                    v-model="filtri.centrale.selected"
+                    debounce="200"
+                    list="list-centrali"></b-form-input>
+                  <b-form-datalist
+                    id="list-centrali"
+                    :options="filtri.centrale.options"></b-form-datalist>
+                </b-form-row>
+                <b-form-row class="mt-2">
+                  <b-button class="bg-danger" @click="resetFiltri">Reset</b-button>
+                </b-form-row>
               </b-form>
             </b-card-body>
           </b-card>
@@ -85,6 +90,7 @@ import {
   BSpinner,
   BButton,
   BForm,
+  BFormRow,
   BFormInput,
   BFormDatalist,
 } from 'bootstrap-vue';
@@ -104,6 +110,7 @@ export default {
     BSpinner,
     BButton,
     BForm,
+    BFormRow,
     BFormInput,
     BFormDatalist,
   },
@@ -194,6 +201,12 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    },
+    resetFiltri() {
+      this.filtri.centrale.selected = '';
+      this.jsonData = [];
+      this.currentPage = 1;
+      this.elementiTotali = 0;
     }
   },
   computed: {
