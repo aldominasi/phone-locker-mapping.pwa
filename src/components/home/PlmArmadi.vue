@@ -14,11 +14,9 @@
                   v-model="filtri.centrale.selected"
                   debounce="200"
                   list="list-centrali"></b-form-input>
-                <div style="max-height: 20px;overflow-y: scroll;">
-                  <b-form-datalist
-                    id="list-centrali"
-                    :options="filtri.centrale.options"></b-form-datalist>
-                </div>
+                <b-form-datalist
+                  id="list-centrali"
+                  :options="filtri.centrale.options"></b-form-datalist>
               </b-form>
             </b-card-body>
           </b-card>
@@ -87,8 +85,6 @@ import {
   BSpinner,
   BButton,
   BForm,
-  // BFormSelect,
-  // BFormSelectOption,
   BFormInput,
   BFormDatalist,
 } from 'bootstrap-vue';
@@ -108,8 +104,6 @@ export default {
     BSpinner,
     BButton,
     BForm,
-    // BFormSelect,
-    // BFormSelectOption,
     BFormInput,
     BFormDatalist,
   },
