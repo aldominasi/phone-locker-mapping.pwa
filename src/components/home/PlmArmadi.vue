@@ -3,8 +3,28 @@
     <b-container class="mt-10">
       <b-row>
         <b-col cols="12">
-          <b-card
-            class="container card_container">
+          <b-card>
+            <b-card-header class="text-center bg-transparent">
+              <h4>Filtri Di Ricerca</h4>
+            </b-card-header>
+            <b-card-body>
+              <b-form>
+                <b-form-select
+                  id="sel-centrale"
+                  class="form-control"
+                  size="sm"
+                  v-model="filtri.centrale.selected"
+                  :options="filtri.centrale.options">
+                  <template #first>
+                    <b-form-select-option :value="null" disabled>Scegli la centrale</b-form-select-option>
+                  </template>
+                </b-form-select>
+              </b-form>
+            </b-card-body>
+          </b-card>
+        </b-col>
+        <b-col cols="12" class="mt-2">
+          <b-card>
             <b-card-body>
               <div class="overflow-auto">
                 <b-table
@@ -12,7 +32,6 @@
                   striped
                   hover
                   responsive
-                  stacked="sm"
                   :busy="tableIsBusy"
                   :fields="fieldsTable"
                   :items="jsonData">
@@ -21,6 +40,21 @@
                       <b-spinner class="align-middle"></b-spinner>
                       <strong> Caricamento...</strong>
                     </div>
+                  </template>
+                  <template #cell(show_details)="row">
+                    <b-button
+                      style="width: max-content"
+                      @click="row.toggleDetails">
+                      {{ row.detailsShowing ? 'Nascondi' : 'Mostra' }} Dettagli
+                    </b-button>
+                  </template>
+                  <template #row-details="row">
+                    <b-card>
+                      <b-row class="mb-2">
+                        <b-col cols="12" class="text-center"><b>{{ row.item.tipoArmadio }}</b></b-col>
+                        <b-col cols="12" class="text-center"><b>{{ row.item.indirizzo }}</b></b-col>
+                      </b-row>
+                    </b-card>
                   </template>
                 </b-table>
                 <b-pagination
@@ -46,10 +80,15 @@ import {
   BRow,
   BCol,
   BCard,
+  BCardHeader,
   BCardBody,
   BPagination,
   BTable,
   BSpinner,
+  BButton,
+  BForm,
+  BFormSelect,
+  BFormSelectOption,
 } from 'bootstrap-vue';
 const START_MD_SIZE = 768;
 
@@ -60,10 +99,15 @@ export default {
     BRow,
     BCol,
     BCard,
+    BCardHeader,
     BCardBody,
     BPagination,
     BTable,
     BSpinner,
+    BButton,
+    BForm,
+    BFormSelect,
+    BFormSelectOption,
   },
   data() {
     return {
@@ -75,26 +119,27 @@ export default {
           label: 'Centrale'
         },
         {
-          key: 'progressivo',
-          label: 'Progressivo',
-        },
-        {
           key: 'zona',
           label: 'Zona',
           formatter: 'zonaFormatter'
         },
         {
-          key: 'tipoArmadio',
-          label: 'Armadio'
-        },
-        {
-          key: 'indirizzo',
-          label: 'Indirizzo'
+          key: 'show_details',
+          label: '',
+          tdClass: 'text-center'
         }
       ],
       currentPage: 1,
       perPage: 3,
-      elementiTotali: 0
+      elementiTotali: 0,
+      filtri: {
+        centrale: {
+          selected: null,
+          options: [
+            { value: 'a', text: 'CASERTA' },
+          ]
+        }
+      }
     }
   },
   mounted() {
@@ -106,7 +151,7 @@ export default {
   },
   methods: {
     zonaFormatter(zona) {
-      return `${zona['info1']} - ${zona['info2']}`;
+      return zona['info1'];
     },
     changePageTable(page) {
       this.currentPage = page;
