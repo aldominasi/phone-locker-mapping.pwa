@@ -13,6 +13,7 @@
                   id="sel-centrale"
                   class="form-control"
                   size="sm"
+                  @change="getArmadi"
                   v-model="filtri.centrale.selected"
                   :options="filtri.centrale.options">
                   <template #first>
@@ -135,9 +136,7 @@ export default {
       filtri: {
         centrale: {
           selected: null,
-          options: [
-            { value: 'a', text: 'CASERTA' },
-          ]
+          options: []
         }
       }
     }
@@ -147,7 +146,7 @@ export default {
       this.perPage = 3;
     else
       this.perPage = 5;
-    this.getArmadi();
+    this.getCentrali();
   },
   methods: {
     zonaFormatter(zona) {
@@ -160,21 +159,19 @@ export default {
     getArmadi() {
       this.tableIsBusy = true;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi`, {
-        headers: {
-          "Accept-Version": '1.0.0'
-        },
+        headers: { "Accept-Version": '1.0.0' },
         params: {
           token: sessionStorage.getItem('tokenPlm'),
           page: this.currentPage - 1,
-          limit: this.perPage
+          limit: this.perPage,
+          centrale: this.filtri.centrale.selected
         }
       })
         .then(response => {
           if (!response.data.success) {
             this.tableIsBusy = false;
-            return console.log('not success');
+            return console.log(response.data.msg);
           }
-          console.log(response.data.data);
           this.jsonData = response.data.data.armadi;
           this.elementiTotali = response.data.data.documentiTotali;
           this.tableIsBusy = false;
@@ -183,6 +180,23 @@ export default {
           this.tableIsBusy = false;
           console.log(err);
         });
+    },
+    getCentrali() {
+      axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali`, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: { token: sessionStorage.getItem('tokenPlm') }
+      })
+      .then(response => {
+        if (!response.data.success)
+          return console.log(response.data.msg);
+        console.log(response.data);
+        this.filtri.centrale.options = response.data.data.map(item => {
+          return { value: item, text: item }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
   },
   computed: {
