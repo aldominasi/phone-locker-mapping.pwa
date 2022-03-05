@@ -9,17 +9,16 @@
             </b-card-header>
             <b-card-body>
               <b-form>
-                <b-form-select
-                  id="sel-centrale"
-                  class="form-control"
-                  size="sm"
-                  @change="getArmadi"
+                <b-form-input
+                  placeholder="Scegli la centrale"
                   v-model="filtri.centrale.selected"
-                  :options="filtri.centrale.options">
-                  <template #first>
-                    <b-form-select-option :value="null" disabled>Scegli la centrale</b-form-select-option>
-                  </template>
-                </b-form-select>
+                  debounce="200"
+                  list="list-centrali"></b-form-input>
+                <div style="max-height: 20px;overflow-y: scroll;">
+                  <b-form-datalist
+                    id="list-centrali"
+                    :options="filtri.centrale.options"></b-form-datalist>
+                </div>
               </b-form>
             </b-card-body>
           </b-card>
@@ -88,8 +87,10 @@ import {
   BSpinner,
   BButton,
   BForm,
-  BFormSelect,
-  BFormSelectOption,
+  // BFormSelect,
+  // BFormSelectOption,
+  BFormInput,
+  BFormDatalist,
 } from 'bootstrap-vue';
 const START_MD_SIZE = 768;
 
@@ -107,8 +108,10 @@ export default {
     BSpinner,
     BButton,
     BForm,
-    BFormSelect,
-    BFormSelectOption,
+    // BFormSelect,
+    // BFormSelectOption,
+    BFormInput,
+    BFormDatalist,
   },
   data() {
     return {
@@ -189,7 +192,7 @@ export default {
       .then(response => {
         if (!response.data.success)
           return console.log(response.data.msg);
-        console.log(response.data);
+
         this.filtri.centrale.options = response.data.data.map(item => {
           return { value: item, text: item }
         });
@@ -207,6 +210,12 @@ export default {
       return window.innerWidth <= START_MD_SIZE;
     }
   },
+  watch: {
+    'filtri.centrale.selected'(){
+      if (this.filtri.centrale.options.find(item => item.value === this.filtri.centrale.selected))
+        this.getArmadi();
+    }
+  }
 }
 </script>
 
