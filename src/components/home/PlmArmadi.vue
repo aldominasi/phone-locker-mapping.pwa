@@ -20,8 +20,22 @@
                     :options="filtri.centrale.options"></b-form-datalist>
                 </b-form-row>
                 <b-form-row class="mt-2">
-                  <b-button class="bg-danger" @click="resetFiltri">Reset</b-button>
+                  <b-form-select
+                    v-model="filtri.zona.selected"
+                    :options="filtri.zona.options"
+                    :disabled="!centraleScelta"
+                    class="form-control">
+                    <template #first>
+                      <b-form-select-option :value="null">Scegli la zona</b-form-select-option>
+                    </template>
+                  </b-form-select>
                 </b-form-row>
+                <b-row class="mt-2">
+                  <b-col>
+                    <b-button class="bg-danger" @click="resetFiltri">Reset</b-button>
+                    <b-button class="bg-info ml-2" @click="getArmadi(1)" :disabled="!centraleScelta">Cerca</b-button>
+                  </b-col>
+                </b-row>
               </b-form>
             </b-card-body>
           </b-card>
@@ -55,7 +69,6 @@
                     <b-card>
                       <b-row class="mb-2">
                         <b-col cols="12" class="text-center"><b>{{ row.item.tipoArmadio }}</b></b-col>
-                        <b-col cols="12" class="text-center"><b>{{ row.item.indirizzo }}</b></b-col>
                       </b-row>
                     </b-card>
                   </template>
@@ -93,6 +106,8 @@ import {
   BFormRow,
   BFormInput,
   BFormDatalist,
+  BFormSelect,
+  BFormSelectOption,
 } from 'bootstrap-vue';
 const START_MD_SIZE = 768;
 
@@ -113,6 +128,8 @@ export default {
     BFormRow,
     BFormInput,
     BFormDatalist,
+    BFormSelect,
+    BFormSelectOption,
   },
   data() {
     return {
@@ -120,13 +137,13 @@ export default {
       tableIsBusy: false,
       fieldsTable: [
         {
-          key: 'centrale',
-          label: 'Centrale'
-        },
-        {
           key: 'zona',
           label: 'Zona',
           formatter: 'zonaFormatter'
+        },
+        {
+          key: 'indirizzo',
+          label: 'Indirizzo'
         },
         {
           key: 'show_details',
@@ -137,8 +154,13 @@ export default {
       currentPage: 1,
       perPage: 3,
       elementiTotali: 0,
+      centraleScelta: false,
       filtri: {
         centrale: {
+          selected: '',
+          options: []
+        },
+        zona: {
           selected: null,
           options: []
         }
@@ -158,17 +180,18 @@ export default {
     },
     changePageTable(page) {
       this.currentPage = page;
-      this.getArmadi();
+      this.getArmadi(this.currentPage);
     },
-    getArmadi() {
+    getArmadi(page) {
       this.tableIsBusy = true;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi`, {
         headers: { "Accept-Version": '1.0.0' },
         params: {
           token: sessionStorage.getItem('tokenPlm'),
-          page: this.currentPage - 1,
+          page: page - 1,
           limit: this.perPage,
-          centrale: this.filtri.centrale.selected
+          centrale: this.filtri.centrale.selected,
+          zona: this.filtri.zona.selected
         }
       })
         .then(response => {
@@ -193,7 +216,6 @@ export default {
       .then(response => {
         if (!response.data.success)
           return console.log(response.data.msg);
-
         this.filtri.centrale.options = response.data.data.map(item => {
           return { value: item, text: item }
         });
@@ -201,6 +223,21 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    },
+    getZone() {
+      axios.get(`${process.env.VUE_APP_URL_BACKEND}/zone`, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: {
+          token: sessionStorage.getItem('tokenPlm'),
+          centrale: this.filtri.centrale.selected
+        }
+      })
+      .then(response => {
+        if (!response.data.success)
+          return console.log(response.data.msg);
+        this.filtri.zona.options = response.data.data;
+      })
+      .catch(err => console.log(err))
     },
     resetFiltri() {
       this.filtri.centrale.selected = '';
@@ -215,12 +252,17 @@ export default {
     },
     smallSize() {
       return window.innerWidth <= START_MD_SIZE;
-    }
+    },
   },
   watch: {
     'filtri.centrale.selected'(){
-      if (this.filtri.centrale.options.find(item => item.value === this.filtri.centrale.selected))
-        this.getArmadi();
+      if (this.filtri.centrale.options.find(item => item.value === this.filtri.centrale.selected)) {
+        this.centraleScelta = true;
+        this.filtri.zona.selected = null;
+        this.getZone();
+      }
+      else
+        this.centraleScelta = false;
     }
   }
 }
