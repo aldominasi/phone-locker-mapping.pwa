@@ -5,82 +5,86 @@
         <b-col cols="12">
           <b-card>
             <b-card-header class="text-center bg-transparent">
-              <h4>Filtri Di Ricerca</h4>
+              <h3>Lista armadi</h3>
             </b-card-header>
             <b-card-body>
-              <b-form>
-                <b-form-row>
-                  <b-form-input
-                    placeholder="Scegli la centrale"
-                    v-model="filtri.centrale.selected"
-                    debounce="200"
-                    list="list-centrali"></b-form-input>
-                  <b-form-datalist
-                    id="list-centrali"
-                    :options="filtri.centrale.options"></b-form-datalist>
-                </b-form-row>
-                <b-form-row class="mt-2">
-                  <b-form-select
-                    v-model="filtri.zona.selected"
-                    :options="filtri.zona.options"
-                    :disabled="!centraleScelta"
-                    class="form-control">
-                    <template #first>
-                      <b-form-select-option :value="null">Scegli la zona</b-form-select-option>
-                    </template>
-                  </b-form-select>
-                </b-form-row>
-                <b-row class="mt-2">
-                  <b-col>
-                    <b-button class="bg-danger" @click="resetFiltri">Reset</b-button>
-                    <b-button class="bg-info ml-2" @click="getArmadi(1)" :disabled="!centraleScelta">Cerca</b-button>
-                  </b-col>
-                </b-row>
-              </b-form>
-            </b-card-body>
-          </b-card>
-        </b-col>
-        <b-col cols="12" class="mt-2">
-          <b-card>
-            <b-card-body>
-              <div class="overflow-auto">
-                <b-table
-                  id="table-armadi"
-                  striped
-                  hover
-                  responsive
-                  :busy="tableIsBusy"
-                  :fields="fieldsTable"
-                  :items="jsonData">
-                  <template #table-busy>
-                    <div class="text-center color-busy-table my-2">
-                      <b-spinner class="align-middle"></b-spinner>
-                      <strong> Caricamento...</strong>
-                    </div>
-                  </template>
-                  <template #cell(show_details)="row">
-                    <b-button
-                      style="width: max-content"
-                      @click="row.toggleDetails">
-                      {{ row.detailsShowing ? 'Nascondi' : 'Mostra' }} Dettagli
-                    </b-button>
-                  </template>
-                  <template #row-details="row">
-                    <b-card>
-                      <b-row class="mb-2">
-                        <b-col cols="12" class="text-center"><b>{{ row.item.tipoArmadio }}</b></b-col>
-                      </b-row>
-                    </b-card>
-                  </template>
-                </b-table>
-                <b-pagination
-                  align="center"
-                  v-model="currentPage"
-                  :total-rows="rows"
-                  :per-page="perPage"
-                  @change="changePageTable"
-                  aria-controls="table-armadi"></b-pagination>
-              </div>
+              <b-row>
+                <b-col cols="12">
+                  <b-form>
+                    <b-form-row>
+                      <b-form-input
+                        placeholder="Scegli la centrale"
+                        v-model="filtri.centrale.selected"
+                        debounce="200"
+                        list="list-centrali"></b-form-input>
+                      <b-form-datalist
+                        id="list-centrali"
+                        :options="filtri.centrale.options"></b-form-datalist>
+                    </b-form-row>
+                    <b-form-row class="mt-2">
+                      <b-form-select
+                        v-model="filtri.zona.selected"
+                        :options="filtri.zona.options"
+                        :disabled="!centraleScelta"
+                        class="form-control">
+                        <template #first>
+                          <b-form-select-option :value="null">Scegli la zona</b-form-select-option>
+                        </template>
+                      </b-form-select>
+                    </b-form-row>
+                    <b-row class="mt-2">
+                      <b-col>
+                        <b-button class="bg-danger" @click="resetFiltri">Reset</b-button>
+                        <b-button class="bg-info ml-2" @click="getArmadi(1)" :disabled="!centraleScelta">Cerca</b-button>
+                      </b-col>
+                    </b-row>
+                  </b-form>
+                </b-col>
+                <b-col cols="12" class="mt-2">
+                  <b-card>
+                    <b-card-body>
+                      <div class="overflow-auto">
+                        <b-table
+                          id="table-armadi"
+                          striped
+                          hover
+                          responsive
+                          :busy="tableIsBusy"
+                          :fields="fieldsTable"
+                          :items="jsonData">
+                          <template #table-busy>
+                            <div class="text-center color-busy-table my-2">
+                              <b-spinner class="align-middle"></b-spinner>
+                              <strong> Caricamento...</strong>
+                            </div>
+                          </template>
+                          <template #cell(show_details)="row">
+                            <b-button
+                              style="width: max-content"
+                              @click="row.toggleDetails">
+                              {{ row.detailsShowing ? 'Nascondi' : 'Mostra' }} Dettagli
+                            </b-button>
+                          </template>
+                          <template #row-details="row">
+                            <b-card>
+                              <b-row class="mb-2">
+                                <b-col cols="12" class="text-center"><b>{{ row.item.tipoArmadio }}</b></b-col>
+                              </b-row>
+                            </b-card>
+                          </template>
+                        </b-table>
+                        <b-pagination
+                          align="center"
+                          v-model="currentPage"
+                          :total-rows="rows"
+                          :per-page="perPage"
+                          @change="changePageTable"
+                          aria-controls="table-armadi"></b-pagination>
+                      </div>
+                    </b-card-body>
+                  </b-card>
+                </b-col>
+              </b-row>
             </b-card-body>
           </b-card>
         </b-col>
@@ -139,17 +143,24 @@ export default {
         {
           key: 'zona',
           label: 'Zona',
-          formatter: 'zonaFormatter'
+          formatter: 'zonaFormatter',
+          tdClass: window.innerWidth <= START_MD_SIZE ? 'tdTableSm' : ''
         },
         {
           key: 'indirizzo',
-          label: 'Indirizzo'
+          label: 'Indirizzo',
+          tdClass: window.innerWidth <= START_MD_SIZE ? 'tdTableSm' : ''
         },
         {
-          key: 'show_details',
-          label: '',
-          tdClass: 'text-center'
+          key: 'tipoArmadio',
+          label: 'Armadio',
+          tdClass: window.innerWidth <= START_MD_SIZE ? 'tdTableSm' : ''
         }
+        // {
+        //   key: 'show_details',
+        //   label: '',
+        //   tdClass: 'text-center'
+        // }
       ],
       currentPage: 1,
       perPage: 3,
