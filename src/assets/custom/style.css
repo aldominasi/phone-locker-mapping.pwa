@@ -2,6 +2,46 @@
     font-family: "NotoSerifDisplay", sans-serif;
     src: url("../custom/Noto_Serif_Display/static/NotoSerifDisplay/NotoSerifDisplay-Black.ttf");
 }
+.btnCustomPrimary {
+    color: #0b769a;
+    border-color: #0b769a;
+    background-color: transparent;
+    font-family: NotoSerifDisplay,serif
+}
+.btnCustomPrimary:focus, .btnCustomPrimary:hover {
+    background-color: #0b769a;
+    box-shadow: 0 0 0 0 transparent;
+}
+.btnCustomPrimary:active {
+    background-color: #0b769a;
+    color: white;
+}
+.btnCustomSecondary:disabled {
+    color: #0b769a;
+    border-color: #9fa4aa;
+    background-color: transparent;
+    font-family: NotoSerifDisplay,serif
+}
+.btnCustomSecondary {
+    color: #218c60;
+    border-color: #218c60;
+    background-color: transparent;
+    font-family: NotoSerifDisplay,serif
+}
+.btnCustomSecondary:focus, .btnCustomSecondary:hover {
+    background-color: #218c60;
+    box-shadow: 0 0 0 0 transparent;
+}
+.btnCustomSecondary:active {
+    background-color: #218c60;
+    color: white;
+}
+.btnCustomSecondary:disabled {
+    color: #218c60;
+    border-color: #9fa4aa;
+    background-color: transparent;
+    font-family: NotoSerifDisplay,serif
+}
 .tdTableSm {
     font-size: 0.8rem;
 }

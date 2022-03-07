@@ -3,6 +3,7 @@ import App from './App.vue'
 //import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.min.css";
+import "/src/assets/custom/style.css";
 import router from './router/router';
 //import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 // import "@fortawesome/fontawesome-free/css/all.css";

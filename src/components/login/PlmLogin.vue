@@ -49,7 +49,7 @@
               class="mt-4 text-center">
               <b-button
                 @click="onLogin"
-                class="btnLogin">Accedi</b-button>
+                class="btnCustomPrimary">Accedi</b-button>
             </b-form-group>
           </b-form>
         </b-card>
@@ -134,20 +134,6 @@ img {
   width: 75px;
   height: auto;
 }
-.btnLogin {
-  color: #0b769a;
-  border-color: #0b769a;
-  background-color: transparent;
-  font-family: NotoSerifDisplay,serif
-}
-.btnLogin:focus {
-  box-shadow: 0 0 0 0 transparent;
-}
-.btnLogin:active {
-  background-color: #0b769a;
-  color: white;
-}
-
 .anchorPwd:link, .anchorPwd:visited {
   text-decoration: none;
   color: #0b769a;

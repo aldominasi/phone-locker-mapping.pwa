@@ -7,7 +7,7 @@ module.exports = defineConfig({
       msTileImage: 'img/icons/mstile-150x150.png'
     },
     name: "Phone Locker Mapping",
-    themeColor: "#41E296",
+    themeColor: "#218c60",
     msTileColor: "#00C4EE",
     workboxOptions: {
       skipWaiting: true,
