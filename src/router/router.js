@@ -1,6 +1,9 @@
 import vue from 'vue';
 import VueRouter from 'vue-router';
-import PlmLogin from '@/components/login/PlmLogin';
+const PlmLogin = () => import ('@/components/login/PlmLogin');
+const NavBar = () => import('@/components/navbar/navBar');
+const PlmArmadi = () => import ('@/components/home/PlmArmadi');
+const PlmUtenti = () => import('@/components/home/PlmUtenti');
 
 vue.use(VueRouter);
 
@@ -9,6 +12,21 @@ const routes = [
     "path": '/',
     "name": 'PlmLogin',
     "component": PlmLogin
+  },
+  {
+    "path": '/home',
+    "name": 'PlmHome',
+    "component": NavBar,
+    "children": [
+      {
+        "path": 'armadi',
+        "component": PlmArmadi
+      },
+      {
+        "path": 'utenti',
+        "component": PlmUtenti
+      }
+    ]
   }
 ];
 

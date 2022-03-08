@@ -1,13 +1,13 @@
 <template>
   <div>
-    <pwa-install></pwa-install>
+    <pwa-install/>
     <b-container class="mt-10">
       <b-row>
         <b-card
           style="max-width: 50rem;"
           class="container card_container">
           <b-card-header class="text-center bg-transparent">
-            <img :src="'/img/logo/logo_150x150.png'" alt="logo">
+            <img :src="'/plm/img/logo/logo_75x75.png'" alt="logo">
             <h4 class="mt-2">Find a locker</h4>
           </b-card-header>
           <b-form @submit.stop.prevent class="mt-4">
@@ -49,7 +49,7 @@
               class="mt-4 text-center">
               <b-button
                 @click="onLogin"
-                class="btnLogin">Accedi</b-button>
+                class="btnCustomPrimary">Accedi</b-button>
             </b-form-group>
           </b-form>
         </b-card>
@@ -61,9 +61,30 @@
 <script>
 import PwaInstall from '@/components/PWAPrompt/PwaInstall';
 import axios from 'axios';
+import {
+  BRow,
+  BContainer,
+  BCard,
+  BCardHeader,
+  BForm,
+  BFormGroup,
+  BButton,
+  BLink,
+  BFormInput
+} from 'bootstrap-vue'
+
 export default {
   components:{
-    PwaInstall
+    PwaInstall,
+    BRow,
+    BContainer,
+    BCard,
+    BCardHeader,
+    BForm,
+    BFormGroup,
+    BButton,
+    BLink,
+    BFormInput
   },
   data() {
     return {
@@ -77,14 +98,18 @@ export default {
     onLogin: function () {
       if (this.validationEmail === false)
         return;
-      axios.post('http://localhost:3000/login', this.jsonData, {
+      axios.post(`${process.env.VUE_APP_URL_BACKEND}/login`, this.jsonData, {
         headers: {
-          "Accept-Version": '1.0.0'
+          "Accept-Version": '1.0.0',
         }
       })
       .then((response) => {
-        if (response.data.success)
-          console.log("LOGIN AVVENUTA CON SUCCESSO");
+        if (response.data.success) {
+          if (response.data.data.auth) {
+            sessionStorage.setItem('tokenPlm', response.data.data.token);
+            this.$router.push('/home/armadi');
+          }
+        }
         else
           console.log("ERRORE LOGIN", response.data.msg);
       })
@@ -105,20 +130,10 @@ export default {
 </script>
 
 <style scoped>
-.btnLogin {
-  color: #0b769a;
-  border-color: #0b769a;
-  background-color: transparent;
-  font-family: NotoSerifDisplay,serif
+img {
+  width: 75px;
+  height: auto;
 }
-.btnLogin:focus {
-  box-shadow: 0 0 0 0 transparent;
-}
-.btnLogin:active {
-  background-color: #0b769a;
-  color: white;
-}
-
 .anchorPwd:link, .anchorPwd:visited {
   text-decoration: none;
   color: #0b769a;

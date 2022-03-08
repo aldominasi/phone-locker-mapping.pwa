@@ -7,8 +7,13 @@
 </template>
 
 <script>
+import { BButton } from 'bootstrap-vue';
+
 export default {
   name: 'PwaInstall',
+  components: {
+    BButton
+  },
   data() {
     return {
       shown: false,
