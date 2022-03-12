@@ -31,8 +31,8 @@
                     </b-form-row>
                     <b-row class="mt-2">
                       <b-col>
-                        <b-button class="btnCustomPrimary">Reset</b-button>
-                        <b-button class="btnCustomSecondary ml-2" @click="getUtenti(1)">Cerca</b-button>
+                        <b-button class="btnCustomPrimary" @click="resetFiltri">Reset</b-button>
+                        <b-button class="btnCustomSecondary ml-2" :disabled="validationEmail === false" @click="getUtenti(1)">Cerca</b-button>
                       </b-col>
                     </b-row>
                   </b-form>
@@ -155,14 +155,21 @@ export default {
   },
   methods: {
     getUtenti(page) {
+      if (this.validationEmail === false)
+        return;
       this.tableIsBusy = true;
+      const queryDiRicerca = {
+        token: sessionStorage.getItem('tokenPlm'),
+        page: page - 1,
+        limit: this.perPage
+      };
+      if (this.validationEmail != null)
+        queryDiRicerca.email = this.filtri.email;
+      if (this.filtri.ruolo.selected != null)
+        queryDiRicerca.ruolo = this.filtri.ruolo.selected;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/utenti`, {
         headers: { 'Accept-Version': '1.0.0' },
-        params: {
-          token: sessionStorage.getItem('tokenPlm'),
-          page: page - 1,
-          limit: this.perPage
-        }
+        params: queryDiRicerca
       })
       .then(response => {
         if (!response.data.success) {
@@ -191,6 +198,13 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    },
+    resetFiltri() {
+      this.filtri.email = '';
+      this.filtri.ruolo.selected = null;
+      this.currentPage = 1;
+      this.elementiTotali = 0;
+      this.getUtenti(1);
     }
   },
   computed: {
