@@ -5,15 +5,14 @@
       title="Navbar"
       type="dark"
       toggleable="lg">
-<!--      <b-navbar-brand class="ml-2">{{title}}</b-navbar-brand>-->
       <b-navbar-toggle target="nav-collapse" class="mr-2"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item>
-            <router-link :to="linkArmadi">Home</router-link>
+            <router-link v-if="permessiUtente.readArmadi" :to="linkArmadi">Home</router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link :to="linkUtenti">Utenti</router-link>
+            <router-link v-if="permessiUtente.readUtenti" :to="linkUtenti">Utenti</router-link>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -24,18 +23,17 @@
 
 <script>
 import {
-  // BNavbarBrand,
   BNavbarToggle,
   BNavbar,
   BNavbarNav,
   BNavItem,
   BCollapse,
 } from 'bootstrap-vue';
+import axios from 'axios';
 
 export default {
   name: 'navBar',
   components: {
-    // BNavbarBrand,
     BNavbarToggle,
     BNavbar,
     BNavbarNav,
@@ -46,9 +44,32 @@ export default {
     return {
       title: 'Home',
       linkArmadi: 'armadi',
-      linkUtenti: 'utenti'
+      linkUtenti: 'utenti',
+      permessiUtente: {
+        readUtenti: false,
+        writeUtenti: false,
+        readArmadi: true,
+        writeArmadi: true
+      }
     }
   },
+  mounted() {
+    axios.get(`${process.env.VUE_APP_URL_BACKEND}/utenti/me`, {
+      headers: { 'Accept-Version': '1.0.0' },
+      params: {
+        token: sessionStorage.getItem('tokenPlm')
+      }
+    })
+    .then(response => {
+      if (!response.data.success)
+        return console.log(response.data.msg);
+      console.log(response.data.permessi);
+      this.permessiUtente = response.data.data.permessi;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
 }
 </script>
 
