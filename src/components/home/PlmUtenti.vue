@@ -9,6 +9,28 @@
             </b-card-header>
             <b-card-body>
               <b-row>
+                <b-col cols="12">
+                  <b-form novalidate>
+                    <b-form-row>
+                      <b-form-input
+                        placeholder="Inserisci email"
+                        type="email"
+                        :state="validationEmail"
+                        class="inputCustomSecondary"
+                        v-model="filtri.email"></b-form-input>
+                    </b-form-row>
+                    <b-form-row class="mt-2">
+                      <b-form-select
+                        v-model="filtri.ruolo.selected"
+                        :options="filtri.ruolo.options"
+                        class="form-control selectCustomPrimary">
+                        <template #first>
+                          <b-form-select-option :value="null">Scegli il ruolo</b-form-select-option>
+                        </template>
+                      </b-form-select>
+                    </b-form-row>
+                  </b-form>
+                </b-col>
                 <b-col cols="12" class="mt-2">
                   <div class="overflow-auto">
                     <b-table
@@ -17,6 +39,7 @@
                       hover
                       borderless
                       responsive
+                      stacked="sm"
                       :busy="tableIsBusy"
                       :fields="fieldsUtenti"
                       :items="jsonData.utenti">
@@ -55,6 +78,11 @@ import {
   BPagination,
   BTable,
   BSpinner,
+  BForm,
+  BFormRow,
+  BFormInput,
+  BFormSelect,
+  BFormSelectOption,
 } from 'bootstrap-vue';
 import axios from 'axios';
 
@@ -70,6 +98,11 @@ export default {
     BPagination,
     BTable,
     BSpinner,
+    BForm,
+    BFormRow,
+    BFormInput,
+    BFormSelect,
+    BFormSelectOption,
   },
   data() {
     return {
@@ -98,6 +131,14 @@ export default {
           label: 'Ruolo',
         }
       ],
+      filtri: {
+        email: '',
+        ruolo: {
+          selected: null,
+          options: []
+        }
+      },
+      regexEmail: /^[A-z0-9.+_-]+@[A-z0-9._-]+\.[A-z]{2,6}$/
     }
   },
   mounted() {
@@ -132,6 +173,9 @@ export default {
   computed: {
     rows() {
       return this.elementiTotali;
+    },
+    validationEmail() {
+      return this.filtri.email === '' ? null : this.regexEmail.test(this.filtri.email)
     }
   }
 }

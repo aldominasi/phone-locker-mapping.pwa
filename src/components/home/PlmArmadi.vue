@@ -10,12 +10,13 @@
             <b-card-body>
               <b-row>
                 <b-col cols="12">
-                  <b-form>
+                  <b-form novalidate>
                     <b-form-row>
                       <b-form-input
                         placeholder="Scegli la centrale"
                         v-model="filtri.centrale.selected"
                         debounce="200"
+                        class="inputCustomSecondary"
                         list="list-centrali"></b-form-input>
                       <b-form-datalist
                         id="list-centrali"
@@ -26,7 +27,7 @@
                         v-model="filtri.zona.selected"
                         :options="filtri.zona.options"
                         :disabled="!centraleScelta"
-                        class="form-control">
+                        class="form-control selectCustomPrimary">
                         <template #first>
                           <b-form-select-option :value="null">Scegli la zona</b-form-select-option>
                         </template>
