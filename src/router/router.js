@@ -4,6 +4,7 @@ const PlmLogin = () => import ('@/components/login/PlmLogin');
 const NavBar = () => import('@/components/navbar/navBar');
 const PlmArmadi = () => import ('@/components/home/PlmArmadi');
 const PlmUtenti = () => import('@/components/home/PlmUtenti');
+const PlmRegistraUtente = () => import('@/components/home/PlmRegistraUtente');
 
 vue.use(VueRouter);
 
@@ -25,6 +26,10 @@ const routes = [
       {
         "path": 'utenti',
         "component": PlmUtenti
+      },
+      {
+        "path": 'addUtente',
+        "component": PlmRegistraUtente
       }
     ]
   }

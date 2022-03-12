@@ -9,10 +9,13 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item>
-            <router-link v-if="permessiUtente.readArmadi" :to="linkArmadi">Home</router-link>
+            <router-link v-if="permessiUtente.readArmadi" :to="linkArmadi">Armadi</router-link>
           </b-nav-item>
           <b-nav-item>
             <router-link v-if="permessiUtente.readUtenti" :to="linkUtenti">Utenti</router-link>
+          </b-nav-item>
+          <b-nav-item>
+            <router-link v-if="permessiUtente.writeUtenti" :to="linkRegistraUtente">Registra utente</router-link>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -45,6 +48,7 @@ export default {
       title: 'Home',
       linkArmadi: 'armadi',
       linkUtenti: 'utenti',
+      linkRegistraUtente: 'addUtente',
       permessiUtente: {
         readUtenti: false,
         writeUtenti: false,
