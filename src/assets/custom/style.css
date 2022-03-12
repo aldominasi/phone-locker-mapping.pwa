@@ -54,6 +54,15 @@ html {
 a, input, label, h1, h2, h3, h4, h5, h6 {
     font-family: NotoSerifDisplay,serif;
 }
+a.nav-link > a {
+    font-size: larger;
+    text-decoration: none;
+    color: white;
+}
+a.nav-link > a.router-link-exact-active {
+    font-size: larger;
+    text-decoration: underline;
+}
 body {
     padding: 0;
     margin: 0;

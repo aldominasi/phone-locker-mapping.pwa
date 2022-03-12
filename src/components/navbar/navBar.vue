@@ -5,7 +5,7 @@
       title="Navbar"
       type="dark"
       toggleable="lg">
-      <b-navbar-brand class="ml-2">{{title}}</b-navbar-brand>
+<!--      <b-navbar-brand class="ml-2">{{title}}</b-navbar-brand>-->
       <b-navbar-toggle target="nav-collapse" class="mr-2"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
@@ -24,7 +24,7 @@
 
 <script>
 import {
-  BNavbarBrand,
+  // BNavbarBrand,
   BNavbarToggle,
   BNavbar,
   BNavbarNav,
@@ -35,7 +35,7 @@ import {
 export default {
   name: 'navBar',
   components: {
-    BNavbarBrand,
+    // BNavbarBrand,
     BNavbarToggle,
     BNavbar,
     BNavbarNav,
