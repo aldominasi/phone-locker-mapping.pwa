@@ -256,6 +256,7 @@ export default {
     },
     resetFiltri() {
       this.filtri.centrale.selected = '';
+      this.filtri.zona.selected = null;
       this.jsonData = [];
       this.currentPage = 1;
       this.elementiTotali = 0;
