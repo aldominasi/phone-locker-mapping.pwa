@@ -9,8 +9,12 @@
       <b-navbar-toggle target="nav-collapse" class="mr-2"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="/#/home/armadi">Home</b-nav-item>
-          <b-nav-item href="/#/home/utenti">Utenti</b-nav-item>
+          <b-nav-item>
+            <router-link :to="linkArmadi">Home</router-link>
+          </b-nav-item>
+          <b-nav-item>
+            <router-link :to="linkUtenti">Utenti</router-link>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -40,7 +44,9 @@ export default {
   },
   data() {
     return {
-      title: 'Home'
+      title: 'Home',
+      linkArmadi: 'armadi',
+      linkUtenti: 'utenti'
     }
   },
 }
