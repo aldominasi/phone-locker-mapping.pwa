@@ -29,6 +29,12 @@
                         </template>
                       </b-form-select>
                     </b-form-row>
+                    <b-row class="mt-2">
+                      <b-col>
+                        <b-button class="btnCustomPrimary">Reset</b-button>
+                        <b-button class="btnCustomSecondary ml-2" @click="getUtenti(1)">Cerca</b-button>
+                      </b-col>
+                    </b-row>
                   </b-form>
                 </b-col>
                 <b-col cols="12" class="mt-2">
@@ -83,6 +89,7 @@ import {
   BFormInput,
   BFormSelect,
   BFormSelectOption,
+  BButton,
 } from 'bootstrap-vue';
 import axios from 'axios';
 
@@ -103,6 +110,7 @@ export default {
     BFormInput,
     BFormSelect,
     BFormSelectOption,
+    BButton,
   },
   data() {
     return {
@@ -142,6 +150,7 @@ export default {
     }
   },
   mounted() {
+    this.getRuoli();
     this.getUtenti(1);
   },
   methods: {
@@ -166,6 +175,20 @@ export default {
       })
       .catch(err => {
         this.tableIsBusy = false;
+        console.log(err);
+      });
+    },
+    getRuoli() {
+      axios.get(`${process.env.VUE_APP_URL_BACKEND}/ruoli`, {
+        headers: { 'Accept-Version': '1.0.0' }
+      })
+      .then(response => {
+        if (!response.data.success) {
+          return console.log(response.data.msg);
+        }
+        this.filtri.ruolo.options = response.data.data.map(item => item._id)
+      })
+      .catch(err => {
         console.log(err);
       });
     }
