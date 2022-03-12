@@ -25,6 +25,7 @@
                 :state="validationEmail"
                 :formatter="value => value.toLowerCase()"
                 v-model="jsonData.email"
+                @keyup.enter="onLogin"
               ></b-form-input>
             </b-form-group>
             <b-form-group
@@ -37,6 +38,7 @@
                 type="password"
                 placeholder="Inserisci la password"
                 v-model="jsonData.password"
+                @keyup.enter="onLogin"
               ></b-form-input>
             </b-form-group>
             <b-form-group
