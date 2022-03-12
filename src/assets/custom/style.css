@@ -2,6 +2,14 @@
     font-family: "NotoSerifDisplay", sans-serif;
     src: url("../custom/Noto_Serif_Display/static/NotoSerifDisplay/NotoSerifDisplay-Black.ttf");
 }
+li.page-item.active > button.page-link, li.page-item.active > button.page-link:focus {
+    background-color: #0b769a;
+    border-color: #0b769a;
+    box-shadow: none;
+}
+li.page-item > button.page-link {
+    color: #0b769a;
+}
 .btnCustomPrimary {
     color: #0b769a;
     border-color: #0b769a;
