@@ -18,42 +18,55 @@
                         :state="emailValidation"
                         class="inputCustomSecondary"
                         v-model="jsonData.email"></b-form-input>
-                      <b-form-row class="mt-2">
-                        <b-form-input
-                          placeholder="Inserisci password"
-                          type="password"
-                          class="inputCustomSecondary"
-                          v-model="jsonData.password"></b-form-input>
-                      </b-form-row>
-                      <b-form-row class="mt-2">
-                        <b-form-input
-                          placeholder="Inserisci cellulare"
-                          class="inputCustomSecondary"
-                          v-model="jsonData.numeroCellulare"></b-form-input>
-                      </b-form-row>
-                      <b-form-row class="mt-2">
-                        <b-form-input
-                          placeholder="Inserisci nome"
-                          class="inputCustomSecondary"
-                          v-model="jsonData.nome"></b-form-input>
-                      </b-form-row>
-                      <b-form-row class="mt-2">
-                        <b-form-input
-                          placeholder="Inserisci cognome"
-                          class="inputCustomSecondary"
-                          v-model="jsonData.cognome"></b-form-input>
-                      </b-form-row>
-                      <b-form-row class="mt-2">
-                        <b-form-select
-                          v-model="jsonData.ruolo"
-                          :options="optionsRuolo"
-                          class="form-control selectCustomPrimary">
-                          <template #first>
-                            <b-form-select-option :value="null" disabled>Scegli il ruolo</b-form-select-option>
-                          </template>
-                        </b-form-select>
-                      </b-form-row>
-                      <b-row>
+                      <b-row class="mt-2">
+                        <b-col sm="12" md="6" lg="6" xl="6">
+                          <b-form-input
+                            placeholder="Inserisci password"
+                            type="password"
+                            class="inputCustomSecondary"
+                            v-model="jsonData.password"></b-form-input>
+                        </b-col>
+                        <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                          <b-form-input
+                            placeholder="Conferma password"
+                            type="password"
+                            class="inputCustomSecondary"
+                            v-model="confermaPassword"></b-form-input>
+                        </b-col>
+                      </b-row>
+                      <b-row class="mt-2">
+                        <b-col sm="12" md="6" lg="6" xl="6">
+                          <b-form-input
+                            placeholder="Inserisci nome"
+                            class="inputCustomSecondary"
+                            v-model="jsonData.nome"></b-form-input>
+                        </b-col>
+                        <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                          <b-form-input
+                            placeholder="Inserisci cognome"
+                            class="inputCustomSecondary"
+                            v-model="jsonData.cognome"></b-form-input>
+                        </b-col>
+                      </b-row>
+                      <b-row class="mt-2">
+                        <b-col sm="12" md="6" lg="6" xl="6">
+                          <b-form-input
+                            placeholder="Inserisci cellulare"
+                            class="inputCustomSecondary"
+                            v-model="jsonData.numeroCellulare"></b-form-input>
+                        </b-col>
+                        <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                          <b-form-select
+                            v-model="jsonData.ruolo"
+                            :options="optionsRuolo"
+                            class="form-control selectCustomPrimary">
+                            <template #first>
+                              <b-form-select-option :value="null" disabled>Scegli il ruolo</b-form-select-option>
+                            </template>
+                          </b-form-select>
+                        </b-col>
+                      </b-row>
+                      <b-row class="mt-2">
                         <b-col>
                           <b-button class="btnCustomPrimary">Registra</b-button>
                         </b-col>
@@ -113,6 +126,7 @@ export default {
         cognome: '',
         ruolo: null,
       },
+      confermaPassword: '',
       optionsRuolo: [],
       regexEmail: /^[A-z0-9.+_-]+@[A-z0-9._-]+\.[A-z]{2,6}$/
     }
