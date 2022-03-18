@@ -74,7 +74,7 @@
                       </b-row>
                       <b-row class="mt-2">
                         <b-col>
-                          <b-button class="btnCustomPrimary">Registra</b-button>
+                          <b-button class="btnCustomPrimary" :disabled="!abilitaRegistrazione">Registra</b-button>
                         </b-col>
                       </b-row>
                     </b-form-row>
@@ -137,7 +137,8 @@ export default {
       confermaPassword: '',
       optionsRuolo: [],
       regexEmail: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
-      regexPassword: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/
+      regexPassword: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/,
+      regexNumeroCell: /^\d*$/
     }
   },
   mounted() {
@@ -150,7 +151,10 @@ export default {
       })
       .then(response => {
         if (!response.data.success)
-          return console.log(response.data.msg);
+          return this.$alert({
+            title: 'Attenzione',
+            content: response.data.msg
+          });
         this.optionsRuolo = response.data.data.map(item => item._id);
       })
       .catch(err => {
@@ -163,10 +167,14 @@ export default {
       })
       .then(response => {
         if (!response.data.success)
-          this.$alert({
+          return this.$alert({
             title: 'Attenzione',
             content: response.data.msg
           });
+        this.$alert({
+          title: 'Congratulazioni',
+          content: 'La registrazione dell\'utente è avvenuta correttamente'
+        });
         this.clearAll();
       })
     },
@@ -184,6 +192,12 @@ export default {
     },
     confermaPasswordValidation() {
       return this.confermaPassword === '' ? null : this.confermaPassword === this.jsonData.password;
+    },
+    cellulareValidation() {
+      return this.jsonData.numeroCellulare === '' ? null : this.regexNumeroCell.test(this.jsonData.numeroCellulare);
+    },
+    abilitaRegistrazione() {
+      return this.emailValidation === true && this.passwordValidation === true && this.confermaPasswordValidation === true && this.jsonData.nome && this.jsonData.cognome && this.cellulareValidation === true && this.jsonData.ruolo;
     }
   }
 }
