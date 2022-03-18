@@ -17,6 +17,9 @@
           <b-nav-item>
             <router-link v-if="permessiUtente.writeUtenti" :to="linkRegistraUtente">Registra utente</router-link>
           </b-nav-item>
+          <b-nav-item>
+            <router-link :to="linkLogout">Esci</router-link>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -49,6 +52,7 @@ export default {
       linkArmadi: 'armadi',
       linkUtenti: 'utenti',
       linkRegistraUtente: 'addUtente',
+      linkLogout: '/logout',
       permessiUtente: {
         readUtenti: false,
         writeUtenti: false,
@@ -73,7 +77,7 @@ export default {
     .catch(err => {
       console.log(err);
     });
-  }
+  },
 }
 </script>
 

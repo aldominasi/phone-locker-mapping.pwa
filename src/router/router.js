@@ -32,6 +32,19 @@ const routes = [
         "component": PlmRegistraUtente
       }
     ]
+  },
+  {
+    path: '/logout',
+    name: 'PlmLogout',
+    component: {
+      beforeRouteEnter(to, from, next) {
+        sessionStorage.clear();
+        next({
+          path: '/',
+          replace: true
+        });
+      }
+    }
   }
 ];
 
