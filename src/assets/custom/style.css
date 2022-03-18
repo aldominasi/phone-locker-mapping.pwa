@@ -2,6 +2,10 @@
     font-family: "NotoSerifDisplay", sans-serif;
     src: url("../custom/Noto_Serif_Display/static/NotoSerifDisplay/NotoSerifDisplay-Black.ttf");
 }
+.navbar-toggler {
+    box-shadow: none;
+    color: transparent !important;
+}
 .selectCustomPrimary {
     box-shadow: none !important;
 }
