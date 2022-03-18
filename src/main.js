@@ -9,12 +9,14 @@ import router from './router/router';
 // import "@fortawesome/fontawesome-free/css/all.css";
 // import "@fortawesome/fontawesome-free/js/all";
 import './registerServiceWorker'
+import vbMsgBox from 'bootstrap-vue-msgbox'
 
 //Vue.use(BootstrapVue);
 //Vue.use(BootstrapVueIcons);
 //Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false
+Vue.use(vbMsgBox);
 
 new Vue({
   router: router,

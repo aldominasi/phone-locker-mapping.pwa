@@ -23,13 +23,19 @@
                           <b-form-input
                             placeholder="Inserisci password"
                             type="password"
+                            :state="passwordValidation"
                             class="inputCustomSecondary"
+                            aria-describedby="password-help-block"
                             v-model="jsonData.password"></b-form-input>
+                          <b-form-text id="password-help-block">
+                            Minimo 6 caratteri, lettere minuscole e maiuscole e almeno un numero
+                          </b-form-text>
                         </b-col>
                         <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
                           <b-form-input
                             placeholder="Conferma password"
                             type="password"
+                            :state="confermaPasswordValidation"
                             class="inputCustomSecondary"
                             v-model="confermaPassword"></b-form-input>
                         </b-col>
@@ -94,6 +100,7 @@ import {
   BForm,
   BFormRow,
   BFormInput,
+  BFormText,
   BFormSelect,
   BFormSelectOption,
   BButton,
@@ -111,6 +118,7 @@ export default {
     BCardBody,
     BForm,
     BFormRow,
+    BFormText,
     BFormInput,
     BFormSelect,
     BFormSelectOption,
@@ -128,7 +136,8 @@ export default {
       },
       confermaPassword: '',
       optionsRuolo: [],
-      regexEmail: /^[A-z0-9.+_-]+@[A-z0-9._-]+\.[A-z]{2,6}$/
+      regexEmail: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
+      regexPassword: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/
     }
   },
   mounted() {
@@ -147,11 +156,34 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    },
+    registra() {
+      axios.post(`${process.env.VUE_APP_URL_BACKEND}/utenti`, {
+        headers: { 'Accept-Version': '1.0.0' }
+      })
+      .then(response => {
+        if (!response.data.success)
+          this.$alert({
+            title: 'Attenzione',
+            content: response.data.msg
+          });
+        this.clearAll();
+      })
+    },
+    clearAll() {
+      for (const prop in this.jsonData)
+        this.jsonData[prop] = prop === 'ruolo' ? null : '';
     }
   },
   computed: {
     emailValidation() {
       return this.jsonData.email === '' ? null : this.regexEmail.test(this.jsonData.email);
+    },
+    passwordValidation() {
+      return this.jsonData.password === '' ? null : this.regexPassword.test(this.jsonData.password);
+    },
+    confermaPasswordValidation() {
+      return this.confermaPassword === '' ? null : this.confermaPassword === this.jsonData.password;
     }
   }
 }

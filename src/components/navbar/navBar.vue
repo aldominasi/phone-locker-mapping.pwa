@@ -71,7 +71,6 @@ export default {
     .then(response => {
       if (!response.data.success)
         return console.log(response.data.msg);
-      console.log(response.data.permessi);
       this.permessiUtente = response.data.data.permessi;
     })
     .catch(err => {
