@@ -1,8 +1,9 @@
 import vue from 'vue';
 import VueRouter from 'vue-router';
-const PlmLogin = () => import ('@/components/login/PlmLogin');
+import { verifyAuthModPwd } from '@/utilityMixin/utility';
+const PlmLogin = () => import('@/components/login/PlmLogin');
 const NavBar = () => import('@/components/navbar/navBar');
-const PlmArmadi = () => import ('@/components/home/PlmArmadi');
+const PlmArmadi = () => import('@/components/home/PlmArmadi');
 const PlmUtenti = () => import('@/components/home/PlmUtenti');
 const PlmRegistraUtente = () => import('@/components/home/PlmRegistraUtente');
 const PlmPwdLost = () => import('@/components/password/PlmPwdLost');
@@ -55,7 +56,7 @@ const routes = [
   {
     path: '/pwdLost',
     name: 'PlmPwdLost',
-    component: PlmPwdLost
+    component: PlmPwdLost,
   }
 ];
 
@@ -64,5 +65,20 @@ const router = new VueRouter({
   mode: "hash",
   base: process.env.BASE_URL
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'PlmPwdLost') {
+    if (to.query == null || to.query.tkn == null)
+      return false;
+    verifyAuthModPwd(to.query.tkn)
+      .then(() => {
+        next();
+      })
+      .catch(() => {
+        next('/');
+      });
+  } else
+    next();
+})
 
 export default router

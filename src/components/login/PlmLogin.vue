@@ -44,7 +44,7 @@
               </span>
             </b-form-group>
             <b-form-group class="mt-10">
-              <b-link class="anchorPwd" href="/#/">Hai dimenticato la password?</b-link>
+              <b-link class="anchorPwd" @click.prevent="recuperaPassword">Hai dimenticato la password?</b-link>
             </b-form-group>
             <b-form-group class="mt-4 text-center">
               <b-button @click="onLogin" class="btnCustomPrimary">Accedi
@@ -72,6 +72,7 @@ import {
   BLink,
   BFormInput,
 } from 'bootstrap-vue'
+const regexEmail = /^[A-z0-9.+_-]+@[A-z0-9._-]+\.[A-z]{2,6}$/;
 
 export default {
   components: {
@@ -133,13 +134,43 @@ export default {
         this.typePwd = 'password';
         this.textPwd = 'mostra password';
       }
+    },
+    recuperaPassword() {
+      this.$prompt({
+        title: 'Recupero password',
+        content: 'Inserisci la tua email per avviare l\'operazione di recupero password',
+        validates (value) {
+          return value === '' ? null : regexEmail.test(value) ? null : 'L\'indirizzo email non è formalmente corretto'
+        }
+      })
+      .then(value => {
+        axios.post(`${process.env.VUE_APP_URL_BACKEND}/recuperopwd`, { email: value }, {
+          headers: {
+            "Accept-Version": '1.0.0',
+          }
+        })
+        .then(response => {
+          this.$alert({
+            title: response.data.success ? 'Recupero password' : 'Attenzione',
+            content: response.data.success ? response.data.data : response.data.msg
+          });
+        })
+        .catch(() => {
+          this.$alert({
+            title: 'Attenzione',
+            content: 'Si è verificato un errore. Riprova più tardi'
+          });
+        })
+      })
+      .catch(() => {
+
+      })
     }
   },
   computed: {
     validationEmail() {
       if (this.jsonData.email === '')
         return null;
-      const regexEmail = /^[A-z0-9.+_-]+@[A-z0-9._-]+\.[A-z]{2,6}$/;
       return this.jsonData.email.match(regexEmail) != null ? null : false
     },
   }

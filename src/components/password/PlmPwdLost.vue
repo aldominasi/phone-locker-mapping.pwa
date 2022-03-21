@@ -40,7 +40,7 @@
             </span>
           </b-form-group>
           <b-form-group class="mt-10 text-center">
-            <b-button class="btnCustomPrimary">Invia</b-button>
+            <b-button class="btnCustomPrimary" @click="inviaDati" :disabled="!abilitaInvio">Invia</b-button>
           </b-form-group>
         </b-form>
       </b-card>
@@ -60,6 +60,7 @@ import {
   BButton,
   BLink,
 } from 'bootstrap-vue';
+import axios from 'axios';
 
 export default {
   components: {
@@ -90,6 +91,33 @@ export default {
     },
     showHidePwd2() {
       this.typePwd2 = this.typePwd2 === 'password' ? 'text' : 'password';
+    },
+    inviaDati() {
+      axios.post(`${process.env.VUE_APP_URL_BACKEND}/recuperopwd/modifica`, this.jsonData, {
+        headers: {
+          "Accept-Version": '1.0.0',
+        },
+        params: {
+          token: this.$route.query.tkn
+        }
+      })
+      .then(response => {
+        this.$alert({
+          title: 'Attenzione',
+          content: response.data.success ? response.data.data : response.data.msg
+        });
+        this.clearAll();
+      })
+      .catch(() => {
+        this.$alert({
+          title: 'Attenzione',
+          content: 'Si è verificato un errore. Riprova più tardi'
+        });
+      });
+    },
+    clearAll() {
+      this.jsonData.pwd = '';
+      this.pwd2 = '';
     }
   },
   computed: {
@@ -104,6 +132,9 @@ export default {
     },
     validationPwd2() {
       return this.pwd2 === '' ? null : this.pwd2 === this.jsonData.pwd;
+    },
+    abilitaInvio() {
+      return this.jsonData.pwd !== '' && this.validationPwd1 === true && this.validationPwd2 === true;
     }
   }
 }
