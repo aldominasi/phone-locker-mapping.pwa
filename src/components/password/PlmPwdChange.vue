@@ -133,7 +133,7 @@ export default {
       return this.pwd2 === '' ? null : this.pwd2 === this.jsonData.newPwd;
     },
     abilitaInvio() {
-      return this.jsonData.oldPwd !== '' && this.validationNewPwd() === true && this.validationPwd2() === true;
+      return this.jsonData.oldPwd !== '' && this.validationNewPwd === true && this.validationPwd2 === true;
     }
   }
 }
