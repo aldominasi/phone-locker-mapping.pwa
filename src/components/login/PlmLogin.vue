@@ -4,54 +4,55 @@
     <b-container class="mt-10">
       <b-row>
         <b-card
-          style="max-width: 50rem;"
-          class="container card_container">
+            style="max-width: 50rem;"
+            class="container card_container">
           <b-card-header class="text-center bg-transparent">
             <img :src="'/plm/img/logo/logo_75x75.png'" alt="logo">
             <h4 class="mt-2">Find a locker</h4>
           </b-card-header>
           <b-form @submit.stop.prevent class="mt-4">
             <b-form-group
-              label="Email"
-              label-for="inputEmail"
-              invalid-feedback="Email formalmente errata"
-              :state="validationEmail">
+                label="Email"
+                label-for="inputEmail"
+                invalid-feedback="Email formalmente errata"
+                :state="validationEmail">
               <b-form-input
-                id="inputEmail"
-                class="inputCustomPrimary"
-                placeholder="Inserisci la mail"
-                autofocus
-                type="email"
-                :state="validationEmail"
-                :formatter="value => value.toLowerCase()"
-                v-model="jsonData.email"
-                @keyup.enter="onLogin"
+                  id="inputEmail"
+                  class="inputCustomPrimary"
+                  placeholder="Inserisci la mail"
+                  autofocus
+                  type="email"
+                  :state="validationEmail"
+                  :formatter="value => value.toLowerCase()"
+                  v-model="jsonData.email"
+                  @keyup.enter="onLogin"
               ></b-form-input>
             </b-form-group>
             <b-form-group
-              class="mt-4"
-              label="Password"
-              label-for="inputPassword">
+                class="mt-4"
+                label="Password"
+                label-for="inputPassword">
               <b-form-input
-                id="inputPassword"
-                class="inputCustomPrimary"
-                type="password"
-                placeholder="Inserisci la password"
-                v-model="jsonData.password"
-                @keyup.enter="onLogin"
-              ></b-form-input>
+                  id="inputPassword"
+                  class="inputCustomPrimary"
+                  :type="typePwd"
+                  placeholder="Inserisci la password"
+                  v-model="jsonData.password"
+                  @keyup.enter="onLogin"></b-form-input>
+              <span class="float-end mr-2">
+                <b-link class="anchorPwd" @click.prevent="showHidePwd">{{ textPwd }}</b-link>
+              </span>
             </b-form-group>
             <b-form-group
-              class="mt-4">
-              <b-link
-                class="anchorPwd"
-                href="/#/">Hai dimenticato la password?</b-link>
+                class="mt-10">
+              <b-link class="anchorPwd" href="/#/">Hai dimenticato la password?</b-link>
             </b-form-group>
             <b-form-group
-              class="mt-4 text-center">
+                class="mt-4 text-center">
               <b-button
-                @click="onLogin"
-                class="btnCustomPrimary">Accedi</b-button>
+                  @click="onLogin"
+                  class="btnCustomPrimary">Accedi
+              </b-button>
             </b-form-group>
           </b-form>
         </b-card>
@@ -62,6 +63,7 @@
 
 <script>
 import PwaInstall from '@/components/PWAPrompt/PwaInstall';
+
 import axios from 'axios';
 import {
   BRow,
@@ -72,11 +74,11 @@ import {
   BFormGroup,
   BButton,
   BLink,
-  BFormInput
+  BFormInput,
 } from 'bootstrap-vue'
 
 export default {
-  components:{
+  components: {
     PwaInstall,
     BRow,
     BContainer,
@@ -86,14 +88,16 @@ export default {
     BFormGroup,
     BButton,
     BLink,
-    BFormInput
+    BFormInput,
   },
   data() {
     return {
       jsonData: {
         email: '',
         password: ''
-      }
+      },
+      typePwd: 'password',
+      textPwd: 'mostra password'
     }
   },
   methods: {
@@ -105,19 +109,28 @@ export default {
           "Accept-Version": '1.0.0',
         }
       })
-      .then((response) => {
-        if (response.data.success) {
-          if (response.data.data.auth) {
-            sessionStorage.setItem('tokenPlm', response.data.data.token);
-            this.$router.push('/home/armadi');
-          }
-        }
-        else
-          console.log("ERRORE LOGIN", response.data.msg);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+          .then((response) => {
+            if (response.data.success) {
+              if (response.data.data.auth) {
+                sessionStorage.setItem('tokenPlm', response.data.data.token);
+                this.$router.push('/home/armadi');
+              }
+            } else
+              console.log("ERRORE LOGIN", response.data.msg);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+    },
+    showHidePwd() {
+      if (this.typePwd === 'password') {
+        this.typePwd = 'text';
+        this.textPwd = 'nascondi password';
+      }
+      else {
+        this.typePwd = 'password';
+        this.textPwd = 'mostra password';
+      }
     }
   },
   computed: {
@@ -136,10 +149,12 @@ img {
   width: 75px;
   height: auto;
 }
+
 .anchorPwd:link, .anchorPwd:visited {
   text-decoration: none;
   color: #0b769a;
 }
+
 .anchorPwd:hover {
   text-decoration: underline;
   color: #0b769a;
