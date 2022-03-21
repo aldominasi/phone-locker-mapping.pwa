@@ -18,6 +18,9 @@
             <router-link :to="linkRegistraUtente">Registra utente</router-link>
           </b-nav-item>
           <b-nav-item class="ml-1">
+            <router-link :to="linkModPwd">Modifica password</router-link>
+          </b-nav-item>
+          <b-nav-item class="ml-1">
             <router-link :to="linkLogout">Esci</router-link>
           </b-nav-item>
         </b-navbar-nav>
@@ -52,6 +55,7 @@ export default {
       linkArmadi: 'armadi',
       linkUtenti: 'utenti',
       linkRegistraUtente: 'addUtente',
+      linkModPwd: 'pwdChange',
       linkLogout: '/logout',
       permessiUtente: {
         readUtenti: false,

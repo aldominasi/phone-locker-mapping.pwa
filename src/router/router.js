@@ -5,31 +5,37 @@ const NavBar = () => import('@/components/navbar/navBar');
 const PlmArmadi = () => import ('@/components/home/PlmArmadi');
 const PlmUtenti = () => import('@/components/home/PlmUtenti');
 const PlmRegistraUtente = () => import('@/components/home/PlmRegistraUtente');
+const PlmPwdLost = () => import('@/components/password/PlmPwdLost');
+const PlmPwdChange = () => import('@/components/password/PlmPwdChange');
 
 vue.use(VueRouter);
 
 const routes = [
   {
-    "path": '/',
-    "name": 'PlmLogin',
-    "component": PlmLogin
+    path: '/',
+    name: 'PlmLogin',
+    component: PlmLogin
   },
   {
-    "path": '/home',
-    "name": 'PlmHome',
-    "component": NavBar,
-    "children": [
+    path: '/home',
+    name: 'PlmHome',
+    component: NavBar,
+    children: [
       {
-        "path": 'armadi',
-        "component": PlmArmadi
+        path: 'armadi',
+        component: PlmArmadi
       },
       {
-        "path": 'utenti',
-        "component": PlmUtenti
+        path: 'utenti',
+        component: PlmUtenti
       },
       {
-        "path": 'addUtente',
-        "component": PlmRegistraUtente
+        path: 'addUtente',
+        component: PlmRegistraUtente
+      },
+      {
+        path: 'pwdChange',
+        component: PlmPwdChange
       }
     ]
   },
@@ -45,6 +51,11 @@ const routes = [
         });
       }
     }
+  },
+  {
+    path: '/pwdLost',
+    name: 'PlmPwdLost',
+    component: PlmPwdLost
   }
 ];
 

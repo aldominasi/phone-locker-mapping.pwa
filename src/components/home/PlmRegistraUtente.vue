@@ -54,8 +54,8 @@
                         </b-form-select>
                       </b-col>
                     </b-row>
-                    <b-row class="mt-2">
-                      <b-col>
+                    <b-row class="mt-3">
+                      <b-col class="text-center">
                         <b-button class="btnCustomPrimary" :disabled="!abilitaRegistrazione" @click="registra">Registra</b-button>
                       </b-col>
                     </b-row>
@@ -112,7 +112,6 @@ export default {
       },
       optionsRuolo: [],
       regexEmail: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
-      regexPassword: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/,
       regexNumeroCell: /^\d*$/
     }
   },
