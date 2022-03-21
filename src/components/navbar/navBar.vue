@@ -8,14 +8,14 @@
       <b-navbar-toggle target="nav-collapse" class="mr-2"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item class="ml-1">
-            <router-link v-if="permessiUtente.readArmadi" :to="linkArmadi">Armadi</router-link>
+          <b-nav-item v-if="permessiUtente.readArmadi" class="ml-1">
+            <router-link :to="linkArmadi">Armadi</router-link>
           </b-nav-item>
-          <b-nav-item class="ml-1">
-            <router-link v-if="permessiUtente.readUtenti" :to="linkUtenti">Utenti</router-link>
+          <b-nav-item v-if="permessiUtente.readUtenti" class="ml-1">
+            <router-link :to="linkUtenti">Utenti</router-link>
           </b-nav-item>
-          <b-nav-item class="ml-1">
-            <router-link v-if="permessiUtente.writeUtenti" :to="linkRegistraUtente">Registra utente</router-link>
+          <b-nav-item v-if="permessiUtente.writeUtenti" class="ml-1">
+            <router-link :to="linkRegistraUtente">Registra utente</router-link>
           </b-nav-item>
           <b-nav-item class="ml-1">
             <router-link :to="linkLogout">Esci</router-link>
