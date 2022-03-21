@@ -115,8 +115,16 @@ export default {
                 sessionStorage.setItem('tokenPlm', response.data.data.token);
                 this.$router.push('/home/armadi');
               }
+              else
+                this.$alert({
+                  title: 'Attenzione',
+                  content: 'Autenticazione non riuscita. Riprova più tardi'
+                });
             } else
-              console.log("ERRORE LOGIN", response.data.msg);
+              this.$alert({
+                title: 'Attenzione',
+                content: response.data.msg
+              });
           })
           .catch((err) => {
             console.log(err);
