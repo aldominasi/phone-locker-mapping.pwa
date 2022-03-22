@@ -89,8 +89,9 @@ export default {
     })
     .then(response => {
       if (!response.data.success)
-        return console.log(response.data.msg);
-      this.permessiUtente = response.data.data.permessi;
+        this.apiErrorHandler(response);
+      else
+        this.permessiUtente = response.data.data.permessi;
     })
     .catch(err => {
       console.log(err);
