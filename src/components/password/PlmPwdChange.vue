@@ -51,7 +51,7 @@
                     </b-row>
                     <b-row class="mt-3">
                       <b-col class="text-center">
-                        <b-button class="btnCustomPrimary" :disabled="!abilitaInvio">Invia</b-button>
+                        <b-button class="btnCustomPrimary" :disabled="!abilitaInvio" @click="inviaDati">Invia</b-button>
                       </b-col>
                     </b-row>
                   </b-form>
@@ -78,6 +78,7 @@ import {
   BButton,
   BLink,
 } from 'bootstrap-vue';
+import axios from 'axios';
 export default {
   name: 'PlmPwdChange',
   components: {
@@ -114,6 +115,30 @@ export default {
     },
     showHidePwd2() {
       this.typePwd2 = this.typePwd2 === 'password' ? 'text' : 'password';
+    },
+    inviaDati() {
+      axios.post(`${process.env.VUE_APP_URL_BACKEND}/modificapwd`, this.jsonData, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: { token: sessionStorage.getItem('tokenPlm') }
+      })
+      .then(response => {
+        this.$alert({
+          title: 'Esito operazione',
+          content: response.data.success ? response.data.data : response.data.msg
+        });
+        this.clearAll();
+      })
+      .catch(() => {
+        this.$alert({
+          title: 'Attenzione',
+          content: 'Si è verificato un errore. Riprova più tardi'
+        });
+      });
+    },
+    clearAll() {
+      this.jsonData.oldPwd = '';
+      this.jsonData.newPwd = '';
+      this.pwd2 = '';
     }
   },
   computed: {
