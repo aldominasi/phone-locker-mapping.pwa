@@ -4,7 +4,7 @@
       id="navbar-1"
       title="Navbar"
       type="dark"
-      toggleable="lg">
+      toggleable="md">
       <b-navbar-toggle target="nav-collapse" class="mr-2"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
@@ -17,12 +17,19 @@
           <b-nav-item v-if="permessiUtente.writeUtenti" class="ml-1">
             <router-link :to="linkRegistraUtente">Registra utente</router-link>
           </b-nav-item>
-          <b-nav-item class="ml-1">
-            <router-link :to="linkModPwd">Modifica password</router-link>
-          </b-nav-item>
-          <b-nav-item class="ml-1">
-            <router-link :to="linkLogout">Esci</router-link>
-          </b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <b-nav-item-dropdown class="ml-1">
+            <template #button-content>
+              <font-awesome-icon style="color: white;" icon="fa-regular fa-user"/>
+            </template>
+            <b-dropdown-item>
+              <router-link :to="linkModPwd">Modifica password</router-link>
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <router-link :to="linkLogout">Esci</router-link>
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -37,9 +44,14 @@ import {
   BNavbarNav,
   BNavItem,
   BCollapse,
+  BNavItemDropdown,
+  BDropdownItem,
 } from 'bootstrap-vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios from 'axios';
-
+library.add(faUser);
 export default {
   name: 'navBar',
   components: {
@@ -48,6 +60,9 @@ export default {
     BNavbarNav,
     BNavItem,
     BCollapse,
+    BNavItemDropdown,
+    FontAwesomeIcon,
+    BDropdownItem,
   },
   data() {
     return {

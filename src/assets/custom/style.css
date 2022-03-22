@@ -2,6 +2,11 @@
     font-family: "NotoSerifDisplay", sans-serif;
     src: url("../custom/Noto_Serif_Display/static/NotoSerifDisplay/NotoSerifDisplay-Black.ttf");
 }
+.dropdown-item > a, .dropdown-item, .dropdown-item:active {
+    color: #0b769a !important;
+    text-decoration: none;
+    background-color: transparent !important;
+}
 .modal-header {
     display: block;
     text-align: center;
@@ -81,9 +86,9 @@ a.nav-link > a {
     text-decoration: none;
     color: white;
 }
-a.nav-link > a.router-link-exact-active {
+a.nav-link > a.router-link-exact-active, .router-link-exact-active {
     font-size: larger;
-    text-decoration: underline;
+    text-decoration: underline !important;
 }
 body {
     padding: 0;
