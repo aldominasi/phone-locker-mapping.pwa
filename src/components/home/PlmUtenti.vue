@@ -174,15 +174,23 @@ export default {
       .then(response => {
         if (!response.data.success) {
           this.tableIsBusy = false;
-          return console.log(response.data.msg);
+          this.$alert({
+            title: 'Attenzione',
+            content: response.data.msg
+          });
         }
-        this.jsonData.utenti = response.data.data.utenti;
-        this.elementiTotali = response.data.data.documentiTotali;
-        this.tableIsBusy = false;
+        else {
+          this.jsonData.utenti = response.data.data.utenti;
+          this.elementiTotali = response.data.data.documentiTotali;
+          this.tableIsBusy = false;
+        }
       })
-      .catch(err => {
+      .catch(() => {
         this.tableIsBusy = false;
-        console.log(err);
+        this.$alert({
+          title: 'Attenzione',
+          content: 'Si è verificato un errore. Riprova più tardi'
+        });
       });
     },
     getRuoli() {
@@ -190,14 +198,10 @@ export default {
         headers: { 'Accept-Version': '1.0.0' }
       })
       .then(response => {
-        if (!response.data.success) {
-          return console.log(response.data.msg);
-        }
-        this.filtri.ruolo.options = response.data.data.map(item => item._id)
+        if (response.data.success)
+          this.filtri.ruolo.options = response.data.data.map(item => item._id)
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(() => {  });
     },
     resetFiltri() {
       this.filtri.email = '';

@@ -212,14 +212,23 @@ export default {
         .then(response => {
           if (!response.data.success) {
             this.tableIsBusy = false;
-            return console.log(response.data.msg);
+            this.$alert({
+              title: 'Attenzione',
+              content: response.data.msg
+            });
           }
-          this.jsonData = response.data.data.armadi;
-          this.elementiTotali = response.data.data.documentiTotali;
-          this.tableIsBusy = false;
+          else {
+            this.jsonData = response.data.data.armadi;
+            this.elementiTotali = response.data.data.documentiTotali;
+            this.tableIsBusy = false;
+          }
         })
         .catch(err => {
           this.tableIsBusy = false;
+          this.$alert({
+            title: 'Attenzione',
+            content: 'Si è verificato un errore. Riprova più tardi'
+          })
           console.log(err);
         });
     },
