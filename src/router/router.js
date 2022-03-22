@@ -77,8 +77,14 @@ router.beforeEach((to, from, next) => {
       .catch(() => {
         next('/');
       });
-  } else
+  } else if (to.name === 'PlmLogin')
     next();
+  else {
+    if (sessionStorage.getItem('tokenPlm') == null)
+      next('/');
+    else
+      next();
+  }
 })
 
 export default router
