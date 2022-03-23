@@ -1,22 +1,37 @@
 <template>
-  <div v-if="shown">
-    Add app to home screen?
-    <b-button @click="installPwa">Install</b-button>
-    <b-button @click="dismissPrompt">No, thanks</b-button>
-  </div>
+  <b-toast
+    ref="toast-pwa-install"
+    toaster="b-toaster-bottom-full"
+    title="PhoneLockerMapping"
+    solid
+    no-auto-hide>
+    <b-row>
+      <b-col>
+        <p>Clicca sul pulsante aggiungi per avere l'app sempre con te.</p>
+        <b-button class="mr-2 float-right" variant="primary" @click="installPwa">Aggiungi</b-button>
+      </b-col>
+    </b-row>
+  </b-toast>
 </template>
 
 <script>
-import { BButton } from 'bootstrap-vue';
+import {
+  BToast,
+  BRow,
+  BCol,
+  BButton
+} from 'bootstrap-vue';
 
 export default {
   name: 'PwaInstall',
   components: {
+    BToast,
+    BRow,
+    BCol,
     BButton
   },
   data() {
     return {
-      shown: false,
       installEvent: null,
     }
   },
@@ -24,18 +39,14 @@ export default {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       this.installEvent = e;
-      this.shown = true;
+      this.$refs["toast-pwa-install"].show();
     })
   },
   methods: {
-    dismissPrompt() {
-      this.shown = false;
-    },
     installPwa() {
       this.installEvent.prompt();
       this.installEvent.userChoice
         .then((choice) => {
-          this.dismissPrompt();
           if (choice.outcome === 'accepted') {
             console.log('accepted');
           } else {
