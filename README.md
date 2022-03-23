@@ -1,4 +1,4 @@
-# phone-locker-mapping-pwa
+# Phone locker mapping PWA
 Phone locker mapping è una soluzione software per le aziende che operano nel settore delle telecomunicazioni
 e che si occupano della manutenzione di reti fisse e mobili.
 La soluzione offre la digitalizzazione delle informazioni necessarie. Inoltre offre la possibilità agli
@@ -20,10 +20,5 @@ Esegui i seguenti comandi:
 1. `npm install`
 2. `npm run serve`
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#LICENZA
+Vedi la [licenza](https://github.com/aldominasi/phone-locker-mapping.pwa/blob/main/LICENSE)
