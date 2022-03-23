@@ -18,7 +18,7 @@
                           class="inputCustomSecondary"
                           :type="typeOldPwd"
                           v-model="jsonData.oldPwd"></b-form-input>
-                        <span class="float-end mr-2">
+                        <span class="float-right mr-2">
                           <b-link class="anchorPwd" @click.prevent="showHideOldPwd">{{ textOldPwd }}</b-link>
                         </span>
                       </b-col>
@@ -31,7 +31,7 @@
                           :state="validationNewPwd"
                           :type="typeNewPwd"
                           v-model="jsonData.newPwd"></b-form-input>
-                        <span class="float-end mr-2">
+                        <span class="float-right mr-2">
                           <b-link class="anchorPwd" @click.prevent="showHideNewPwd">{{ textNewPwd }}</b-link>
                         </span>
                       </b-col>
@@ -44,7 +44,7 @@
                           :state="validationPwd2"
                           :type="typePwd2"
                           v-model="pwd2"></b-form-input>
-                        <span class="float-end mr-2">
+                        <span class="float-right mr-2">
                           <b-link class="anchorPwd" @click.prevent="showHidePwd2">{{ textPwd2 }}</b-link>
                         </span>
                       </b-col>

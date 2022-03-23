@@ -39,7 +39,7 @@
                 placeholder="Inserisci la password"
                 v-model="jsonData.password"
                 @keyup.enter="onLogin"></b-form-input>
-              <span class="float-end mr-2">
+              <span class="float-right mr-2">
                 <b-link class="anchorPwd" @click.prevent="showHidePwd">{{ textPwd }}</b-link>
               </span>
             </b-form-group>

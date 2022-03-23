@@ -35,7 +35,7 @@
               :state="validationPwd2"
               placeholder="Conferma la nuova password"
               v-model="pwd2"></b-form-input>
-            <span class="float-end mr-2">
+            <span class="float-right mr-2">
               <b-link class="anchorPwd" @click.prevent="showHidePwd2">{{ textPwd2 }}</b-link>
             </span>
           </b-form-group>
