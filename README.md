@@ -6,7 +6,7 @@ operatori di lavorare in maniera smart utilizzando il proprio dispositivo.
 
 ## Distribuzione della soluzione in produzione
 La soluzione è divisa in due progetti: [back-end](https://github.com/aldominasi/phone-locker-mapping-backend)
-e front-end (questo repository).\
+e front-end (questo repository)  
 Per la distribuzione del software seguire i seguenti passi:
 - Scaricare o clonare il back-end
 - Eseguire il comando `npm install` per installare i package necessari
