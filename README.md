@@ -1,4 +1,4 @@
-# Phone locker mapping PWA
+# Phone locker mapping
 Phone locker mapping è una soluzione software per le aziende che operano nel settore delle telecomunicazioni
 e che si occupano della manutenzione di reti fisse e mobili.
 La soluzione offre la digitalizzazione delle informazioni necessarie. Inoltre offre la possibilità agli
