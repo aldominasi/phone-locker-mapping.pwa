@@ -8,7 +8,7 @@ operatori di lavorare in maniera smart utilizzando il proprio dispositivo.
 La soluzione è divisa in due progetti: [back-end](https://github.com/aldominasi/phone-locker-mapping-backend)
 e front-end (questo repository).\
 Per la distribuzione del software seguire i seguenti passi:
-- Scaricare o clonare il backe-end
+- Scaricare o clonare il back-end
 - Eseguire il comando `npm install` per installare i package necessari
 - Modificare il file `.env` presente nella root del progetto per inserire l'url del back-end
 - Eseguire il comando `npm run build` per compilare il progetto
