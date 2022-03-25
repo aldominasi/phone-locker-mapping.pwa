@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const JWT_ERR = 'ERR_JWT_1';
+
 export const verifyAuthModPwd = function(token) {
   return new Promise((resolve, reject) => {
     try {
@@ -24,4 +26,15 @@ export const verifyAuthModPwd = function(token) {
       reject('Il servizio non è al momento disponibile');
     }
   })
+}
+
+export const apiErrorHandler = function (response) {
+  if (response.data.codError === JWT_ERR)
+    this.$router.replace('/');
+  else {
+    this.$alert({
+      title: 'Attenzione',
+      content: 'Si è verificato un errore riprova più tardi'
+    });
+  }
 }

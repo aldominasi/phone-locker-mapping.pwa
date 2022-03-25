@@ -6,22 +6,15 @@ import "/src/assets/custom/style.css";
 import router from './router/router';
 import './registerServiceWorker'
 import vbMsgBox from 'bootstrap-vue-msgbox'
+import { apiErrorHandler } from '@/utilityMixin/utility';
+
 
 Vue.config.productionTip = false
 Vue.use(vbMsgBox);
 
 Vue.mixin({
   methods: {
-    apiErrorHandler(response) {
-      if (response.data.codError === 2)
-        this.$router.replace('/');
-      else {
-        this.$alert({
-          title: 'Attenzione',
-          content: 'Si è verificato un errore riprova più tardi'
-        });
-      }
-    }
+    apiErrorHandler
   }
 })
 
