@@ -7,14 +7,15 @@ import router from './router/router';
 import './registerServiceWorker'
 import vbMsgBox from 'bootstrap-vue-msgbox'
 import apiErrorHandler from '@/utilityMixin/apiErrorHandler';
-
+import notificaErrore from '@/utilityMixin/notificaErrore';
 
 Vue.config.productionTip = false
 Vue.use(vbMsgBox);
 
 Vue.mixin({
   methods: {
-    apiErrorHandler
+    apiErrorHandler,
+    notificaErrore
   }
 })
 

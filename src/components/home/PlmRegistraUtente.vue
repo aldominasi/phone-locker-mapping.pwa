@@ -124,16 +124,10 @@ export default {
         headers: {'Accept-Version': '1.0.0'},
       })
           .then(response => {
-            if (!response.data.success)
-              return this.$alert({
-                title: 'Attenzione',
-                content: response.data.msg
-              });
-            this.optionsRuolo = response.data.data.map(item => item._id);
+            if (response.data.success)
+              this.optionsRuolo = response.data.data.map(item => item._id);
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(() => this.notificaErrore());
     },
     registra() {
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/utenti`, this.jsonData, {
@@ -144,16 +138,15 @@ export default {
       })
           .then(response => {
             if (!response.data.success)
-              return this.$alert({
-                title: 'Attenzione',
-                content: response.data.msg
+              this.apiErrorHandler();
+            else
+              this.$alert({
+                title: 'Congratulazioni',
+                content: 'La registrazione dell\'utente è avvenuta correttamente'
               });
-            this.$alert({
-              title: 'Congratulazioni',
-              content: 'La registrazione dell\'utente è avvenuta correttamente'
-            });
             this.clearAll();
           })
+      .catch(() => this.notificaErrore())
     },
     clearAll() {
       for (const prop in this.jsonData)

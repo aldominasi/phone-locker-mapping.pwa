@@ -80,27 +80,27 @@ export default {
         readUtenti: false,
         writeUtenti: false,
         readArmadi: true,
-        writeArmadi: true
+        writeArmadi: false
       }
     }
   },
-  mounted() {
+  beforeCreate() {
     axios.get(`${process.env.VUE_APP_URL_BACKEND}/utenti/me`, {
       headers: { 'Accept-Version': '1.0.0' },
       params: {
         token: sessionStorage.getItem('tokenPlm')
       }
     })
-    .then(response => {
-      if (!response.data.success)
-        this.apiErrorHandler(response);
-      else
-        this.permessiUtente = response.data.data.permessi;
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  },
+      .then(response => {
+        if (!response.data.success)
+          this.apiErrorHandler(response);
+        else
+          this.permessiUtente = response.data.data.permessi;
+      })
+      .catch(() => {
+        this.notificaErrore()
+      });
+  }
 }
 </script>
 

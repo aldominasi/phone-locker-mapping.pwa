@@ -160,11 +160,6 @@ export default {
           label: 'Armadio',
           tdClass: window.innerWidth <= START_MD_SIZE ? 'tdTableSm' : ''
         }
-        // {
-        //   key: 'show_details',
-        //   label: '',
-        //   tdClass: 'text-center'
-        // }
       ],
       currentPage: 1,
       perPage: 3,
@@ -212,10 +207,7 @@ export default {
         .then(response => {
           if (!response.data.success) {
             this.tableIsBusy = false;
-            this.$alert({
-              title: 'Attenzione',
-              content: response.data.msg
-            });
+            this.apiErrorHandler(response);
           }
           else {
             this.jsonData = response.data.data.armadi;
@@ -223,13 +215,9 @@ export default {
             this.tableIsBusy = false;
           }
         })
-        .catch(err => {
+        .catch(() => {
           this.tableIsBusy = false;
-          this.$alert({
-            title: 'Attenzione',
-            content: 'Si è verificato un errore. Riprova più tardi'
-          })
-          console.log(err);
+          this.notificaErrore();
         });
     },
     getCentrali() {
@@ -238,15 +226,12 @@ export default {
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
-        if (!response.data.success)
-          return console.log(response.data.msg);
-        this.filtri.centrale.options = response.data.data.map(item => {
-          return { value: item, text: item }
-        });
+        if (response.data.success)
+          this.filtri.centrale.options = response.data.data.map(item => {
+            return { value: item, text: item }
+          });
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(() => this.notificaErrore() );
     },
     getZone() {
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/zone`, {
@@ -258,10 +243,11 @@ export default {
       })
       .then(response => {
         if (!response.data.success)
-          return console.log(response.data.msg);
-        this.filtri.zona.options = response.data.data;
+          this.apiErrorHandler(response);
+        else
+          this.filtri.zona.options = response.data.data;
       })
-      .catch(err => console.log(err))
+      .catch(() => this.notificaErrore())
     },
     resetFiltri() {
       this.filtri.centrale.selected = '';

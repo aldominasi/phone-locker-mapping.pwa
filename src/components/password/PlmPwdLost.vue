@@ -102,18 +102,16 @@ export default {
         }
       })
       .then(response => {
-        this.$alert({
-          title: 'Attenzione',
-          content: response.data.success ? response.data.data : response.data.msg
-        });
+        if (!response.data.success)
+          this.apiErrorHandler();
+        else
+          this.$alert({
+            title: 'Attenzione',
+            content: response.data.data
+          });
         this.clearAll();
       })
-      .catch(() => {
-        this.$alert({
-          title: 'Attenzione',
-          content: 'Si è verificato un errore. Riprova più tardi'
-        });
-      });
+      .catch(() => this.notificaErrore());
     },
     clearAll() {
       this.jsonData.pwd = '';

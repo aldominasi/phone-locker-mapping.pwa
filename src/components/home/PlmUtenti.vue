@@ -151,7 +151,6 @@ export default {
   },
   mounted() {
     this.getRuoli();
-    this.getUtenti(1);
   },
   methods: {
     getUtenti(page) {
@@ -174,10 +173,7 @@ export default {
       .then(response => {
         if (!response.data.success) {
           this.tableIsBusy = false;
-          this.$alert({
-            title: 'Attenzione',
-            content: response.data.msg
-          });
+          this.apiErrorHandler();
         }
         else {
           this.jsonData.utenti = response.data.data.utenti;
@@ -187,10 +183,7 @@ export default {
       })
       .catch(() => {
         this.tableIsBusy = false;
-        this.$alert({
-          title: 'Attenzione',
-          content: 'Si è verificato un errore. Riprova più tardi'
-        });
+        this.notificaErrore();
       });
     },
     getRuoli() {
@@ -201,7 +194,7 @@ export default {
         if (response.data.success)
           this.filtri.ruolo.options = response.data.data.map(item => item._id)
       })
-      .catch(() => {  });
+      .catch(() => this.notificaErrore());
     },
     resetFiltri() {
       this.filtri.email = '';
