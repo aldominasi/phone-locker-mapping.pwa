@@ -18,7 +18,7 @@
                             class="inputCustomSecondary"
                             v-model="jsonData.nome"></b-form-input>
                       </b-col>
-                      <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                      <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
                         <b-form-input
                             placeholder="Inserisci cognome"
                             class="inputCustomSecondary"
@@ -34,7 +34,7 @@
                             class="inputCustomSecondary"
                             v-model="jsonData.email"></b-form-input>
                       </b-col>
-                      <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                      <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
                         <b-form-input
                             placeholder="Inserisci cellulare"
                             class="inputCustomSecondary"
