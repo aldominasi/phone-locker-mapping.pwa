@@ -1,6 +1,6 @@
 import vue from 'vue';
 import VueRouter from 'vue-router';
-import { verifyAuthModPwd } from '@/utilityMixin/utility';
+import verifyAuthModPwd from '@/router/verifyAuthModPwd';
 const PlmLogin = () => import('@/components/login/PlmLogin');
 const NavBar = () => import('@/components/navbar/navBar');
 const PlmArmadi = () => import('@/components/home/PlmArmadi');

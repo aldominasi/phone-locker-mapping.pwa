@@ -6,7 +6,7 @@ import "/src/assets/custom/style.css";
 import router from './router/router';
 import './registerServiceWorker'
 import vbMsgBox from 'bootstrap-vue-msgbox'
-import { apiErrorHandler } from '@/utilityMixin/utility';
+import apiErrorHandler from '@/utilityMixin/apiErrorHandler';
 
 
 Vue.config.productionTip = false
