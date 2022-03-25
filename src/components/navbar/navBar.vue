@@ -17,6 +17,9 @@
           <b-nav-item v-if="permessiUtente.writeUtenti" class="ml-1">
             <router-link :to="linkRegistraUtente">Registra utente</router-link>
           </b-nav-item>
+          <b-nav-item v-if="permessiUtente.writeArmadi" class="ml-1">
+            <router-link :to="linkRegistraArmadio">Nuovo armadio</router-link>
+          </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav>
           <b-nav-item-dropdown class="ml-1">
@@ -70,6 +73,7 @@ export default {
       linkArmadi: 'armadi',
       linkUtenti: 'utenti',
       linkRegistraUtente: 'addUtente',
+      linkRegistraArmadio: 'addArmadio',
       linkModPwd: 'pwdChange',
       linkLogout: '/logout',
       permessiUtente: {

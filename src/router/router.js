@@ -6,6 +6,7 @@ const NavBar = () => import('@/components/navbar/navBar');
 const PlmArmadi = () => import('@/components/home/PlmArmadi');
 const PlmUtenti = () => import('@/components/home/PlmUtenti');
 const PlmRegistraUtente = () => import('@/components/home/PlmRegistraUtente');
+const PlmRegistraArmadio = () => import('@/components/home/PlmRegistraArmadio');
 const PlmPwdLost = () => import('@/components/password/PlmPwdLost');
 const PlmPwdChange = () => import('@/components/password/PlmPwdChange');
 
@@ -37,6 +38,10 @@ const routes = [
       {
         path: 'pwdChange',
         component: PlmPwdChange
+      },
+      {
+        path: 'addArmadio',
+        component: PlmRegistraArmadio
       }
     ]
   },
