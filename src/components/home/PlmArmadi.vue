@@ -49,6 +49,7 @@
                       hover
                       borderless
                       responsive
+                      @row-clicked="armadioScelto"
                       :busy="tableIsBusy"
                       :fields="fieldsTable"
                       :items="jsonData">
@@ -57,13 +58,6 @@
                           <b-spinner class="align-middle"></b-spinner>
                           <strong> Caricamento...</strong>
                         </div>
-                      </template>
-                      <template #cell(show_details)="row">
-                        <b-button
-                          style="width: max-content"
-                          @click="row.toggleDetails">
-                          {{ row.detailsShowing ? 'Nascondi' : 'Mostra' }} Dettagli
-                        </b-button>
                       </template>
                       <template #row-details="row">
                         <b-card>
@@ -91,6 +85,31 @@
           </b-card>
         </b-col>
       </b-row>
+      <b-modal
+        ref="modalPlmArmadi"
+        hide-footer
+        size="lg">
+        <b-container fluid>
+          <b-tabs content-class="mt-2">
+            <b-tab title="Posizione">
+              <b-row>
+                <b-col cols="12">
+                  <plm-map-get-armadi
+                    :lat="armadioSelezionato.lat"
+                    :lng="armadioSelezionato.lng"
+                  ></plm-map-get-armadi>
+                </b-col>
+                <b-col cols="12" class="text-center mt-3">
+                  <b-button class="btnCustomPrimary" @click="indicazioniStradali">Indicazioni stradali</b-button>
+                </b-col>
+              </b-row>
+            </b-tab>
+            <b-tab title="Dettagli">
+              Dettagli
+            </b-tab>
+          </b-tabs>
+        </b-container>
+      </b-modal>
     </b-container>
   </div>
 </template>
@@ -115,7 +134,11 @@ import {
   BFormSelect,
   BFormSelectOption,
   BImg,
+  BTabs,
+  BTab,
+  BModal,
 } from 'bootstrap-vue';
+import PlmMapGetArmadi from '@/components/home/maps/PlmMapGetArmadi';
 const START_MD_SIZE = 768;
 
 export default {
@@ -138,6 +161,10 @@ export default {
     BFormSelect,
     BFormSelectOption,
     BImg,
+    BTabs,
+    BTab,
+    BModal,
+    PlmMapGetArmadi,
   },
   data() {
     return {
@@ -174,6 +201,10 @@ export default {
           selected: null,
           options: []
         }
+      },
+      armadioSelezionato: {
+        lat: 0,
+        lng: 0
       }
     }
   },
@@ -185,6 +216,33 @@ export default {
     this.getCentrali();
   },
   methods: {
+    armadioScelto(item) {
+      this.armadioSelezionato.lat = item.localizzazione.coordinates[0];
+      this.armadioSelezionato.lng = item.localizzazione.coordinates[1];
+      this.$refs.modalPlmArmadi.show();
+    },
+    indicazioniStradali() {
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+        const query = `api=1&origin=${latitude},${longitude}&destination=${this.armadioSelezionato.lat},${this.armadioSelezionato.lng}&travelmode=driving&dir_action=navigate`
+        if ((navigator.platform.indexOf('iPhone') !== -1) ||
+          (navigator.platform.indexOf('iPad') !== -1) ||
+          (navigator.platform.indexOf('iPod') !== -1))
+          window.open(`maps://maps.google.com/maps?daddr=${this.armadioSelezionato.lat},${this.armadioSelezionato.lng}&amp;ll=`);
+        else
+          window.open(`https://www.google.com/maps/dir/?${query}`);
+      }, (err) => {
+        const modalAlert = {
+          title: 'Attenzione',
+          content: ''
+        };
+        if (err.code === 1)
+          modalAlert.content = 'La piattaforma non ha i permessi per accedere alla localizzazione del dispositivo';
+        else
+          modalAlert.content = 'Si è verificato un errore. Riprova più tardi';
+        alert(modalAlert);
+      });
+    },
     zonaFormatter(zona) {
       return zona['info1'];
     },
