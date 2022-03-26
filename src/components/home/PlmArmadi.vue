@@ -95,8 +95,8 @@
               <b-row>
                 <b-col cols="12">
                   <plm-map-get-armadi
-                    :lat="armadioSelezionato.lat"
-                    :lng="armadioSelezionato.lng"
+                    :lat="armadioSelezionato ? armadioSelezionato.localizzazione.coordinates[0] : 0"
+                    :lng="armadioSelezionato ? armadioSelezionato.localizzazione.coordinates[1] : 0"
                   ></plm-map-get-armadi>
                 </b-col>
                 <b-col cols="12" class="text-center mt-3">
@@ -105,7 +105,7 @@
               </b-row>
             </b-tab>
             <b-tab title="Dettagli">
-              Dettagli
+              <PlmInfoArmadio :armadio="armadioSelezionato"></PlmInfoArmadio>
             </b-tab>
           </b-tabs>
         </b-container>
@@ -139,6 +139,7 @@ import {
   BModal,
 } from 'bootstrap-vue';
 import PlmMapGetArmadi from '@/components/home/maps/PlmMapGetArmadi';
+import PlmInfoArmadio from '@/components/home/PlmInfoArmadio';
 const START_MD_SIZE = 768;
 
 export default {
@@ -165,6 +166,7 @@ export default {
     BTab,
     BModal,
     PlmMapGetArmadi,
+    PlmInfoArmadio,
   },
   data() {
     return {
@@ -202,10 +204,7 @@ export default {
           options: []
         }
       },
-      armadioSelezionato: {
-        lat: 0,
-        lng: 0
-      }
+      armadioSelezionato: null
     }
   },
   mounted() {
@@ -217,8 +216,7 @@ export default {
   },
   methods: {
     armadioScelto(item) {
-      this.armadioSelezionato.lat = item.localizzazione.coordinates[0];
-      this.armadioSelezionato.lng = item.localizzazione.coordinates[1];
+      this.armadioSelezionato = item;
       this.$refs.modalPlmArmadi.show();
     },
     indicazioniStradali() {
