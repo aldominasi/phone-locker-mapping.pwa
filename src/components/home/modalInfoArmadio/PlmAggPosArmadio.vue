@@ -144,7 +144,7 @@ export default {
         else {
           this.$props.armadio.localizzazione.coordinates = response.data.data.localizzazione.coordinates;
           this.variantToast = 'success';
-          this.titleToast = 'Operazine Riuscita';
+          this.titleToast = 'Operazine riuscita';
           this.resultUpdate = 'La posizione dell\'armadio è stata aggiornata correttamente';
           this.$refs["toast-res-patch-pos"].show();
         }

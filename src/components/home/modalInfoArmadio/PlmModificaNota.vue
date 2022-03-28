@@ -20,9 +20,10 @@
       <b-toast
         ref="toast-res-patch-nota"
         toaster="b-toaster-bottom-full"
+        :variant="variantToast"
         :title="titleToast"
         solid>
-        <span :class="classSpanToast">{{ resultUpdate }}</span>
+        <span>{{ resultUpdate }}</span>
       </b-toast>
     </b-container>
   </div>
@@ -59,7 +60,7 @@ export default {
       },
       titleToast: '',
       resultUpdate: '',
-      classSpanToast: ''
+      variantToast: ''
     }
   },
   methods: {
@@ -80,13 +81,18 @@ export default {
           this.apiErrorHandler(response);
         else {
           this.$props.armadio.nota = response.data.data.nota;
-          this.classSpanToast = 'text-success';
-          this.titleToast = 'Operazine Riuscita';
+          this.variantToast = 'success';
+          this.titleToast = 'Operazine riuscita';
           this.resultUpdate = 'Le note sono state aggiornate correttamente';
           this.$refs["toast-res-patch-nota"].show();
         }
       })
-      .catch(() => this.notificaErrore())
+      .catch(() => {
+        this.variantToast = 'danger';
+        this.titleToast = 'Operazine non riuscita';
+        this.resultUpdate = 'Si è verificato un errore. Riprova più tardi';
+        this.$refs["toast-res-patch-nota"].show();
+      })
     }
   },
   computed: {
