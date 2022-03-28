@@ -17,17 +17,13 @@
             @click="aggiornaNote">Aggiorna le note</b-button>
         </b-col>
       </b-row>
-      <b-row class="mt-2">
-        <b-col cols="12">
-          <b-toast
-            ref="toast-res-patch-nota"
-            toaster="b-toaster-bottom-full"
-            :title="titleToast"
-            solid>
-            <span :class="classSpanToast">{{ resultUpdate }}</span>
-          </b-toast>
-        </b-col>
-      </b-row>
+      <b-toast
+        ref="toast-res-patch-nota"
+        toaster="b-toaster-bottom-full"
+        :title="titleToast"
+        solid>
+        <span :class="classSpanToast">{{ resultUpdate }}</span>
+      </b-toast>
     </b-container>
   </div>
 </template>
