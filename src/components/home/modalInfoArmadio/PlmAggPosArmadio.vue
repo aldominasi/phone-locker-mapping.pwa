@@ -25,7 +25,20 @@
               :lat-lng="jsonData.posizioneDispositivo"></l-marker>
           </l-map>
         </b-col>
+        <b-col cols="12" class="mt-2 text-center">
+          <b-button
+            class="btnCustomPrimary"
+            :disabled="!abilitaAggiornamento"
+            @click="invia">Invia posizione</b-button>
+        </b-col>
       </b-row>
+      <b-toast
+        ref="toast-res-patch-pos"
+        toaster="b-toaster-bottom-full"
+        :title="titleToast"
+        solid>
+        <span :class="classSpanToast">{{ resultUpdate }}</span>
+      </b-toast>
     </b-container>
   </div>
 </template>
@@ -35,6 +48,8 @@ import {
   BContainer,
   BRow,
   BCol,
+  BButton,
+  BToast,
 } from 'bootstrap-vue';
 import {
   LMap,
@@ -42,7 +57,8 @@ import {
   LMarker,
   LControl,
 } from 'vue2-leaflet';
-import {Icon, icon} from "leaflet";
+import {Icon, icon} from 'leaflet';
+import axios from 'axios';
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -59,6 +75,8 @@ export default {
     LTileLayer,
     LMarker,
     LControl,
+    BButton,
+    BToast,
   },
   props: {
     armadio: Object,
@@ -71,7 +89,7 @@ export default {
       },
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      zoom: 13,
+      zoom: 18,
       center: this.$props.armadio.localizzazione.coordinates,
       abilitaAggiornamento: false,
       iconMyPosition: icon({
@@ -79,6 +97,9 @@ export default {
         iconUrl: require('../../../assets/custom/marker-icon-red.png'),
         shadowUrl: require('../../../assets/custom/marker-shadow.png'),
       }),
+      titleToast: '',
+      resultUpdate: '',
+      classSpanToast: ''
     };
   },
   mounted() {
@@ -103,6 +124,31 @@ export default {
           modalAlert.content = 'Si è verificato un errore. Riprova più tardi';
         alert(modalAlert);
       });
+    },
+    invia() {
+      const body = [{
+        operation: 'replace',
+        path: 'localizzazione.coordinates',
+        value: this.jsonData.posizioneDispositivo
+      }];
+      axios.patch(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.$props.armadio._id}`, body, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: {
+          token: sessionStorage.getItem('tokenPlm'),
+        }
+      })
+      .then(response => {
+        if (!response.data.success)
+          this.apiErrorHandler(response);
+        else {
+          this.$props.armadio.localizzazione.coordinates = response.data.data.localizzazione.coordinates;
+          this.classSpanToast = 'text-success';
+          this.titleToast = 'Operazine Riuscita';
+          this.resultUpdate = 'La posizione dell\'armadio è stata aggiornata correttamente';
+          this.$refs["toast-res-patch-pos"].show();
+        }
+      })
+      .catch(() => this.notificaErrore());
     }
   }
 }

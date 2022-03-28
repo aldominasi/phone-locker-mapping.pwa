@@ -20,7 +20,7 @@
       <b-row class="mt-2">
         <b-col cols="12">
           <b-toast
-            ref="toast-res-path-nota"
+            ref="toast-res-patch-nota"
             toaster="b-toaster-bottom-full"
             :title="titleToast"
             solid>
@@ -87,7 +87,7 @@ export default {
           this.classSpanToast = 'text-success';
           this.titleToast = 'Operazine Riuscita';
           this.resultUpdate = 'Le note sono state aggiornate correttamente';
-          this.$refs["toast-res-path-nota"].show();
+          this.$refs["toast-res-patch-nota"].show();
         }
       })
       .catch(() => this.notificaErrore())
