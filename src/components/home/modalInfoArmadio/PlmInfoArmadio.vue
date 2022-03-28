@@ -38,15 +38,6 @@
               <span>{{ armadio.indirizzo }}</span>
             </b-col>
           </b-row>
-          <hr>
-          <b-row class="mt-2">
-            <b-col cols="12" class="text-center">
-              <strong>NOTA</strong>
-            </b-col>
-            <b-col cols="12">
-              <span>{{ !armadio.nota ? 'Nessuna nota' : armadio.nota }}</span>
-            </b-col>
-          </b-row>
         </b-col>
       </b-row>
     </b-container>

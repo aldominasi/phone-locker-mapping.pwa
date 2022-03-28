@@ -107,6 +107,9 @@
             <b-tab title="Dettagli">
               <PlmInfoArmadio :armadio="armadioSelezionato"></PlmInfoArmadio>
             </b-tab>
+            <b-tab title="Note">
+              <plm-modifica-nota :armadio="armadioSelezionato"></plm-modifica-nota>
+            </b-tab>
           </b-tabs>
         </b-container>
       </b-modal>
@@ -138,8 +141,9 @@ import {
   BTab,
   BModal,
 } from 'bootstrap-vue';
-import PlmMapGetArmadi from '@/components/home/maps/PlmMapGetArmadi';
-import PlmInfoArmadio from '@/components/home/PlmInfoArmadio';
+import PlmMapGetArmadi from '@/components/home/modalInfoArmadio/PlmMapGetArmadi';
+import PlmInfoArmadio from '@/components/home/modalInfoArmadio/PlmInfoArmadio';
+import PlmModificaNota from '@/components/home/modalInfoArmadio/PlmModificaNota';
 const START_MD_SIZE = 768;
 
 export default {
@@ -167,6 +171,7 @@ export default {
     BModal,
     PlmMapGetArmadi,
     PlmInfoArmadio,
+    PlmModificaNota,
   },
   data() {
     return {

@@ -2,6 +2,9 @@
     font-family: "NotoSerifDisplay", sans-serif;
     src: url("../custom/Noto_Serif_Display/static/NotoSerifDisplay/NotoSerifDisplay-Black.ttf");
 }
+tbody[role="rowgroup"] > tr[role="row"] {
+    cursor: pointer;
+}
 .dropdown-item > a, .dropdown-item, .dropdown-item:active {
     color: #0b769a !important;
     text-decoration: none;
@@ -42,6 +45,11 @@ li.page-item > button.page-link {
 .btnCustomPrimary:active {
     background-color: #0b769a;
     color: white;
+}
+.btnCustomPrimary:disabled {
+    color: white;
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
 }
 .btnCustomSecondary:disabled {
     color: #0b769a;
