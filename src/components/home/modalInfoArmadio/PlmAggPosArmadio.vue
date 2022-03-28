@@ -91,7 +91,6 @@ export default {
       attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       zoom: 18,
       center: this.$props.armadio.localizzazione.coordinates,
-      abilitaAggiornamento: false,
       iconMyPosition: icon({
         iconRetinaUrl: require('../../../assets/custom/marker-icon-2x-red.png'),
         iconUrl: require('../../../assets/custom/marker-icon-red.png'),
@@ -149,6 +148,11 @@ export default {
         }
       })
       .catch(() => this.notificaErrore());
+    }
+  },
+  computed: {
+    abilitaAggiornamento() {
+      return this.jsonData.posizioneDispositivo.length === 2;
     }
   }
 }
