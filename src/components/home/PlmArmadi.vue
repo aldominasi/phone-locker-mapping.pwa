@@ -91,16 +91,13 @@
         size="lg">
         <b-container fluid>
           <b-tabs content-class="mt-2">
-            <b-tab title="Posizione">
+            <b-tab title="Posizione" lazy>
               <b-row>
                 <b-col cols="12">
                   <plm-map-get-armadi
                     :lat="armadioSelezionato ? armadioSelezionato.localizzazione.coordinates[0] : 0"
                     :lng="armadioSelezionato ? armadioSelezionato.localizzazione.coordinates[1] : 0"
                   ></plm-map-get-armadi>
-                </b-col>
-                <b-col cols="12" class="text-center mt-3">
-                  <b-button class="btnCustomPrimary" @click="indicazioniStradali">Indicazioni stradali</b-button>
                 </b-col>
               </b-row>
             </b-tab>
@@ -109,6 +106,9 @@
             </b-tab>
             <b-tab title="Note">
               <plm-modifica-nota :armadio="armadioSelezionato"></plm-modifica-nota>
+            </b-tab>
+            <b-tab title="Aggiorna posizione" lazy>
+              <plm-agg-pos-armadio :armadio="armadioSelezionato"></plm-agg-pos-armadio>
             </b-tab>
           </b-tabs>
         </b-container>
@@ -144,6 +144,7 @@ import {
 import PlmMapGetArmadi from '@/components/home/modalInfoArmadio/PlmMapGetArmadi';
 import PlmInfoArmadio from '@/components/home/modalInfoArmadio/PlmInfoArmadio';
 import PlmModificaNota from '@/components/home/modalInfoArmadio/PlmModificaNota';
+import PlmAggPosArmadio from '@/components/home/modalInfoArmadio/PlmAggPosArmadio';
 const START_MD_SIZE = 768;
 
 export default {
@@ -172,6 +173,7 @@ export default {
     PlmMapGetArmadi,
     PlmInfoArmadio,
     PlmModificaNota,
+    PlmAggPosArmadio,
   },
   data() {
     return {
@@ -223,28 +225,6 @@ export default {
     armadioScelto(item) {
       this.armadioSelezionato = item;
       this.$refs.modalPlmArmadi.show();
-    },
-    indicazioniStradali() {
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude, longitude } = position.coords;
-        const query = `api=1&origin=${latitude},${longitude}&destination=${this.armadioSelezionato.lat},${this.armadioSelezionato.lng}&travelmode=driving&dir_action=navigate`
-        if ((navigator.platform.indexOf('iPhone') !== -1) ||
-          (navigator.platform.indexOf('iPad') !== -1) ||
-          (navigator.platform.indexOf('iPod') !== -1))
-          window.open(`maps://maps.google.com/maps?daddr=${this.armadioSelezionato.lat},${this.armadioSelezionato.lng}&amp;ll=`);
-        else
-          window.open(`https://www.google.com/maps/dir/?${query}`);
-      }, (err) => {
-        const modalAlert = {
-          title: 'Attenzione',
-          content: ''
-        };
-        if (err.code === 1)
-          modalAlert.content = 'La piattaforma non ha i permessi per accedere alla localizzazione del dispositivo';
-        else
-          modalAlert.content = 'Si è verificato un errore. Riprova più tardi';
-        alert(modalAlert);
-      });
     },
     zonaFormatter(zona) {
       return zona['info1'];
