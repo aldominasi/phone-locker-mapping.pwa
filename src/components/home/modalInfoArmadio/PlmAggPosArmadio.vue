@@ -35,9 +35,10 @@
       <b-toast
         ref="toast-res-patch-pos"
         toaster="b-toaster-bottom-full"
+        :variant="variantToast"
         :title="titleToast"
         solid>
-        <span :class="classSpanToast">{{ resultUpdate }}</span>
+        <span>{{ resultUpdate }}</span>
       </b-toast>
     </b-container>
   </div>
@@ -98,7 +99,7 @@ export default {
       }),
       titleToast: '',
       resultUpdate: '',
-      classSpanToast: ''
+      variantToast: ''
     };
   },
   mounted() {
@@ -110,9 +111,7 @@ export default {
       navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
         this.jsonData.posizioneDispositivo = [latitude, longitude];
-        this.abilitaAggiornamento = true;
       }, err => {
-        this.abilitaAggiornamento = false;
         const modalAlert = {
           title: 'Attenzione',
           content: ''
@@ -131,7 +130,10 @@ export default {
         value: this.jsonData.posizioneDispositivo
       }];
       axios.patch(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.$props.armadio._id}`, body, {
-        headers: { 'Accept-Version': '1.0.0' },
+        headers: {
+          'Accept-Version': '1.0.0',
+          'Content-Type': 'application/json-patch+json'
+        },
         params: {
           token: sessionStorage.getItem('tokenPlm'),
         }
@@ -141,13 +143,18 @@ export default {
           this.apiErrorHandler(response);
         else {
           this.$props.armadio.localizzazione.coordinates = response.data.data.localizzazione.coordinates;
-          this.classSpanToast = 'text-success';
+          this.variantToast = 'success';
           this.titleToast = 'Operazine Riuscita';
           this.resultUpdate = 'La posizione dell\'armadio è stata aggiornata correttamente';
           this.$refs["toast-res-patch-pos"].show();
         }
       })
-      .catch(() => this.notificaErrore());
+      .catch(() => {
+        this.variantToast = 'danger';
+        this.titleToast = 'Operazine non riuscita';
+        this.resultUpdate = 'Si è verificato un errore. Riprova più tardi';
+        this.$refs["toast-res-patch-pos"].show();
+      });
     }
   },
   computed: {
