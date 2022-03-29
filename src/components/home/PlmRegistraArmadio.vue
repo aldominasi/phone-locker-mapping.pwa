@@ -58,18 +58,19 @@
                     <b-row class="mt-2">
                       <b-col cols="12">
                         <l-map
+                          @click="aggiungiMarker"
                           ref="mapCreateArmadio"
                           style="height: 300px"
                           :zoom="zoom"
                           :center="center">
                           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                          <!--                          <l-marker :lat-lng="jsonData.localizzazione.coordinates"></l-marker>-->
+                          <l-marker v-if="jsonData.localizzazione.coordinates.length === 2" :lat-lng="jsonData.localizzazione.coordinates"></l-marker>
                         </l-map>
                       </b-col>
                     </b-row>
                     <b-row class="mt-3">
                       <b-col class="text-center">
-                        <b-button class="btnCustomPrimary" :disabled="!abilitaConferma">Invia</b-button>
+                        <b-button class="btnCustomPrimary" :disabled="!abilitaConferma" @click="invia">Invia</b-button>
                       </b-col>
                     </b-row>
                   </b-form>
@@ -99,7 +100,7 @@ import {
 import {
   LMap,
   LTileLayer,
-  // LMarker,
+  LMarker,
 } from 'vue2-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -126,7 +127,7 @@ export default {
     BButton,
     LMap,
     LTileLayer,
-    // LMarker,
+    LMarker,
   },
   data() {
     return {
@@ -183,6 +184,9 @@ export default {
           });
       })
       .catch(() => this.notificaErrore());
+    },
+    aggiungiMarker(e) {
+      this.jsonData.localizzazione.coordinates = [ e.latlng.lat, e.latlng.lng ];
     }
   },
   computed: {
