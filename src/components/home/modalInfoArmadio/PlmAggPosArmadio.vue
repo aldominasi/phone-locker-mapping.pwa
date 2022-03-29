@@ -120,7 +120,7 @@ export default {
           modalAlert.content = 'La piattaforma non ha i permessi per accedere alla localizzazione del dispositivo';
         else
           modalAlert.content = 'Si è verificato un errore. Riprova più tardi';
-        alert(modalAlert);
+        alert(modalAlert.content);
       });
     },
     invia() {
