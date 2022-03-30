@@ -237,24 +237,34 @@ export default {
       .catch(() => this.notificaErrore())
     },
     invia() {
-      console.log(this.jsonData);
-      // axios.post(`${process.env.VUE_APP_URL_BACKEND}/armadi`, this.jsonData, {
-      //   headers: { 'Accept-Version': '1.0.0' },
-      //   params: { token: sessionStorage.getItem('tokenPlm') }
-      // })
-      // .then(response => {
-      //   if (!response.data.success)
-      //     this.apiErrorHandler(response);
-      //   else
-      //     this.$alert({
-      //       title: 'Operazione riuscita',
-      //       content: 'La registrazione dell\'armadio è avvenuta con successo'
-      //     });
-      // })
-      // .catch(() => this.notificaErrore());
+      axios.post(`${process.env.VUE_APP_URL_BACKEND}/armadi`, this.jsonData, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: { token: sessionStorage.getItem('tokenPlm') }
+      })
+      .then(response => {
+        if (!response.data.success)
+          this.apiErrorHandler(response);
+        else {
+          this.$alert({
+            title: 'Operazione riuscita',
+            content: 'La registrazione dell\'armadio è avvenuta con successo'
+          });
+          this.clearAll();
+        }
+      })
+      .catch(() => this.notificaErrore());
     },
     aggiungiMarker(e) {
       this.jsonData.localizzazione.coordinates = [ e.latlng.lat, e.latlng.lng ];
+    },
+    clearAll() {
+      this.jsonData.centrale = null;
+      this.jsonData.progressivo = '';
+      this.jsonData.zona.info1 = '';
+      this.jsonData.tipoArmadio = '';
+      this.jsonData.indirizzo = '';
+      this.jsonData.localizzazione.coordinates = [];
+      this.jsonData.nota = '';
     }
   },
   computed: {
