@@ -13,12 +13,30 @@
                   <b-form novalidate>
                     <b-row class="mt-2">
                       <b-col sm="12" md="6" lg="6" xl="6">
-                        <b-form-input
-                          placeholder="Inserisci la centrale"
-                          class="inputCustomSecondary"
-                          v-model="jsonData.centrale"></b-form-input>
+                        <b-form-select
+                          v-model="filtri.provincia.selected"
+                          :options="filtri.provincia.options"
+                          @change="getComuni"
+                          class="form-control selectCustomPrimary">
+                          <template #first>
+                            <b-form-select-option :value="null">Scegli la provincia</b-form-select-option>
+                          </template>
+                        </b-form-select>
                       </b-col>
                       <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                        <b-form-select
+                          v-model="jsonData.centrale"
+                          :options="filtri.centrale.options"
+                          :disabled="!provinciaScelta"
+                          class="form-control selectCustomPrimary">
+                          <template #first>
+                            <b-form-select-option :value="null">Scegli la centrale</b-form-select-option>
+                          </template>
+                        </b-form-select>
+                      </b-col>
+                    </b-row>
+                    <b-row class="mt-2">
+                      <b-col cols="12">
                         <b-form-input
                           placeholder="Inserisci il progressivo"
                           class="inputCustomSecondary"
@@ -96,6 +114,8 @@ import {
   BFormInput,
   BFormTextarea,
   BButton,
+  BFormSelect,
+  BFormSelectOption,
 } from 'bootstrap-vue';
 import {
   LMap,
@@ -128,11 +148,13 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
+    BFormSelect,
+    BFormSelectOption,
   },
   data() {
     return {
       jsonData: {
-        centrale: '',
+        centrale: null,
         progressivo: '',
         zona: {
           info1: '',
@@ -146,6 +168,16 @@ export default {
         },
         nota: ''
       },
+      filtri: {
+        provincia: {
+          selected: null,
+          options: []
+        },
+        centrale: {
+          options: []
+        }
+      },
+      centraleScelta: false,
       zoom: 15,
       center: [41.073723741325, 14.3423023542596],
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -166,24 +198,60 @@ export default {
       else
         modalAlert.content = 'Si è verificato un errore. Riprova più tardi';
       this.$alert(modalAlert);
-    })
+    });
+    this.getProvince();
   },
   methods: {
-    invia() {
-      axios.post(`${process.env.VUE_APP_URL_BACKEND}/armadi`, this.jsonData, {
-        headers: { 'Accept-Version': '1.0.0' },
-        params: { token: sessionStorage.getItem('tokenPlm') }
+    getProvince() {
+      axios.get(`${process.env.VUE_APP_URL_BACKEND}/province`, {
+        headers: { 'Accept-Version': '1.0.0' }
       })
       .then(response => {
         if (!response.data.success)
           this.apiErrorHandler(response);
-        else
-          this.$alert({
-            title: 'Operazione riuscita',
-            content: 'La registrazione dell\'armadio è avvenuta con successo'
+        else {
+          this.filtri.provincia.options = response.data.data.map(item => {
+            return { value: item, text: item.nome };
           });
+        }
       })
-      .catch(() => this.notificaErrore());
+      .catch(() => this.notificaErrore())
+    },
+    getComuni() {
+      this.jsonData.centrale = null;
+      axios.get(`${process.env.VUE_APP_URL_BACKEND}/comuni/byProvincia`, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: {
+          codice: this.filtri.provincia.selected.codice
+        }
+      })
+      .then(response => {
+        if (!response.data.success)
+          this.apiErrorHandler(response);
+        else {
+          this.filtri.centrale.options = response.data.data.map(item => {
+            return { value: item, text: item.nome }
+          });
+        }
+      })
+      .catch(() => this.notificaErrore())
+    },
+    invia() {
+      console.log(this.jsonData);
+      // axios.post(`${process.env.VUE_APP_URL_BACKEND}/armadi`, this.jsonData, {
+      //   headers: { 'Accept-Version': '1.0.0' },
+      //   params: { token: sessionStorage.getItem('tokenPlm') }
+      // })
+      // .then(response => {
+      //   if (!response.data.success)
+      //     this.apiErrorHandler(response);
+      //   else
+      //     this.$alert({
+      //       title: 'Operazione riuscita',
+      //       content: 'La registrazione dell\'armadio è avvenuta con successo'
+      //     });
+      // })
+      // .catch(() => this.notificaErrore());
     },
     aggiungiMarker(e) {
       this.jsonData.localizzazione.coordinates = [ e.latlng.lat, e.latlng.lng ];
@@ -197,6 +265,9 @@ export default {
         this.jsonData.indirizzo !== '' &&
         this.jsonData.zona.info1 !== '' &&
         this.jsonData.localizzazione.coordinates.length === 2
+    },
+    provinciaScelta() {
+      return this.filtri.provincia.selected !== null;
     }
   }
 }
