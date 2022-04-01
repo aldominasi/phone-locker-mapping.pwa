@@ -9,6 +9,7 @@ const PlmRegistraUtente = () => import('@/components/home/PlmRegistraUtente');
 const PlmRegistraArmadio = () => import('@/components/home/PlmRegistraArmadio');
 const PlmPwdLost = () => import('@/components/password/PlmPwdLost');
 const PlmPwdChange = () => import('@/components/password/PlmPwdChange');
+const PlmModificaArmadio = () => import('@/components/home/PlmModificaArmadio');
 
 vue.use(VueRouter);
 
@@ -38,6 +39,10 @@ const routes = [
       {
         path: 'pwdChange',
         component: PlmPwdChange
+      },
+      {
+        path: 'updateArmadio',
+        component: PlmModificaArmadio
       },
       {
         path: 'addArmadio',
