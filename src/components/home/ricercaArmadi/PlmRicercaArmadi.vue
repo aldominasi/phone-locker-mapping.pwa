@@ -11,7 +11,7 @@
                 @change="getComuni"
                 class="form-control selectCustomPrimary">
                 <template #first>
-                  <b-form-select-option :value="null">Scegli la provincia</b-form-select-option>
+                  <b-form-select-option :value="null" disabled>Scegli la provincia</b-form-select-option>
                 </template>
               </b-form-select>
             </b-col>
@@ -23,7 +23,7 @@
                 @change="comuneScelto()"
                 class="form-control selectCustomPrimary">
                 <template #first>
-                  <b-form-select-option :value="null">Scegli il comune</b-form-select-option>
+                  <b-form-select-option :value="null" disabled>Scegli il comune</b-form-select-option>
                 </template>
               </b-form-select>
             </b-col>
@@ -33,6 +33,7 @@
               <b-form-select
                 v-model="filtri.zona.selected"
                 :options="filtri.zona.options"
+                :disabled="!abilitaZone"
                 @change="getArmadi(1)"
                 class="form-control selectCustomPrimary">
                 <template #first>
@@ -161,7 +162,6 @@ export default {
   },
   methods: {
     getProvince() {
-      this.filtri.comune.selected = null;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/province`, {
         headers: { 'Accept-Version': '1.0.0' }
       })
@@ -181,7 +181,7 @@ export default {
         headers: { 'Accept-Version': '1.0.0' },
         params: {
           token: sessionStorage.getItem('tokenPlm'),
-          centrale: this.filtri.centrale.selected.nome
+          codiceCentrale: this.filtri.comune.selected.codice
         }
       })
         .then(response => {
@@ -193,6 +193,7 @@ export default {
         .catch(() => this.notificaErrore())
     },
     getComuni() {
+      this.filtri.comune.selected = null;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/comuni/byProvincia`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: {
@@ -216,7 +217,7 @@ export default {
         token: sessionStorage.getItem('tokenPlm'),
         page: page - 1,
         limit: this.tabella.perPage,
-        centrale: this.filtri.comune.selected.nome
+        codiceCentrale: this.filtri.comune.selected.codice
       };
       if (this.filtri.zona.selected)
         queryStringGetArmadi.zona = this.filtri.zona.selected;
@@ -258,7 +259,10 @@ export default {
   computed: {
     rows() { return this.tabella.elementiTotali; },
     smallSize() { return window.innerWidth <= START_MD_SIZE; },
-    provinciaScelta() { return this.filtri.provincia.selected !== null; }
+    provinciaScelta() { return this.filtri.provincia.selected != null; },
+    abilitaZone() {
+      return this.filtri.comune.selected != null;
+    }
   }
 }
 </script>

@@ -8,79 +8,7 @@
               <h3>Lista armadi</h3>
             </b-card-header>
             <b-card-body>
-              <b-row>
-                <b-col cols="12">
-                  <b-form novalidate>
-                    <b-form-row>
-                      <b-form-input
-                        placeholder="Scegli la centrale"
-                        v-model="filtri.centrale.selected"
-                        debounce="200"
-                        class="inputCustomSecondary"
-                        list="list-centrali"></b-form-input>
-                      <b-form-datalist
-                        id="list-centrali"
-                        :options="filtri.centrale.options"></b-form-datalist>
-                    </b-form-row>
-                    <b-form-row class="mt-2">
-                      <b-form-select
-                        v-model="filtri.zona.selected"
-                        :options="filtri.zona.options"
-                        :disabled="!centraleScelta"
-                        class="form-control selectCustomPrimary">
-                        <template #first>
-                          <b-form-select-option :value="null">Scegli la zona</b-form-select-option>
-                        </template>
-                      </b-form-select>
-                    </b-form-row>
-                    <b-row class="mt-2">
-                      <b-col>
-                        <b-button class="btnCustomPrimary" @click="resetFiltri">Reset</b-button>
-                        <b-button class="btnCustomSecondary ml-2" @click="getArmadi(1)" :disabled="!centraleScelta">Cerca</b-button>
-                      </b-col>
-                    </b-row>
-                  </b-form>
-                </b-col>
-                <b-col cols="12" class="mt-2" v-if="jsonData.length > 0">
-                  <div class="overflow-auto">
-                    <b-table
-                      id="table-armadi"
-                      striped
-                      hover
-                      borderless
-                      responsive
-                      @row-clicked="armadioScelto"
-                      :busy="tableIsBusy"
-                      :fields="fieldsTable"
-                      :items="jsonData">
-                      <template #table-busy>
-                        <div class="text-center color-busy-table my-2">
-                          <b-spinner class="align-middle"></b-spinner>
-                          <strong> Caricamento...</strong>
-                        </div>
-                      </template>
-                      <template #row-details="row">
-                        <b-card>
-                          <b-row class="mb-2">
-                            <b-col cols="12" class="text-center"><b>{{ row.item.tipoArmadio }}</b></b-col>
-                          </b-row>
-                        </b-card>
-                      </template>
-                    </b-table>
-                    <b-pagination
-                      align="center"
-                      v-model="currentPage"
-                      :total-rows="rows"
-                      :per-page="perPage"
-                      @change="changePageTable"
-                      aria-controls="table-armadi"></b-pagination>
-                  </div>
-                </b-col>
-                <b-col cols="12" class="text-center mt-4" v-else>
-                  <b-img src="/plm/img/empty.svg" width="100%" center fluid alt="Nessun dato"></b-img>
-                  <label>Elenco vuoto</label>
-                </b-col>
-              </b-row>
+              <plm-ricerca-armadi @armadioSelezionato="armadioScelto"></plm-ricerca-armadi>
             </b-card-body>
           </b-card>
         </b-col>
@@ -126,17 +54,6 @@ import {
   BCard,
   BCardHeader,
   BCardBody,
-  BPagination,
-  BTable,
-  BSpinner,
-  BButton,
-  BForm,
-  BFormRow,
-  BFormInput,
-  BFormDatalist,
-  BFormSelect,
-  BFormSelectOption,
-  BImg,
   BTabs,
   BTab,
   BModal,
@@ -145,28 +62,19 @@ import PlmMapGetArmadi from '@/components/home/modalInfoArmadio/PlmMapGetArmadi'
 import PlmInfoArmadio from '@/components/home/modalInfoArmadio/PlmInfoArmadio';
 import PlmModificaNota from '@/components/home/modalInfoArmadio/PlmModificaNota';
 import PlmAggPosArmadio from '@/components/home/modalInfoArmadio/PlmAggPosArmadio';
+import PlmRicercaArmadi from '@/components/home/ricercaArmadi/PlmRicercaArmadi';
 const START_MD_SIZE = 768;
 
 export default {
   name: 'PlmArmadi',
   components: {
+    PlmRicercaArmadi,
     BContainer,
     BRow,
     BCol,
     BCard,
     BCardHeader,
     BCardBody,
-    BPagination,
-    BTable,
-    BSpinner,
-    BButton,
-    BForm,
-    BFormRow,
-    BFormInput,
-    BFormDatalist,
-    BFormSelect,
-    BFormSelectOption,
-    BImg,
     BTabs,
     BTab,
     BModal,

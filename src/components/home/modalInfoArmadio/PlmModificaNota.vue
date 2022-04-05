@@ -71,7 +71,10 @@ export default {
           value: this.jsonData.nota
         }];
       axios.patch(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.$props.armadio._id}`, body, {
-        headers: { 'Accept-Version': '1.0.0' },
+        headers: {
+          'Accept-Version': '1.0.0',
+          'Content-Type': 'application/json-patch+json'
+        },
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {

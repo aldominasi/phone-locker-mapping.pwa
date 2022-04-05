@@ -8,7 +8,7 @@
               <strong>CENTRALE</strong>
             </b-col>
             <b-col cols="12">
-              <span>{{ armadio.centrale }}</span>
+              <span>{{ armadio.centrale.nome }}</span>
             </b-col>
           </b-row>
           <hr>
