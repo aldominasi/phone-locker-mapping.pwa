@@ -21,7 +21,7 @@
       </b-col>
       <b-col cols="12" class="mt-2" v-if="armadio != null">
         <strong>Centrale: </strong>
-        <span>{{ armadio.centrale }}</span>
+        <span>{{ armadio.centrale.nome }}</span>
       </b-col>
       <b-col cols="12" class="mt-2" v-if="armadio != null">
         <strong>Progressivo: </strong>
