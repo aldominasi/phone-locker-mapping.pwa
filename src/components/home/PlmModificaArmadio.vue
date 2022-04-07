@@ -58,6 +58,53 @@
                   </template>
                 </b-form-select>
               </b-col>
+              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                <b-form-input
+                  placeholder="Inserisci il progressivo"
+                  class="inputCustomSecondary"
+                  v-model="armadio.progressivo"></b-form-input>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                <b-form-input
+                  placeholder="Inserisci la zona"
+                  class="inputCustomSecondary"
+                  v-model="armadio.zona.info1"></b-form-input>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                <b-form-input
+                  placeholder="Inserisci il tipo di armadio"
+                  class="inputCustomSecondary"
+                  v-model="armadio.tipoArmadio"></b-form-input>
+              </b-col>
+              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                <b-form-input
+                  placeholder="Inserisci l'indirizzo"
+                  class="inputCustomSecondary"
+                  v-model="armadio.indirizzo"></b-form-input>
+              </b-col>
+              <b-col cols="12" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                <b-form-textarea
+                  placeholder="Inserisci le note"
+                  class="inputCustomSecondary"
+                  v-model="armadio.nota"></b-form-textarea>
+              </b-col>
+              <b-col cols="12" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                <l-map
+                  ref="mapAggiornaArmadio"
+                  style="height: 300px"
+                  :zoom="zoom"
+                  :center="center">
+                  <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                  <l-marker v-if="armadio.localizzazione.coordinates.length === 2" :lat-lng="armadio.localizzazione.coordinates"></l-marker>
+                </l-map>
+              </b-col>
+            </b-row>
+            <b-row class="mt-3">
+              <b-col class="text-center">
+                <b-button
+                  class="btnCustomPrimary"
+                  @click="aggiornaArmadio">Aggiorna</b-button>
+              </b-col>
             </b-row>
           </b-form>
         </b-container>
@@ -79,10 +126,25 @@ import {
   BFormSelect,
   BFormSelectOption,
   BModal,
+  BFormInput,
+  BFormTextarea,
 } from 'bootstrap-vue';
+import {
+  LMap,
+  LTileLayer,
+  LMarker,
+} from 'vue2-leaflet';
+import { Icon } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import PlmRicercaArmadi from '@/components/home/ricercaArmadi/PlmRicercaArmadi';
 import PlmRicercaArmadio from '@/components/home/ricercaArmadi/PlmRicercaArmadio';
 import axios from 'axios';
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 export default {
   components: {
@@ -99,16 +161,25 @@ export default {
     BFormSelect,
     BFormSelectOption,
     BModal,
+    BFormInput,
+    LMap,
+    LTileLayer,
+    LMarker,
+    BFormTextarea,
   },
   name: "PlmModificaArmadio",
   data() {
     return {
       ricercaAvanzata: false,
       armadio: {
+        _id: '',
         centrale: null,
         provincia: null,
         progressivo: 0,
-        zona: null,
+        zona: {
+          info1: '',
+          info2: ''
+        },
         tipoArmadio: '',
         indirizzo: '',
         localizzazione: {
@@ -125,6 +196,10 @@ export default {
           options: []
         }
       },
+      zoom: 15,
+      center: [41.073723741325, 14.3423023542596],
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     }
   },
   mounted() {
@@ -169,9 +244,27 @@ export default {
         })
         .catch(() => this.notificaErrore())
     },
+    aggiornaArmadio() {
+      axios.put(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.armadio._id}`, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: { token: sessionStorage.getItem('tokenPlm') },
+        body: this.armadio
+      })
+      .then(response => {
+        if (!response.data.success)
+          this.apiErrorHandler(response);
+        else {
+          this.$alert({
+            title: 'Operazione riuscita',
+            content: 'L\'aggiornamento dell\'armadio è avvenuto con successo'
+          });
+        }
+      })
+      .catch(() => this.notificaErrore())
+    }
   },
   computed: {
-    provinciaScelta() { return this.armadio.provincia != null; }
+    provinciaScelta() { return this.armadio.provincia != null; },
   },
 }
 </script>
