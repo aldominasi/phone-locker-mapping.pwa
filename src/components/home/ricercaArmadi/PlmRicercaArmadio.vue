@@ -108,7 +108,7 @@ export default {
   name: "PlmRicercaArmadio",
   data() {
     return {
-      idArmadio: '624b5df9a70bee8defa3bcc9',
+      idArmadio: '',
       armadio: null,
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
