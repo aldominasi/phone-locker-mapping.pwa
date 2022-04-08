@@ -34,69 +34,117 @@
         hide-footer
         size="lg">
         <b-container fluid>
-          <b-form class="mt-2">
+          <b-form>
             <b-row>
               <b-col sm="12" md="6" lg="6" xl="6">
-                <b-form-select
-                  v-model="armadio.provincia"
-                  :options="filtri.provincia.options"
-                  @change="getComuni"
-                  class="form-control selectCustomPrimary">
-                  <template #first>
-                    <b-form-select-option :value="null">Scegli la provincia</b-form-select-option>
-                  </template>
-                </b-form-select>
+                <b-form-group
+                  id="groupProvincia"
+                  label="Provincia"
+                  label-for="selectProvincia">
+                  <b-form-select
+                    id="selectProvincia"
+                    v-model="armadio.provincia"
+                    :options="filtri.provincia.options"
+                    @change="getComuni"
+                    class="form-control selectCustomPrimary">
+                    <template #first>
+                      <b-form-select-option :value="null">Scegli la provincia</b-form-select-option>
+                    </template>
+                  </b-form-select>
+                </b-form-group>
               </b-col>
               <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                <b-form-select
-                  v-model="armadio.centrale"
-                  :options="filtri.comune.options"
-                  :disabled="!provinciaScelta"
-                  class="form-control selectCustomPrimary">
-                  <template #first>
-                    <b-form-select-option :value="null">Scegli il comune</b-form-select-option>
-                  </template>
-                </b-form-select>
+                <b-form-group
+                  id="groupCentrale"
+                  label="Centrale"
+                  label-for="selectCentrale">
+                  <b-form-select
+                    id="selectCentrale"
+                    v-model="armadio.centrale"
+                    :options="filtri.comune.options"
+                    :disabled="!provinciaScelta"
+                    class="form-control selectCustomPrimary">
+                    <template #first>
+                      <b-form-select-option :value="null">Scegli il comune</b-form-select-option>
+                    </template>
+                  </b-form-select>
+                </b-form-group>
               </b-col>
-              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                <b-form-input
-                  placeholder="Inserisci il progressivo"
-                  class="inputCustomSecondary"
-                  v-model="armadio.progressivo"></b-form-input>
+              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2">
+                <b-form-group
+                  id="groupProgressivo"
+                  label="Progressivo"
+                  label-for="selectProgressivo">
+                  <b-form-input
+                    id="selectProgressivo"
+                    placeholder="Inserisci il progressivo"
+                    class="inputCustomSecondary"
+                    v-model="armadio.progressivo"></b-form-input>
+                </b-form-group>
               </b-col>
-              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                <b-form-input
-                  placeholder="Inserisci la zona"
-                  class="inputCustomSecondary"
-                  v-model="armadio.zona.info1"></b-form-input>
+              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2">
+                <b-form-group
+                  id="groupZona"
+                  label="Zona"
+                  label-for="inputZona">
+                  <b-form-input
+                    id="inputZona"
+                    placeholder="Inserisci la zona"
+                    class="inputCustomSecondary"
+                    v-model="armadio.zona.info1"></b-form-input>
+                </b-form-group>
               </b-col>
-              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                <b-form-input
-                  placeholder="Inserisci il tipo di armadio"
-                  class="inputCustomSecondary"
-                  v-model="armadio.tipoArmadio"></b-form-input>
+              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2">
+                <b-form-group
+                  id="groupTipoArmadio"
+                  label="Tipo Armadio"
+                  label-for="inputTipoArmadio">
+                  <b-form-input
+                    id="inputTipoArmadio"
+                    placeholder="Inserisci il tipo di armadio"
+                    class="inputCustomSecondary"
+                    v-model="armadio.tipoArmadio"></b-form-input>
+                </b-form-group>
               </b-col>
-              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                <b-form-input
-                  placeholder="Inserisci l'indirizzo"
-                  class="inputCustomSecondary"
-                  v-model="armadio.indirizzo"></b-form-input>
+              <b-col sm="12" md="6" lg="6" xl="6" class="mt-2">
+                <b-form-group
+                  id="groupIndirizzo"
+                  label="Indirizzo"
+                  label-for="inputIndirizzo">
+                  <b-form-input
+                    id="inputIndirizzo"
+                    placeholder="Inserisci l'indirizzo"
+                    class="inputCustomSecondary"
+                    v-model="armadio.indirizzo"></b-form-input>
+                </b-form-group>
               </b-col>
-              <b-col cols="12" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                <b-form-textarea
-                  placeholder="Inserisci le note"
-                  class="inputCustomSecondary"
-                  v-model="armadio.nota"></b-form-textarea>
+              <b-col cols="12" class="mt-2">
+                <b-form-group
+                  id="groupNote"
+                  label="Zona"
+                  label-for="textAreaNote">
+                  <b-form-textarea
+                    id="textAreaNote"
+                    placeholder="Inserisci le note"
+                    class="inputCustomSecondary"
+                    v-model="armadio.nota"></b-form-textarea>
+                </b-form-group>
               </b-col>
-              <b-col cols="12" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                <l-map
-                  ref="mapAggiornaArmadio"
-                  style="height: 300px"
-                  :zoom="zoom"
-                  :center="center">
-                  <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                  <l-marker v-if="armadio.localizzazione.coordinates.length === 2" :lat-lng="armadio.localizzazione.coordinates"></l-marker>
-                </l-map>
+              <b-col cols="12" class="mt-2">
+                <b-form-group
+                  id="groupMap"
+                  label="Posizione armadio"
+                  label-for="mapAggiornaArmadio">
+                  <l-map
+                    id="mapAggiornaArmadio"
+                    ref="mapAggiornaArmadio"
+                    style="height: 300px"
+                    :zoom="zoom"
+                    :center="center">
+                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                    <l-marker v-if="armadio.localizzazione.coordinates.length === 2" :lat-lng="armadio.localizzazione.coordinates"></l-marker>
+                  </l-map>
+                </b-form-group>
               </b-col>
             </b-row>
             <b-row class="mt-3">
@@ -128,6 +176,8 @@ import {
   BModal,
   BFormInput,
   BFormTextarea,
+  BButton,
+  BFormGroup,
 } from 'bootstrap-vue';
 import {
   LMap,
@@ -166,6 +216,8 @@ export default {
     LTileLayer,
     LMarker,
     BFormTextarea,
+    BButton,
+    BFormGroup,
   },
   name: "PlmModificaArmadio",
   data() {
@@ -208,8 +260,10 @@ export default {
   methods: {
     armadioSelezionato(armadio){
       this.armadio = armadio;
+      this.center = armadio.localizzazione.coordinates;
       this.getComuni();
       this.$refs.modalModificaArmadio.show();
+      setTimeout(() => this.$refs.mapAggiornaArmadio.mapObject.invalidateSize(), 20);
     },
     getProvince() {
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/province`, {
@@ -245,19 +299,22 @@ export default {
         .catch(() => this.notificaErrore())
     },
     aggiornaArmadio() {
-      axios.put(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.armadio._id}`, {
+      axios.put(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.armadio._id}`, this.armadio, {
         headers: { 'Accept-Version': '1.0.0' },
-        params: { token: sessionStorage.getItem('tokenPlm') },
-        body: this.armadio
+        params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
         if (!response.data.success)
           this.apiErrorHandler(response);
         else {
-          this.$alert({
-            title: 'Operazione riuscita',
-            content: 'L\'aggiornamento dell\'armadio è avvenuto con successo'
-          });
+          this.$refs.modalModificaArmadio.hide();
+          let me = this;
+          setTimeout(() => {
+            me.$alert({
+              title: 'Operazione riuscita',
+              content: 'L\'aggiornamento dell\'armadio è avvenuto con successo'
+            });
+          }, 200);
         }
       })
       .catch(() => this.notificaErrore())
