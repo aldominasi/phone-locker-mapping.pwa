@@ -139,6 +139,7 @@
                     id="mapAggiornaArmadio"
                     ref="mapAggiornaArmadio"
                     style="height: 300px"
+                    @click="aggiornaPosizione"
                     :zoom="zoom"
                     :center="center">
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -162,6 +163,7 @@
 </template>
 
 <script>
+//TODO: GESTIRE GLI ERRORI DELLA PUT PER LA MODIFICA DELL'ARMADIO
 import {
   BContainer,
   BRow,
@@ -318,6 +320,9 @@ export default {
         }
       })
       .catch(() => this.notificaErrore())
+    },
+    aggiornaPosizione(e) {
+      this.armadio.localizzazione.coordinates = [ e.latlng.lat, e.latlng.lng ];
     }
   },
   computed: {
