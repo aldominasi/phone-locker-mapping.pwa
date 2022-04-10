@@ -81,8 +81,6 @@
 </template>
 
 <script>
-//TODO: IMPLEMENTARE LA LISTA DELLE PROVINCE DELLE CENTRALI PRESENTI NEL DB
-//TODO: IMPLEMENTARE LA LISTA DELLE CENTRALI DI UNA PROVINCIA
 import {
   BRow,
   BCol,
@@ -164,8 +162,9 @@ export default {
   },
   methods: {
     getProvince() {
-      axios.get(`${process.env.VUE_APP_URL_BACKEND}/province`, {
-        headers: { 'Accept-Version': '1.0.0' }
+      axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali/province`, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: { token: sessionStorage.getItem('tokenPlm'), }
       })
         .then(response => {
           if (!response.data.success)
@@ -196,11 +195,9 @@ export default {
     },
     getComuni() {
       this.filtri.comune.selected = null;
-      axios.get(`${process.env.VUE_APP_URL_BACKEND}/comuni/byProvincia`, {
+      axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali/provincia/${this.filtri.provincia.selected.codice}`, {
         headers: { 'Accept-Version': '1.0.0' },
-        params: {
-          codice: this.filtri.provincia.selected.codice
-        }
+        params: { token: sessionStorage.getItem('tokenPlm'), }
       })
         .then(response => {
           if (!response.data.success)
