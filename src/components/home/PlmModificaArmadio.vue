@@ -163,7 +163,6 @@
 </template>
 
 <script>
-//TODO: GESTIRE GLI ERRORI DELLA PUT PER LA MODIFICA DELL'ARMADIO
 import {
   BContainer,
   BRow,
@@ -306,10 +305,14 @@ export default {
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
-        if (!response.data.success)
-          this.apiErrorHandler(response);
+        this.$refs.modalModificaArmadio.hide();
+        let me =this;
+        if (!response.data.success) {
+          setTimeout(() => {
+            me.apiErrorHandler(response);
+          }, 200);
+        }
         else {
-          this.$refs.modalModificaArmadio.hide();
           let me = this;
           setTimeout(() => {
             me.$alert({
@@ -319,7 +322,13 @@ export default {
           }, 200);
         }
       })
-      .catch(() => this.notificaErrore())
+      .catch(() => {
+        this.$refs.modalModificaArmadio.hide();
+        let me = this;
+        setTimeout(() => {
+          me.notificaErrore();
+        }, 200);
+      })
     },
     aggiornaPosizione(e) {
       this.armadio.localizzazione.coordinates = [ e.latlng.lat, e.latlng.lng ];
