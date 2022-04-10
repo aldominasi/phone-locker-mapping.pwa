@@ -1,6 +1,5 @@
 <template>
   <div>
-  <div>
     <pwa-install/>
     <b-container class="mt-10">
       <b-row>
@@ -56,15 +55,6 @@
       </b-row>
     </b-container>
   </div>
-  <loading-plugin
-    :active.sync="isLoading"
-    :can-cancel="false"
-    :is-full-page="true"
-    color="#16ccd9"
-    loader="dots"
-    :height="120"
-    :width="120"></loading-plugin>
-  </div>
 </template>
 
 <script>
@@ -81,8 +71,8 @@ import {
   BLink,
   BFormInput,
 } from 'bootstrap-vue';
-import LoadingPlugin from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+//import LoadingPlugin from 'vue-loading-overlay';
+//import 'vue-loading-overlay/dist/vue-loading.css';
 const regexEmail = /^[A-z0-9.+_-]+@[A-z0-9._-]+\.[A-z]{2,6}$/;
 
 export default {
@@ -97,7 +87,7 @@ export default {
     BButton,
     BLink,
     BFormInput,
-    LoadingPlugin
+    //LoadingPlugin
   },
   data() {
     return {
@@ -114,14 +104,16 @@ export default {
     onLogin: function () {
       if (this.validationEmail === false)
         return;
-      this.isLoading = true;
+      // this.isLoading = true;
+      const loadingOverlay = this.showLoadingOverlay();
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/login`, this.jsonData, {
         headers: {
           "Accept-Version": '1.0.0',
         }
       })
         .then((response) => {
-          this.isLoading = false;
+          // this.isLoading = false;
+          this.hideLoadingOverlay(loadingOverlay);
           if (response.data.success) {
             if (response.data.data.auth) {
               sessionStorage.setItem('tokenPlm', response.data.data.token);
