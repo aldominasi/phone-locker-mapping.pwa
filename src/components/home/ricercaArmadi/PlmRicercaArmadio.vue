@@ -118,18 +118,23 @@ export default {
   },
   methods: {
     getArmadio() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.idArmadio}`, {
         headers: { "Accept-Version": '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
           this.apiErrorHandler(response);
         else
           this.armadio = response.data.data;
         this.center = response.data.data.localizzazione.coordinates;
       })
-      .catch(() => { this.notificaErrore(); })
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      });
     },
     selezionaArmadio() {
       this.$emit('armadioSelezionato', this.armadio);

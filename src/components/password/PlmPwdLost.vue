@@ -93,6 +93,7 @@ export default {
       this.typePwd2 = this.typePwd2 === 'password' ? 'text' : 'password';
     },
     inviaDati() {
+      const loader = this.showLoadingOverlay();
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/recuperopwd/modifica`, this.jsonData, {
         headers: {
           "Accept-Version": '1.0.0',
@@ -102,8 +103,9 @@ export default {
         }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
-          this.apiErrorHandler();
+          this.apiErrorHandler(loader);
         else
           this.$alert({
             title: 'Attenzione',
@@ -111,7 +113,10 @@ export default {
           });
         this.clearAll();
       })
-      .catch(() => this.notificaErrore());
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      });
     },
     clearAll() {
       this.jsonData.pwd = '';

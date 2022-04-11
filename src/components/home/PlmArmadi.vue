@@ -170,19 +170,25 @@ export default {
         });
     },
     getCentrali() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (response.data.success)
           this.filtri.centrale.options = response.data.data.map(item => {
             return { value: item, text: item }
           });
       })
-      .catch(() => this.notificaErrore() );
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      });
     },
     getZone() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/zone`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: {
@@ -191,12 +197,16 @@ export default {
         }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
           this.apiErrorHandler(response);
         else
           this.filtri.zona.options = response.data.data;
       })
-      .catch(() => this.notificaErrore())
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      })
     },
     resetFiltri() {
       this.filtri.centrale.selected = '';

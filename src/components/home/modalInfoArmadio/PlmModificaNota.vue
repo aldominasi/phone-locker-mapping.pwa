@@ -65,6 +65,7 @@ export default {
   },
   methods: {
     aggiornaNote() {
+      const loader = this.showLoadingOverlay();
       const body = [{
           operation: 'replace',
           path: 'nota',
@@ -78,6 +79,7 @@ export default {
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
           this.apiErrorHandler(response);
         else {
@@ -89,6 +91,7 @@ export default {
         }
       })
       .catch(() => {
+        this.hideLoadingOverlay(loader);
         this.variantToast = 'danger';
         this.titleToast = 'Operazine non riuscita';
         this.resultUpdate = 'Si è verificato un errore. Riprova più tardi';

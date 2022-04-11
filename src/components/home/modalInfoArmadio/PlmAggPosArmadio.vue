@@ -124,6 +124,7 @@ export default {
       });
     },
     invia() {
+      const loader = this.showLoadingOverlay();
       const body = [{
         operation: 'replace',
         path: 'localizzazione.coordinates',
@@ -139,6 +140,7 @@ export default {
         }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
           this.apiErrorHandler(response);
         else {
@@ -150,6 +152,7 @@ export default {
         }
       })
       .catch(() => {
+        this.hideLoadingOverlay(loader);
         this.variantToast = 'danger';
         this.titleToast = 'Operazine non riuscita';
         this.resultUpdate = 'Si è verificato un errore. Riprova più tardi';

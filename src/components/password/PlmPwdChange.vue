@@ -117,11 +117,13 @@ export default {
       this.typePwd2 = this.typePwd2 === 'password' ? 'text' : 'password';
     },
     inviaDati() {
+      const loader = this.showLoadingOverlay();
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/modificapwd`, this.jsonData, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
           this.apiErrorHandler();
         else
@@ -132,7 +134,10 @@ export default {
         this.clearAll();
         this.$router.replace('/');
       })
-      .catch(() => this.notificaErrore());
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      });
     },
     clearAll() {
       this.jsonData.oldPwd = '';

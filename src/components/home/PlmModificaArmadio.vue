@@ -267,10 +267,12 @@ export default {
       setTimeout(() => this.$refs.mapAggiornaArmadio.mapObject.invalidateSize(), 20);
     },
     getProvince() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/province`, {
         headers: { 'Accept-Version': '1.0.0' }
       })
         .then(response => {
+          this.hideLoadingOverlay(loader);
           if (!response.data.success)
             this.apiErrorHandler(response);
           else {
@@ -279,9 +281,13 @@ export default {
             });
           }
         })
-        .catch(() => this.notificaErrore())
+        .catch(() => {
+          this.hideLoadingOverlay(loader);
+          this.notificaErrore()
+        });
     },
     getComuni() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/comuni/byProvincia`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: {
@@ -289,6 +295,7 @@ export default {
         }
       })
         .then(response => {
+          this.hideLoadingOverlay(loader);
           if (!response.data.success)
             this.apiErrorHandler(response);
           else {
@@ -297,9 +304,13 @@ export default {
             });
           }
         })
-        .catch(() => this.notificaErrore())
+        .catch(() => {
+          this.hideLoadingOverlay(loader);
+          this.notificaErrore()
+        });
     },
     aggiornaArmadio() {
+      const loader = this.showLoadingOverlay();
       axios.put(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.armadio._id}`, this.armadio, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm') }
@@ -309,12 +320,14 @@ export default {
         let me =this;
         if (!response.data.success) {
           setTimeout(() => {
+            me.hideLoadingOverlay(loader);
             me.apiErrorHandler(response);
           }, 200);
         }
         else {
           let me = this;
           setTimeout(() => {
+            me.hideLoadingOverlay(loader);
             me.$alert({
               title: 'Operazione riuscita',
               content: 'L\'aggiornamento dell\'armadio è avvenuto con successo'
@@ -327,6 +340,7 @@ export default {
         let me = this;
         setTimeout(() => {
           me.notificaErrore();
+          me.hideLoadingOverlay(loader);
         }, 200);
       })
     },

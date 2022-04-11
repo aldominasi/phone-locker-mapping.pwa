@@ -203,10 +203,12 @@ export default {
   },
   methods: {
     getProvince() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/province`, {
         headers: { 'Accept-Version': '1.0.0' }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
           this.apiErrorHandler(response);
         else {
@@ -215,9 +217,13 @@ export default {
           });
         }
       })
-      .catch(() => this.notificaErrore())
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      })
     },
     getComuni() {
+      const loader = this.showLoadingOverlay();
       this.jsonData.centrale = null;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/comuni/byProvincia`, {
         headers: { 'Accept-Version': '1.0.0' },
@@ -226,6 +232,7 @@ export default {
         }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
           this.apiErrorHandler(response);
         else {
@@ -234,14 +241,19 @@ export default {
           });
         }
       })
-      .catch(() => this.notificaErrore())
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      });
     },
     invia() {
+      const loader = this.showLoadingOverlay();
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/armadi`, this.jsonData, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
           this.apiErrorHandler(response);
         else {
@@ -252,7 +264,10 @@ export default {
           this.clearAll();
         }
       })
-      .catch(() => this.notificaErrore());
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      });
     },
     aggiungiMarker(e) {
       this.jsonData.localizzazione.coordinates = [ e.latlng.lat, e.latlng.lng ];

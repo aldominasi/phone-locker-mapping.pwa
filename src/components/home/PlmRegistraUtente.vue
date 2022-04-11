@@ -120,16 +120,22 @@ export default {
   },
   methods: {
     getRuoli() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/ruoli`, {
         headers: {'Accept-Version': '1.0.0'},
       })
           .then(response => {
+            this.hideLoadingOverlay(loader);
             if (response.data.success)
               this.optionsRuolo = response.data.data.map(item => item._id);
           })
-          .catch(() => this.notificaErrore());
+          .catch(() => {
+            this.hideLoadingOverlay(loader);
+            this.notificaErrore();
+          });
     },
     registra() {
+      const loader = this.showLoadingOverlay();
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/utenti`, this.jsonData, {
         headers: {'Accept-Version': '1.0.0'},
         params: {
@@ -137,6 +143,7 @@ export default {
         }
       })
           .then(response => {
+            this.hideLoadingOverlay(loader);
             if (!response.data.success)
               this.apiErrorHandler();
             else
@@ -146,7 +153,10 @@ export default {
               });
             this.clearAll();
           })
-      .catch(() => this.notificaErrore())
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      })
     },
     clearAll() {
       for (const prop in this.jsonData)

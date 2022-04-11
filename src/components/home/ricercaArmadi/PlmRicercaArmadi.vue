@@ -162,11 +162,13 @@ export default {
   },
   methods: {
     getProvince() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali/province`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm'), }
       })
         .then(response => {
+          this.hideLoadingOverlay(loader);
           if (!response.data.success)
             this.apiErrorHandler(response);
           else {
@@ -175,9 +177,13 @@ export default {
             });
           }
         })
-        .catch(() => this.notificaErrore())
+        .catch(() => {
+          this.hideLoadingOverlay(loader);
+          this.notificaErrore();
+        })
     },
     getZone() {
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/zone`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: {
@@ -186,20 +192,26 @@ export default {
         }
       })
         .then(response => {
+          this.hideLoadingOverlay(loader);
           if (!response.data.success)
             this.apiErrorHandler(response);
           else
             this.filtri.zona.options = response.data.data;
         })
-        .catch(() => this.notificaErrore())
+        .catch(() => {
+          this.hideLoadingOverlay(loader);
+          this.notificaErrore();
+        });
     },
     getComuni() {
+      const loader = this.showLoadingOverlay();
       this.filtri.comune.selected = null;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali/provincia/${this.filtri.provincia.selected.codice}`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm'), }
       })
         .then(response => {
+          this.hideLoadingOverlay(loader);
           if (!response.data.success)
             this.apiErrorHandler(response);
           else {
@@ -208,7 +220,10 @@ export default {
             });
           }
         })
-        .catch(() => this.notificaErrore())
+        .catch(() => {
+          this.hideLoadingOverlay(loader);
+          this.notificaErrore();
+        });
     },
     getArmadi(page) {
       this.tabella.isBusy = true;
