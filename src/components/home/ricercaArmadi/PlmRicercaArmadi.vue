@@ -73,7 +73,7 @@
         </div>
       </b-col>
       <b-col cols="12" class="text-center mt-4" v-else>
-        <b-img src="/plm/img/empty.svg" width="100%" center fluid alt="Nessun dato"></b-img>
+        <b-img src="/img/empty.svg" width="100%" center fluid alt="Nessun dato"></b-img>
         <label>Elenco vuoto</label>
       </b-col>
     </b-row>

@@ -75,7 +75,7 @@ const router = new VueRouter({
   mode: "hash",
   base: process.env.BASE_URL
 });
-
+console.log("BASE_URL", process.env.BASE_URL);
 router.beforeEach((to, from, next) => {
   if (to.name === 'PlmPwdLost') {
     if (to.query == null || to.query.tkn == null)

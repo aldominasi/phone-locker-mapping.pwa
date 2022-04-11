@@ -1,7 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: '/plm/',
+  //publicPath: '/plm/',
   pwa: {
     iconPaths: {
       msTileImage: 'img/icons/mstile-150x150.png',
