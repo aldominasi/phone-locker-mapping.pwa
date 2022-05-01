@@ -206,6 +206,8 @@ export default {
     getComuni() {
       const loader = this.showLoadingOverlay();
       this.filtri.comune.selected = null;
+      this.filtri.zona.selected = null;
+      this.getArmadi(1);
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali/provincia/${this.filtri.provincia.selected.codice}`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm'), }
@@ -230,9 +232,12 @@ export default {
       const queryStringGetArmadi = {
         token: sessionStorage.getItem('tokenPlm'),
         page: page - 1,
-        limit: this.tabella.perPage,
-        codiceCentrale: this.filtri.comune.selected.codice
+        limit: this.tabella.perPage
       };
+      if (this.filtri.provincia.selected)
+        queryStringGetArmadi.codiceProvincia = this.filtri.provincia.selected.codice;
+      if (this.filtri.comune.selected)
+        queryStringGetArmadi.codiceCentrale = this.filtri.comune.selected.codice;
       if (this.filtri.zona.selected)
         queryStringGetArmadi.zona = this.filtri.zona.selected;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi`, {
