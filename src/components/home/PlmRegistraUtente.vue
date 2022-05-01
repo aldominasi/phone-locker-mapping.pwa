@@ -43,7 +43,7 @@
                       </b-col>
                     </b-row>
                     <b-row class="mt-2">
-                      <b-col>
+                      <b-col cols="12">
                         <b-form-select
                             v-model="jsonData.ruolo"
                             :options="optionsRuolo"
@@ -52,6 +52,9 @@
                             <b-form-select-option :value="null" disabled>Scegli il ruolo</b-form-select-option>
                           </template>
                         </b-form-select>
+                      </b-col>
+                      <b-col cols="12" class="text-right">
+                        <span class="small">* Tutti i campi sono obbligatori</span>
                       </b-col>
                     </b-row>
                     <b-row class="mt-3">
