@@ -81,7 +81,7 @@ export default {
     indicazioniStradali() {
       navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
-        const query = `api=1&origin=${latitude},${longitude}&destination=${this.armadioSelezionato.lat},${this.armadioSelezionato.lng}&travelmode=driving&dir_action=navigate`
+        const query = `api=1&origin=${latitude},${longitude}&destination=${this.markerLatLng[0]},${this.markerLatLng[1]}&travelmode=driving&dir_action=navigate`
         if ((navigator.platform.indexOf('iPhone') !== -1) ||
           (navigator.platform.indexOf('iPad') !== -1) ||
           (navigator.platform.indexOf('iPod') !== -1))
