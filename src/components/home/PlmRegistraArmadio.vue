@@ -19,7 +19,7 @@
                           @change="getComuni"
                           class="form-control selectCustomPrimary">
                           <template #first>
-                            <b-form-select-option :value="null">Scegli la provincia</b-form-select-option>
+                            <b-form-select-option :value="null">Scegli la provincia *</b-form-select-option>
                           </template>
                         </b-form-select>
                       </b-col>
@@ -30,7 +30,7 @@
                           :disabled="!provinciaScelta"
                           class="form-control selectCustomPrimary">
                           <template #first>
-                            <b-form-select-option :value="null">Scegli la centrale</b-form-select-option>
+                            <b-form-select-option :value="null">Scegli la centrale *</b-form-select-option>
                           </template>
                         </b-form-select>
                       </b-col>
@@ -38,7 +38,7 @@
                     <b-row class="mt-2">
                       <b-col cols="12">
                         <b-form-input
-                          placeholder="Inserisci il progressivo"
+                          placeholder="Inserisci il progressivo *"
                           class="inputCustomSecondary"
                           v-model="jsonData.progressivo"></b-form-input>
                       </b-col>
@@ -46,13 +46,13 @@
                     <b-row class="mt-2">
                       <b-col sm="12" md="6" lg="6" xl="6">
                         <b-form-input
-                          placeholder="Inserisci la zona"
+                          placeholder="Inserisci la zona *"
                           class="inputCustomSecondary"
                           v-model="jsonData.zona.info1"></b-form-input>
                       </b-col>
                       <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
                         <b-form-input
-                          placeholder="Tipologia di armadio"
+                          placeholder="Tipologia di armadio *"
                           class="inputCustomSecondary"
                           v-model="jsonData.tipoArmadio"></b-form-input>
                       </b-col>
@@ -60,7 +60,7 @@
                     <b-row class="mt-2">
                       <b-col cols="12">
                         <b-form-input
-                          placeholder="Inserisci indirizzo"
+                          placeholder="Inserisci indirizzo *"
                           class="inputCustomSecondary"
                           v-model="jsonData.indirizzo"></b-form-input>
                       </b-col>
@@ -75,6 +75,9 @@
                     </b-row>
                     <b-row class="mt-2">
                       <b-col cols="12">
+                        <label>Clicca sulla mappa per inserire la posizione dell'armadio *</label>
+                      </b-col>
+                      <b-col cols="12">
                         <l-map
                           @click="aggiungiMarker"
                           ref="mapCreateArmadio"
@@ -84,6 +87,9 @@
                           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                           <l-marker v-if="jsonData.localizzazione.coordinates.length === 2" :lat-lng="jsonData.localizzazione.coordinates"></l-marker>
                         </l-map>
+                      </b-col>
+                      <b-col cols="12" class="text-right">
+                        <span class="small">* Campi obbligatori</span>
                       </b-col>
                     </b-row>
                     <b-row class="mt-3">
