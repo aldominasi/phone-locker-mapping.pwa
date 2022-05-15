@@ -130,8 +130,8 @@ export default {
             });
         })
         .catch((err) => {
-          this.isLoading = false;
-          console.log(err);
+          this.hideLoadingOverlay(loadingOverlay);
+          console.log("login", err);
         })
     },
     showHidePwd() {
