@@ -28,6 +28,7 @@
                           v-model="jsonData.centrale"
                           :options="filtri.centrale.options"
                           :disabled="!provinciaScelta"
+                          @change="centraleSelezionata"
                           class="form-control selectCustomPrimary">
                           <template #first>
                             <b-form-select-option :value="null">Scegli la centrale *</b-form-select-option>
@@ -252,9 +253,14 @@ export default {
         this.notificaErrore();
       });
     },
+    centraleSelezionata() {
+      this.center = [ this.jsonData.centrale.coordinate.lat, this.jsonData.centrale.coordinate.lng ];
+    },
     invia() {
       const loader = this.showLoadingOverlay();
-      axios.post(`${process.env.VUE_APP_URL_BACKEND}/armadi`, this.jsonData, {
+      const bodyRequest = { ...this.jsonData };
+      delete bodyRequest.centrale.coordinate;
+      axios.post(`${process.env.VUE_APP_URL_BACKEND}/armadi`, bodyRequest, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
