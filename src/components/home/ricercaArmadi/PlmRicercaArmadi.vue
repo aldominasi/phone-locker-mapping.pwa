@@ -1,10 +1,12 @@
 <template>
+  <!-- Componente utilizzato per la ricerca degli armadi -->
   <div>
     <b-row>
       <b-col cols="12">
         <b-form novalidate>
           <b-row class="mt-2">
             <b-col sm="12" md="6" lg="6" xl="6">
+              <!-- Select provincia -->
               <b-form-select
                 v-model="filtri.provincia.selected"
                 :options="filtri.provincia.options"
@@ -16,6 +18,7 @@
               </b-form-select>
             </b-col>
             <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+              <!-- Select comuni (Centrali) -->
               <b-form-select
                 v-model="filtri.comune.selected"
                 :options="filtri.comune.options"
@@ -30,6 +33,7 @@
           </b-row>
           <b-row class="mt-2">
             <b-col cols="12">
+              <!-- Select zona -->
               <b-form-select
                 v-model="filtri.zona.selected"
                 :options="filtri.zona.options"
@@ -46,6 +50,7 @@
       </b-col>
       <b-col cols="12" class="mt-2" v-if="armadi.length > 0">
         <div class="overflow-auto">
+          <!-- Tabella contenente gli armadi trovati -->
           <b-table
             id="tableAggiornaArmadi"
             striped
@@ -56,6 +61,7 @@
             :busy="tabella.isBusy"
             :fields="tabella.fields"
             :items="armadi">
+            <!-- Spinner di caricamento delle informazioni nella tabella -->
             <template #table-busy>
               <div class="text-center color-busy-table my-2">
                 <b-spinner class="align-middle"></b-spinner>
@@ -63,6 +69,7 @@
               </div>
             </template>
           </b-table>
+          <!-- Componente utilizzato per la paginazione della tabella -->
           <b-pagination
             align="center"
             v-model="tabella.currentPage"
@@ -112,7 +119,7 @@ export default {
   data() {
     return {
       armadi: [],
-      filtri: {
+      filtri: { // Filtri utilizzati per filtrare la ricerca degli armadi
         provincia: {
           selected: null,
           options: []
@@ -126,7 +133,7 @@ export default {
           options: []
         }
       },
-      tabella: {
+      tabella: { // Configurazione della tabella degli armadi
         isBusy: false,
         fields: [
           {
@@ -162,6 +169,7 @@ export default {
   },
   methods: {
     getProvince() {
+      // Metodo utilizzato per recuperare tutte le province
       const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali/province`, {
         headers: { 'Accept-Version': '1.0.0' },
@@ -183,6 +191,7 @@ export default {
         })
     },
     getZone() {
+      // Metodo usato per ottenere le zone di un comune
       const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/zone`, {
         headers: { 'Accept-Version': '1.0.0' },

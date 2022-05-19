@@ -1,16 +1,19 @@
 <template>
+  <!-- Componente per la ricerca dell'armadio utilizzando l'id dell'armadio -->
   <div>
     <b-row>
       <b-col cols="12">
         <b-form novalidate class="text-center">
           <b-row>
             <b-col sm="12" md="10" lg="10" xl="10">
+              <!-- Input ID -->
               <b-form-input
                 placeholder="ID dell'armadio"
                 v-model="idArmadio"
                 class="inputCustomSecondary mb-2 mr-sm-2 mb-sm-0"></b-form-input>
             </b-col>
             <b-col sm="12" md="2" lg="2" xl="2">
+              <!-- Button cerca armadio -->
               <b-button
                 @click="getArmadio"
                 :disabled="!abilitaRicerca"
@@ -19,6 +22,7 @@
           </b-row>
         </b-form>
       </b-col>
+      <!-- Visualizzazione delle informazioni dell'armadio -->
       <b-col cols="12" class="mt-2" v-if="armadio != null">
         <strong>Centrale: </strong>
         <span>{{ armadio.centrale.nome }}</span>
@@ -60,6 +64,7 @@
           <l-marker v-if="armadio != null" :lat-lng="armadio.localizzazione.coordinates"></l-marker>
         </l-map>
       </b-col>
+      <!-- Button per la selezione dell'armadio -->
       <b-col cols="12" class="text-center mt-2" v-if="armadio != null">
         <b-button
           class="btnCustomPrimary"
@@ -112,12 +117,13 @@ export default {
       armadio: null,
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      zoom: 15,
-      center: [],
+      zoom: 15, //Zoom sulla mappa
+      center: [], // Latitudine e longitudine su cui centrare la mappa
     }
   },
   methods: {
     getArmadio() {
+      // Metodo utilizzato per richiedere al server le informazioni dell'armadio
       const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.idArmadio}`, {
         headers: { "Accept-Version": '1.0.0' },
@@ -136,12 +142,12 @@ export default {
         this.notificaErrore();
       });
     },
-    selezionaArmadio() {
+    selezionaArmadio() { // Emette l'evento al componente genitore per indicare l'armadio selezionato
       this.$emit('armadioSelezionato', this.armadio);
     }
   },
   computed: {
-    abilitaRicerca() { return this.idArmadio !== '' }
+    abilitaRicerca() { return this.idArmadio !== '' } // Abilita il pulsante per l'invio dei dati
   }
 }
 </script>

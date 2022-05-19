@@ -1,4 +1,5 @@
 <template>
+  <!-- Componente utilizzato per la sola visualizzazione delle informazioni dell'armadio -->
   <div>
     <b-container>
       <b-row>

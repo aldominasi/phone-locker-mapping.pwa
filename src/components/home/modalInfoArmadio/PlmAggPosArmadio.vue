@@ -1,8 +1,11 @@
 <template>
+  <!-- Componente che visualizza la posizione geografica dell'armadio e dell'utente e
+   offre la possibilità di aggiornare la posizione dell'armadio con quella recuperata dal dispositivo-->
   <div>
     <b-container>
       <b-row>
         <b-col cols="12">
+          <!-- Mappa -->
           <l-map
             ref="myMapUpdate"
             style="height: 300px"
@@ -18,6 +21,7 @@
                 <span>Tu</span>
               </div>
             </l-control>
+            <!-- Markers -->
             <l-marker :lat-lng="armadio.localizzazione.coordinates"></l-marker>
             <l-marker
               :icon="iconMyPosition"
@@ -32,6 +36,7 @@
             @click="invia">Invia posizione</b-button>
         </b-col>
       </b-row>
+      <!-- Visualizza il messaggio relativo all'esito dell'operazione di aggiornamento della posizione dell'armadio -->
       <b-toast
         ref="toast-res-patch-pos"
         toaster="b-toaster-bottom-full"
@@ -108,6 +113,7 @@ export default {
   },
   methods: {
     getMyCoords() {
+      // Metodo che chiede all'utente di recuperare la propria posizione
       navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
         this.jsonData.posizioneDispositivo = [latitude, longitude];
@@ -124,6 +130,7 @@ export default {
       });
     },
     invia() {
+      // Metodo utilizzato per l'invio dei dati
       const loader = this.showLoadingOverlay();
       const body = [{
         operation: 'replace',
@@ -161,7 +168,7 @@ export default {
     }
   },
   computed: {
-    abilitaAggiornamento() {
+    abilitaAggiornamento() { // Abilita/Disabilita il button di invio dati
       return this.jsonData.posizioneDispositivo.length === 2;
     }
   }

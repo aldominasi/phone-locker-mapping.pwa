@@ -1,4 +1,5 @@
 <template>
+  <!-- Componente utilizzato per modificare la password senza effettuare l'accesso -->
   <b-container class="mt-10">
     <b-row>
       <b-card style="max-width: 50rem;" class="container card_container">
@@ -16,6 +17,7 @@
             </ul>
           </b-form-group>
           <b-form-group class="mt-2" label="Password" label-for="password1">
+            <!-- Input nuova password -->
             <b-form-input
               id="password1"
               class="inputCustomPrimary"
@@ -23,11 +25,13 @@
               :state="validationPwd1"
               placeholder="Inserisci la nuova password"
               v-model="jsonData.pwd"></b-form-input>
+            <!-- anchor mostra/nascondi password -->
             <span class="float-end mr-2">
               <b-link class="anchorPwd" @click.prevent="showHidePwd1">{{ textPwd1 }}</b-link>
             </span>
           </b-form-group>
           <b-form-group class="mt-8" label="Conferma password" label-for="password2">
+            <!-- Input conferma password -->
             <b-form-input
               id="password2"
               class="inputCustomPrimary"
@@ -35,10 +39,12 @@
               :state="validationPwd2"
               placeholder="Conferma la nuova password"
               v-model="pwd2"></b-form-input>
+            <!-- anchor mostra/nascondi password -->
             <span class="float-right mr-2">
               <b-link class="anchorPwd" @click.prevent="showHidePwd2">{{ textPwd2 }}</b-link>
             </span>
           </b-form-group>
+          <!-- Button invio dati -->
           <b-form-group class="mt-10 text-center">
             <b-button class="btnCustomPrimary" @click="inviaDati" :disabled="!abilitaInvio">Invia</b-button>
           </b-form-group>
@@ -93,13 +99,14 @@ export default {
       this.typePwd2 = this.typePwd2 === 'password' ? 'text' : 'password';
     },
     inviaDati() {
+      // Metodo utilizzato per inviare i dati per modificare la password
       const loader = this.showLoadingOverlay();
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/recuperopwd/modifica`, this.jsonData, {
         headers: {
           "Accept-Version": '1.0.0',
         },
         params: {
-          token: this.$route.query.tkn
+          token: this.$route.query.tkn // token recuperato in query params
         }
       })
       .then(response => {
@@ -107,7 +114,7 @@ export default {
         if (!response.data.success)
           this.apiErrorHandler(loader);
         else
-          this.$alert({
+          this.$alert({ // Visualizza l'esito dell'operazione all'utente
             title: 'Attenzione',
             content: response.data.data
           });

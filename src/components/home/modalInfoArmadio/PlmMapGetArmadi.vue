@@ -1,8 +1,11 @@
 <template>
+  <!-- Componente utilizzato per la visualizzazione della posizione dell'armadio e offre la possibilità
+   all'utente di visualizzare il percorso da seguire per arrivare all'armadio, tramite Google Maps, il percorso -->
   <div>
     <b-container>
       <b-row>
         <b-col cols="12">
+          <!-- Mappa -->
           <l-map
             ref="myMap"
             style="height: 300px"
@@ -10,6 +13,7 @@
             :center="center">
             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
             <l-control position="bottomleft">
+              <!-- Leggenda -->
               <div class="legend">
                 <h4>Legenda</h4>
                 <i style="background-color: #2b82cb"></i>
@@ -19,6 +23,7 @@
             <l-marker :lat-lng="markerLatLng"></l-marker>
           </l-map>
         </b-col>
+        <!-- Button per ottenere le indicazioni strdali -->
         <b-col cols="12" class="text-center mt-2">
           <b-button class="btnCustomPrimary" @click="indicazioniStradali">Indicazioni stradali</b-button>
         </b-col>

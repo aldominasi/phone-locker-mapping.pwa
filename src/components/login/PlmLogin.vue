@@ -1,16 +1,17 @@
 <template>
   <div>
-    <pwa-install/>
+    <pwa-install/> <!-- Componente che chiede all'utente se vuole aggiungere il sito web alla sua homepage -->
     <b-container class="mt-10">
       <b-row>
         <b-card
           style="max-width: 50rem;"
           class="container card_container">
-          <b-card-header class="text-center bg-transparent">
+          <b-card-header class="text-center bg-transparent"> <!-- Logo del progetto -->
             <img :src="'/img/logo/logo_75x75.png'" alt="logo">
             <h4 class="mt-2">Find a locker</h4>
           </b-card-header>
           <b-form @submit.stop.prevent class="mt-4">
+            <!-- Input email -->
             <b-form-group
               label="Email"
               label-for="inputEmail"
@@ -32,6 +33,7 @@
               class="mt-4"
               label="Password"
               label-for="inputPassword">
+              <!-- Input password -->
               <b-form-input
                 id="inputPassword"
                 class="inputCustomPrimary"
@@ -39,13 +41,16 @@
                 placeholder="Inserisci la password"
                 v-model="jsonData.password"
                 @keyup.enter="onLogin"></b-form-input>
+              <!-- Mostra in chiaro o nasconde la password inserita -->
               <span class="float-right mr-2">
                 <b-link class="anchorPwd" @click.prevent="showHidePwd">{{ textPwd }}</b-link>
               </span>
             </b-form-group>
+            <!-- Recupero della password -->
             <b-form-group class="mt-10">
               <b-link class="anchorPwd" @click.prevent="recuperaPassword">Hai dimenticato la password?</b-link>
             </b-form-group>
+            <!-- Button accedi -->
             <b-form-group class="mt-4 text-center">
               <b-button @click="onLogin" class="btnCustomPrimary">Accedi
               </b-button>
@@ -95,17 +100,18 @@ export default {
         email: '',
         password: ''
       },
-      typePwd: 'password',
-      textPwd: 'mostra password',
+      typePwd: 'password', // utilizzata per cambiare il type della input relativa alla password
+      textPwd: 'mostra password', // testo visualizzato per la funzione mostra/nascondi password
       isLoading: false,
     }
   },
   methods: {
-    onLogin: function () {
-      if (this.validationEmail === false)
+    onLogin: function () { // Metodo che viene chiamato quando si clicca su accedi
+      if (this.validationEmail === false) // Controlla se l'email è formalmente valida
         return;
       // this.isLoading = true;
-      const loadingOverlay = this.showLoadingOverlay();
+      const loadingOverlay = this.showLoadingOverlay(); // Mette in primo piano il loading circle
+      // HTTP POST per eseguire la login
       axios.post(`${process.env.VUE_APP_URL_BACKEND}/login`, this.jsonData, {
         headers: {
           "Accept-Version": '1.0.0',
@@ -113,13 +119,14 @@ export default {
       })
         .then((response) => {
           // this.isLoading = false;
-          this.hideLoadingOverlay(loadingOverlay);
-          if (response.data.success) {
-            if (response.data.data.auth) {
+          this.hideLoadingOverlay(loadingOverlay); // Rimuove dal primo piano il loading circle
+          if (response.data.success) { // L'API ha risposto correttamente
+            if (response.data.data.auth) { // Login avvenuta con successo
+              // Salva il jwt token restituito dall'api di login
               sessionStorage.setItem('tokenPlm', response.data.data.token);
-              this.$router.push('/home/armadi');
+              this.$router.push('/home/armadi'); // Redirect alla homepage
             } else
-              this.$alert({
+              this.$alert({ // Autenticazione fallita
                 title: 'Attenzione',
                 content: 'Autenticazione non riuscita. Riprova più tardi'
               });
@@ -144,6 +151,11 @@ export default {
       }
     },
     recuperaPassword() {
+      /*
+      Metodo utilizzato per la funzionalità di recupero password.
+      Viene visualizzato all'utente una input dove inserire l'indirizzo di posta elettronica
+      a cui sarà inviata la mail di recupero password
+       */
       this.$prompt({
         title: 'Recupero password',
         content: 'Inserisci la tua email per avviare l\'operazione di recupero password',
