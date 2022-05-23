@@ -9,14 +9,14 @@ This solution is split into two projects: [back-end](https://github.com/aldomina
 e front-end (this repository)
 
 ## Quickstart
-1. Create the environment variable `VUE_APP_URL_BACKEND` by assigning the host or domain of the back-end
+1. Create the environment variable `VUE_APP_URL_BACKEND` by assigning the host (ex. http://127.0.0.1:3000) or domain of the back-end
 2. Install the required packages
 ```bash
 npm install
 ```
 3. Compile and run the project
 ```bash
-npm serve
+npm run serve
 ```
 
 # Installation
