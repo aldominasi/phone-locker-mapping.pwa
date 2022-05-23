@@ -43,6 +43,30 @@
                       </b-col>
                     </b-row>
                     <b-row class="mt-2">
+                      <b-col sm="12" md="6" lg="6" xl="6">
+                        <b-form-input
+                          v-model="jsonData.password"
+                          :state="passwordValidation"
+                          placeholder="Inserisci password"
+                          :type="typePwd"
+                          class="inputCustomSecondary"></b-form-input>
+                        <span class="float-right mr-2">
+                          <b-link class="anchorPwd" @click.prevent="showHidePwd">{{ textPwd }}</b-link>
+                        </span>
+                      </b-col>
+                      <b-col sm="12" md="6" lg="6" xl="6" class="mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                        <b-form-input
+                          v-model="confermaPassword"
+                          :state="confermaPasswordValidation"
+                          placeholder="Conferma password"
+                          :type="typeConfermaPwd"
+                          class="inputCustomSecondary"></b-form-input>
+                        <span class="float-right mr-2">
+                          <b-link class="anchorPwd" @click.prevent="showHideConfermaPwd">{{ textConfermaPwd }}</b-link>
+                        </span>
+                      </b-col>
+                    </b-row>
+                    <b-row class="mt-2">
                       <b-col cols="12">
                         <b-form-select
                             v-model="jsonData.ruolo"
@@ -79,6 +103,7 @@ import {
   BRow,
   BCol,
   BCard,
+  BLink,
   BCardHeader,
   BCardBody,
   BForm,
@@ -96,6 +121,7 @@ export default {
     BRow,
     BCol,
     BCard,
+    BLink,
     BCardHeader,
     BCardBody,
     BForm,
@@ -112,10 +138,17 @@ export default {
         nome: '',
         cognome: '',
         ruolo: null,
+        password: ''
       },
+      typePwd: 'password',
+      textPwd: 'mostra password',
+      typeConfermaPwd: 'password',
+      textConfermaPwd: 'mostra password',
+      confermaPassword: '',
       optionsRuolo: [],
       regexEmail: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
-      regexNumeroCell: /^\d*$/
+      regexNumeroCell: /^\d*$/,
+      regexPassword: /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/
     }
   },
   mounted() {
@@ -145,25 +178,44 @@ export default {
           token: sessionStorage.getItem('tokenPlm'),
         }
       })
-          .then(response => {
-            this.hideLoadingOverlay(loader);
-            if (!response.data.success)
-              this.apiErrorHandler();
-            else
-              this.$alert({
-                title: 'Congratulazioni',
-                content: 'La registrazione dell\'utente è avvenuta correttamente'
-              });
-            this.clearAll();
-          })
-      .catch(() => {
+        .then(response => {
+          this.hideLoadingOverlay(loader);
+          if (!response.data.success)
+            this.apiErrorHandler();
+          else
+            this.$alert({
+              title: 'Congratulazioni',
+              content: 'La registrazione dell\'utente è avvenuta correttamente'
+            });
+          this.clearAll();
+        })
+        .catch(() => {
         this.hideLoadingOverlay(loader);
         this.notificaErrore();
       })
     },
+    showHidePwd() {
+      if (this.typePwd === 'password') {
+        this.typePwd = 'text';
+        this.textPwd = 'nascondi password';
+      } else {
+        this.typePwd = 'password';
+        this.textPwd = 'mostra password';
+      }
+    },
+    showHideConfermaPwd() {
+      if (this.typeConfermaPwd === 'password') {
+        this.typeConfermaPwd = 'text';
+        this.textConfermaPwd = 'nascondi password';
+      } else {
+        this.typeConfermaPwd = 'password';
+        this.textConfermaPwd = 'mostra password';
+      }
+    },
     clearAll() {
       for (const prop in this.jsonData)
         this.jsonData[prop] = prop === 'ruolo' ? null : '';
+      this.confermaPassword = '';
     }
   },
   computed: {
@@ -174,7 +226,13 @@ export default {
       return this.jsonData.numeroCellulare === '' ? null : this.regexNumeroCell.test(this.jsonData.numeroCellulare);
     },
     abilitaRegistrazione() {
-      return this.emailValidation === true && this.jsonData.nome && this.jsonData.cognome && this.cellulareValidation === true && this.jsonData.ruolo;
+      return this.emailValidation === true && this.jsonData.nome && this.jsonData.cognome && this.cellulareValidation === true && this.jsonData.ruolo && this.passwordValidation === true && this.confermaPasswordValidation === true;
+    },
+    passwordValidation() {
+      return this.jsonData.password === '' ? null : this.regexPassword.test(this.jsonData.password);
+    },
+    confermaPasswordValidation() {
+      return this.confermaPassword === '' ? null : this.jsonData.password === this.confermaPassword;
     }
   }
 }
