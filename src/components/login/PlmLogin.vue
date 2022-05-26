@@ -124,6 +124,7 @@ export default {
             if (response.data.data.auth) { // Login avvenuta con successo
               // Salva il jwt token restituito dall'api di login
               sessionStorage.setItem('tokenPlm', response.data.data.token);
+              sessionStorage.setItem('emailUtente', this.jsonData.email);
               this.$router.push('/home/armadi'); // Redirect alla homepage
             } else
               this.$alert({ // Autenticazione fallita

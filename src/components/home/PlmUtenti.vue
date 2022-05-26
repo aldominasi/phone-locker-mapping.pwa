@@ -56,7 +56,7 @@
                         </div>
                       </template>
                       <template #cell(delete)="data">
-                        <b-button
+                        <b-button v-if="emailUtente !== data.item.email"
                           class="btnCustomDanger"
                           @click="eliminaUtente(data.item._id)">Elimina</b-button>
                       </template>
@@ -126,6 +126,7 @@ export default {
       perPage: 3,
       elementiTotali: 0,
       tableIsBusy: false,
+      emailUtente: '',
       fieldsUtenti: [
         {
           key: 'email',
@@ -160,6 +161,7 @@ export default {
   },
   mounted() {
     this.getRuoli();
+    this.emailUtente = sessionStorage.getItem('emailUtente');
   },
   methods: {
     getUtenti(page) {
