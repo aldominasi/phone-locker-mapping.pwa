@@ -336,7 +336,12 @@ export default {
           }
         })
         .catch(() => {
-
+          this.$refs.modalModificaArmadio.hide();
+          let me = this;
+          setTimeout(() => {
+            me.notificaErrore();
+            me.hideLoadingOverlay(loader);
+          }, 200);
         });
     },
     aggiornaArmadio() {

@@ -55,6 +55,11 @@
                           <strong> Caricamento...</strong>
                         </div>
                       </template>
+                      <template #cell(delete)="data">
+                        <b-button
+                          class="btnCustomDanger"
+                          @click="eliminaUtente(data.item._id)">Elimina</b-button>
+                      </template>
                     </b-table>
                     <b-pagination
                       align="center"
@@ -137,6 +142,10 @@ export default {
         {
           key: 'ruolo',
           label: 'Ruolo',
+        },
+        {
+          key: 'delete',
+          label: ''
         }
       ],
       filtri: {
@@ -202,6 +211,27 @@ export default {
       this.currentPage = 1;
       this.elementiTotali = 0;
       this.getUtenti(1);
+    },
+    eliminaUtente(idUtente) {
+      const loader = this.showLoadingOverlay();
+      axios.delete(`${process.env.VUE_APP_URL_BACKEND}/utenti/${idUtente}`, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: { token: sessionStorage.getItem('tokenPlm') }
+      })
+        .then(response => {
+          this.hideLoadingOverlay(loader);
+          if (response.status === 200)
+            this.apiErrorHandler(response);
+          else {
+            this.$alert({
+              title: 'Operazione riuscita',
+              content: 'L\'account è stato eliminato con successo'
+            });
+            this.getUtenti(this.currentPage);
+          }
+
+        })
+        .catch(() => { this.notificaErrore() })
     }
   },
   computed: {
