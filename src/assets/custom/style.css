@@ -86,12 +86,31 @@ li.page-item > button.page-link {
     background-color: #6c757d !important;
     border-color: #6c757d !important;
 }
-.btnCustomSecondary:disabled {
-    color: #0b769a;
+
+.btnCustomDanger:disabled {
+    color: #cb2940;
     border-color: #9fa4aa;
     background-color: transparent;
-    font-family: NotoSerifDisplay,serif
+    font-family: NotoSerifDisplay, serif;
 }
+
+.btnCustomDanger {
+    color: #cb2940;
+    border-color: #cb2940;
+    background-color: transparent;
+    font-family: NotoSerifDisplay,serif;
+}
+
+.btnCustomDanger:focus, .btnCustomDanger:hover {
+    background-color: #cb2940;
+    box-shadow: 0 0 0 0 transparent;
+}
+
+.btnCustomDanger:active {
+    background-color: #cb2940;
+    color: white;
+}
+
 .btnCustomSecondary {
     color: #218c60;
     border-color: #218c60;

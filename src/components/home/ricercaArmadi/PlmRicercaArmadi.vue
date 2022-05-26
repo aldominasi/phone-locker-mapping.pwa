@@ -269,6 +269,9 @@ export default {
           this.notificaErrore();
         });
     },
+    getPage() {
+      return this.tabella.currentPage;
+    },
     comuneScelto() {
       this.getArmadi(1);
       this.getZone();

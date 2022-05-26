@@ -21,7 +21,7 @@
               </b-row>
               <b-row>
                 <b-col cols="12">
-                  <plm-ricerca-armadi @armadioSelezionato="armadioSelezionato" v-if="!ricercaAvanzata"></plm-ricerca-armadi>
+                  <plm-ricerca-armadi ref="ricercaArmadi" @armadioSelezionato="armadioSelezionato" v-if="!ricercaAvanzata"></plm-ricerca-armadi>
                   <plm-ricerca-armadio @armadioSelezionato="armadioSelezionato" v-else></plm-ricerca-armadio>
                 </b-col>
               </b-row>
@@ -153,6 +153,11 @@
                 <b-button
                   class="btnCustomPrimary"
                   @click="aggiornaArmadio">Aggiorna</b-button>
+              </b-col>
+              <b-col class="text-center">
+                <b-button
+                  class="btnCustomDanger"
+                  @click="eliminaArmadio">Elimina</b-button>
               </b-col>
             </b-row>
           </b-form>
@@ -309,6 +314,31 @@ export default {
           this.notificaErrore()
         });
     },
+    eliminaArmadio() {
+      const loader = this.showLoadingOverlay();
+      axios.delete(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.armadio._id}`, {
+        headers: { 'Accept-Version': '1.0.0' },
+        params: { token: sessionStorage.getItem('tokenPlm') }
+      })
+        .then(response => {
+          this.$refs.modalModificaArmadio.hide();
+          let me = this;
+          if (response.status === 200) {
+            setTimeout(() => {
+              me.hideLoadingOverlay(loader);
+              me.apiErrorHandler(response);
+            }, 200);
+          } else {
+            setTimeout(() => {
+              me.hideLoadingOverlay(loader);
+              this.$refs.ricercaArmadi.getArmadi(this.$refs.ricercaArmadi.getPage());
+            }, 200);
+          }
+        })
+        .catch(() => {
+
+        });
+    },
     aggiornaArmadio() {
       const loader = this.showLoadingOverlay();
       axios.put(`${process.env.VUE_APP_URL_BACKEND}/armadi/${this.armadio._id}`, this.armadio, {
@@ -325,7 +355,6 @@ export default {
           }, 200);
         }
         else {
-          let me = this;
           setTimeout(() => {
             me.hideLoadingOverlay(loader);
             me.$alert({
