@@ -1,4 +1,6 @@
 <template>
+  <!-- Componente che visualizza la lista degli armadi e
+  offre la possibilità di accedere alle loro info nel dettaglio -->
   <div>
     <b-container class="mt-10">
       <b-row>
@@ -8,88 +10,45 @@
               <h3>Lista armadi</h3>
             </b-card-header>
             <b-card-body>
-              <b-row>
-                <b-col cols="12">
-                  <b-form>
-                    <b-form-row>
-                      <b-form-input
-                        placeholder="Scegli la centrale"
-                        v-model="filtri.centrale.selected"
-                        debounce="200"
-                        list="list-centrali"></b-form-input>
-                      <b-form-datalist
-                        id="list-centrali"
-                        :options="filtri.centrale.options"></b-form-datalist>
-                    </b-form-row>
-                    <b-form-row class="mt-2">
-                      <b-form-select
-                        v-model="filtri.zona.selected"
-                        :options="filtri.zona.options"
-                        :disabled="!centraleScelta"
-                        class="form-control">
-                        <template #first>
-                          <b-form-select-option :value="null">Scegli la zona</b-form-select-option>
-                        </template>
-                      </b-form-select>
-                    </b-form-row>
-                    <b-row class="mt-2">
-                      <b-col>
-                        <b-button class="btnCustomPrimary" @click="resetFiltri">Reset</b-button>
-                        <b-button class="btnCustomSecondary ml-2" @click="getArmadi(1)" :disabled="!centraleScelta">Cerca</b-button>
-                      </b-col>
-                    </b-row>
-                  </b-form>
-                </b-col>
-                <b-col cols="12" class="mt-2" v-if="jsonData.length > 0">
-                  <div class="overflow-auto">
-                    <b-table
-                      id="table-armadi"
-                      striped
-                      hover
-                      borderless
-                      responsive
-                      :busy="tableIsBusy"
-                      :fields="fieldsTable"
-                      :items="jsonData">
-                      <template #table-busy>
-                        <div class="text-center color-busy-table my-2">
-                          <b-spinner class="align-middle"></b-spinner>
-                          <strong> Caricamento...</strong>
-                        </div>
-                      </template>
-                      <template #cell(show_details)="row">
-                        <b-button
-                          style="width: max-content"
-                          @click="row.toggleDetails">
-                          {{ row.detailsShowing ? 'Nascondi' : 'Mostra' }} Dettagli
-                        </b-button>
-                      </template>
-                      <template #row-details="row">
-                        <b-card>
-                          <b-row class="mb-2">
-                            <b-col cols="12" class="text-center"><b>{{ row.item.tipoArmadio }}</b></b-col>
-                          </b-row>
-                        </b-card>
-                      </template>
-                    </b-table>
-                    <b-pagination
-                      align="center"
-                      v-model="currentPage"
-                      :total-rows="rows"
-                      :per-page="perPage"
-                      @change="changePageTable"
-                      aria-controls="table-armadi"></b-pagination>
-                  </div>
-                </b-col>
-                <b-col cols="12" class="text-center mt-4" v-else>
-                  <b-img src="/plm/img/empty.svg" width="100%" center fluid alt="Nessun dato"></b-img>
-                  <label>Elenco vuoto</label>
-                </b-col>
-              </b-row>
+              <!-- Componente per la ricerca e la visualizzazione degli armadi -->
+              <plm-ricerca-armadi @armadioSelezionato="armadioScelto"></plm-ricerca-armadi>
             </b-card-body>
           </b-card>
         </b-col>
       </b-row>
+      <!-- Modal contenente l'oggetto tabs di Bootstrap per organizzare le varie funzionalità -->
+      <b-modal
+        ref="modalPlmArmadi"
+        hide-footer
+        size="lg">
+        <b-container fluid>
+          <b-tabs content-class="mt-2">
+            <b-tab title="Posizione" lazy>
+              <b-row>
+                <b-col cols="12">
+                  <!-- Componente che visualizza all'utente la posizione geografica dell'armadio selezionato -->
+                  <plm-map-get-armadi
+                    :lat="armadioSelezionato ? armadioSelezionato.localizzazione.coordinates[0] : 0"
+                    :lng="armadioSelezionato ? armadioSelezionato.localizzazione.coordinates[1] : 0"
+                  ></plm-map-get-armadi>
+                </b-col>
+              </b-row>
+            </b-tab>
+            <b-tab title="Dettagli">
+              <!-- Componente che mostra le informazioni dettagliate dell'armadio -->
+              <PlmInfoArmadio :armadio="armadioSelezionato"></PlmInfoArmadio>
+            </b-tab>
+            <b-tab title="Note">
+              <!-- Componente che permette di aggiungere/modificare le note per l'armadio selezionato -->
+              <plm-modifica-nota :armadio="armadioSelezionato"></plm-modifica-nota>
+            </b-tab>
+            <b-tab title="Aggiorna posizione" lazy>
+              <!-- Componente che permette di aggiornare la posizione dell'armadio -->
+              <plm-agg-pos-armadio :armadio="armadioSelezionato"></plm-agg-pos-armadio>
+            </b-tab>
+          </b-tabs>
+        </b-container>
+      </b-modal>
     </b-container>
   </div>
 </template>
@@ -103,46 +62,40 @@ import {
   BCard,
   BCardHeader,
   BCardBody,
-  BPagination,
-  BTable,
-  BSpinner,
-  BButton,
-  BForm,
-  BFormRow,
-  BFormInput,
-  BFormDatalist,
-  BFormSelect,
-  BFormSelectOption,
-  BImg,
+  BTabs,
+  BTab,
+  BModal,
 } from 'bootstrap-vue';
+import PlmMapGetArmadi from '@/components/home/modalInfoArmadio/PlmMapGetArmadi';
+import PlmInfoArmadio from '@/components/home/modalInfoArmadio/PlmInfoArmadio';
+import PlmModificaNota from '@/components/home/modalInfoArmadio/PlmModificaNota';
+import PlmAggPosArmadio from '@/components/home/modalInfoArmadio/PlmAggPosArmadio';
+import PlmRicercaArmadi from '@/components/home/ricercaArmadi/PlmRicercaArmadi';
 const START_MD_SIZE = 768;
 
 export default {
   name: 'PlmArmadi',
   components: {
+    PlmRicercaArmadi,
     BContainer,
     BRow,
     BCol,
     BCard,
     BCardHeader,
     BCardBody,
-    BPagination,
-    BTable,
-    BSpinner,
-    BButton,
-    BForm,
-    BFormRow,
-    BFormInput,
-    BFormDatalist,
-    BFormSelect,
-    BFormSelectOption,
-    BImg,
+    BTabs,
+    BTab,
+    BModal,
+    PlmMapGetArmadi,
+    PlmInfoArmadio,
+    PlmModificaNota,
+    PlmAggPosArmadio,
   },
   data() {
     return {
       jsonData: [],
       tableIsBusy: false,
-      fieldsTable: [
+      fieldsTable: [ // Campi della tabella e loro configurazione
         {
           key: 'zona',
           label: 'Zona',
@@ -159,17 +112,12 @@ export default {
           label: 'Armadio',
           tdClass: window.innerWidth <= START_MD_SIZE ? 'tdTableSm' : ''
         }
-        // {
-        //   key: 'show_details',
-        //   label: '',
-        //   tdClass: 'text-center'
-        // }
       ],
-      currentPage: 1,
-      perPage: 3,
+      currentPage: 1, // Pagina corrente della tabella
+      perPage: 3, // Numero di righe per pagina
       elementiTotali: 0,
       centraleScelta: false,
-      filtri: {
+      filtri: { // Filtri per la ricerca degli armadi
         centrale: {
           selected: '',
           options: []
@@ -178,7 +126,8 @@ export default {
           selected: null,
           options: []
         }
-      }
+      },
+      armadioSelezionato: null
     }
   },
   mounted() {
@@ -189,7 +138,11 @@ export default {
     this.getCentrali();
   },
   methods: {
-    zonaFormatter(zona) {
+    armadioScelto(item) {
+      this.armadioSelezionato = item;
+      this.$refs.modalPlmArmadi.show();
+    },
+    zonaFormatter(zona) { // Formatta la visualizzazione della zona dell'armadio
       return zona['info1'];
     },
     changePageTable(page) {
@@ -197,64 +150,78 @@ export default {
       this.getArmadi(this.currentPage);
     },
     getArmadi(page) {
+      // Metodo utilizzato per il recupero degli armadi
       this.tableIsBusy = true;
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/armadi`, {
         headers: { "Accept-Version": '1.0.0' },
         params: {
           token: sessionStorage.getItem('tokenPlm'),
-          page: page - 1,
+          page: page - 1, // Pagina selezionata - 1
           limit: this.perPage,
-          centrale: this.filtri.centrale.selected,
-          zona: this.filtri.zona.selected
+          centrale: this.filtri.centrale.selected, // Filtro sulla centrale (Comune) scelta
+          zona: this.filtri.zona.selected // Filtro sulla zona scelta
         }
       })
         .then(response => {
           if (!response.data.success) {
             this.tableIsBusy = false;
-            return console.log(response.data.msg);
+            this.apiErrorHandler(response);
           }
-          this.jsonData = response.data.data.armadi;
-          this.elementiTotali = response.data.data.documentiTotali;
-          this.tableIsBusy = false;
+          else {
+            this.jsonData = response.data.data.armadi;
+            this.elementiTotali = response.data.data.documentiTotali;
+            this.tableIsBusy = false;
+          }
         })
-        .catch(err => {
+        .catch(() => {
           this.tableIsBusy = false;
-          console.log(err);
+          this.notificaErrore();
         });
     },
     getCentrali() {
+      // Metodo utilizzato per il recupero delle centrali
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/centrali`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: { token: sessionStorage.getItem('tokenPlm') }
       })
       .then(response => {
-        if (!response.data.success)
-          return console.log(response.data.msg);
-        this.filtri.centrale.options = response.data.data.map(item => {
-          return { value: item, text: item }
-        });
+        this.hideLoadingOverlay(loader);
+        if (response.data.success)
+          this.filtri.centrale.options = response.data.data.map(item => {
+            return { value: item, text: item }
+          });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
       });
     },
     getZone() {
+      // Metodo utilizzato per recuperare le zone di una centrale
+      const loader = this.showLoadingOverlay();
       axios.get(`${process.env.VUE_APP_URL_BACKEND}/zone`, {
         headers: { 'Accept-Version': '1.0.0' },
         params: {
           token: sessionStorage.getItem('tokenPlm'),
-          centrale: this.filtri.centrale.selected
+          centrale: this.filtri.centrale.selected // Centrale selezionata
         }
       })
       .then(response => {
+        this.hideLoadingOverlay(loader);
         if (!response.data.success)
-          return console.log(response.data.msg);
-        this.filtri.zona.options = response.data.data;
+          this.apiErrorHandler(response);
+        else
+          this.filtri.zona.options = response.data.data;
       })
-      .catch(err => console.log(err))
+      .catch(() => {
+        this.hideLoadingOverlay(loader);
+        this.notificaErrore();
+      })
     },
     resetFiltri() {
       this.filtri.centrale.selected = '';
+      this.filtri.zona.selected = null;
       this.jsonData = [];
       this.currentPage = 1;
       this.elementiTotali = 0;

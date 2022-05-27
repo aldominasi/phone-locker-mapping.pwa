@@ -4,13 +4,45 @@
       id="navbar-1"
       title="Navbar"
       type="dark"
-      toggleable="lg">
-      <b-navbar-brand class="ml-2">{{title}}</b-navbar-brand>
+      toggleable="md">
       <b-navbar-toggle target="nav-collapse" class="mr-2"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="/#/home/armadi">Home</b-nav-item>
-          <b-nav-item href="/#/home/utenti">Utenti</b-nav-item>
+          <!-- Visualizza il componente per la ricerca degli armadi -->
+          <b-nav-item v-if="permessiUtente.readArmadi" class="ml-1">
+            <router-link :to="linkArmadi">Armadi</router-link>
+          </b-nav-item>
+          <!-- Visualizza il componente per la ricerca degli utenti -->
+          <b-nav-item v-if="permessiUtente.readUtenti" class="ml-1">
+            <router-link :to="linkUtenti">Utenti</router-link>
+          </b-nav-item>
+          <!-- Visualizza il componente per registrare un nuovo utente -->
+          <b-nav-item v-if="permessiUtente.writeUtenti" class="ml-1">
+            <router-link :to="linkRegistraUtente">Registra utente</router-link>
+          </b-nav-item>
+          <!-- Visualizza il componente per modificare un armadio -->
+          <b-nav-item v-if="permessiUtente.writeArmadi" class="ml-1">
+            <router-link :to="linkModificaUtente">Modifica armadio</router-link>
+          </b-nav-item>
+          <!-- Visualizza il componente per registrare un nuovo armadio -->
+          <b-nav-item v-if="permessiUtente.writeArmadi" class="ml-1">
+            <router-link :to="linkRegistraArmadio">Nuovo armadio</router-link>
+          </b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav>
+          <b-nav-item-dropdown class="ml-1">
+            <template #button-content>
+              <font-awesome-icon style="color: white;" icon="fa-regular fa-user"/>
+            </template>
+            <!-- Visualizza il componente per modificare la password -->
+            <b-dropdown-item>
+              <router-link :to="linkModPwd">Modifica password</router-link>
+            </b-dropdown-item>
+            <!-- Esegue il logout -->
+            <b-dropdown-item>
+              <router-link :to="linkLogout">Esci</router-link>
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -20,29 +52,67 @@
 
 <script>
 import {
-  BNavbarBrand,
   BNavbarToggle,
   BNavbar,
   BNavbarNav,
   BNavItem,
   BCollapse,
+  BNavItemDropdown,
+  BDropdownItem,
 } from 'bootstrap-vue';
-
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import axios from 'axios';
+library.add(faUser);
 export default {
   name: 'navBar',
   components: {
-    BNavbarBrand,
     BNavbarToggle,
     BNavbar,
     BNavbarNav,
     BNavItem,
     BCollapse,
+    BNavItemDropdown,
+    FontAwesomeIcon,
+    BDropdownItem,
   },
   data() {
     return {
-      title: 'Home'
+      title: 'Home',
+      linkArmadi: 'armadi',
+      linkUtenti: 'utenti',
+      linkRegistraUtente: 'addUtente',
+      linkModificaUtente: 'updateArmadio',
+      linkRegistraArmadio: 'addArmadio',
+      linkModPwd: 'pwdChange',
+      linkLogout: '/logout',
+      permessiUtente: {
+        readUtenti: false,
+        writeUtenti: false,
+        readArmadi: true,
+        writeArmadi: false
+      }
     }
   },
+  beforeCreate() {
+    // Recupera le informazioni dell'utente compreso il ruolo e le funzioni a cui può accedere
+    axios.get(`${process.env.VUE_APP_URL_BACKEND}/utenti/me`, {
+      headers: { 'Accept-Version': '1.0.0' },
+      params: {
+        token: sessionStorage.getItem('tokenPlm') // Recupera il token dal session storage
+      }
+    })
+      .then(response => {
+        if (!response.data.success)
+          this.apiErrorHandler(response);
+        else
+          this.permessiUtente = response.data.data.permessi;
+      })
+      .catch(() => {
+        this.notificaErrore()
+      });
+  }
 }
 </script>
 
