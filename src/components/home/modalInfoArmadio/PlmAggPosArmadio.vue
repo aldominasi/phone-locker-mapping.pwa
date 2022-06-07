@@ -95,7 +95,7 @@ export default {
       },
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      zoom: 18,
+      zoom: 12,
       center: this.$props.armadio.localizzazione.coordinates,
       iconMyPosition: icon({
         iconRetinaUrl: require('../../../assets/custom/marker-icon-2x-red.png'),
